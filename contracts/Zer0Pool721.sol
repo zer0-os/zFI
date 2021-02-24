@@ -1,3 +1,9 @@
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.1;
+
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 contract Zer0Pool721 {
     using SafeMath for uint256;
     uint32 poolid;
