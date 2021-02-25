@@ -4,16 +4,16 @@ pragma solidity ^0.8.1;
 
 import "./oz/erc20/ERC20.sol";
 
-contract Zer0LPToken is ERC20 {
+contract Zer0LendLPToken is ERC20 {
     modifier onlypool{
         require(msg.sender == _pooladdress);
         _;
     }
     address _pooladdress;
     
-    constructor(uint256 supply, address pooladdress) ERC20("Zer0721LP", "ZLP") {
+    constructor(string memory name, string memory ticker, uint256 supply) ERC20(name, ticker) {
         _mint(msg.sender, supply);
-        _pooladdress = pooladdress;
+        _pooladdress = msg.sender;
     }
     
     function mint(address to, uint256 amt) public virtual onlypool{
