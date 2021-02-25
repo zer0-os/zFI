@@ -6,10 +6,10 @@ import "./IERC721.sol";
 import "./IERC721Receiver.sol";
 import "./IERC721Metadata.sol";
 import "./IERC721Enumerable.sol";
-import "./Address.sol";
-import "./Context.sol";
-import "./Strings.sol";
-import "./ERC165.sol";
+import "../util/Address.sol";
+import "../util/Context.sol";
+import "../util/Strings.sol";
+import "../util/ERC165.sol";
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including

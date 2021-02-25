@@ -3,9 +3,10 @@
 const A = artifacts.require("../contracts/Zer0Pool721.sol");
 const B = artifacts.require("../contracts/Zer0Lend721.sol");
 const C = artifacts.require("../contracts/Zer0LPToken.sol");
+const D = artifacts.require("../contracts/ERC721TestToken.sol");
 
 module.exports = async function(deployer) {
-    let aInst, bInst, cInst;
+    let aInst, bInst, cInst, dInst;
 
     await Promise.all([deployer.deploy(A), deployer.deploy(B)]);
 
@@ -13,8 +14,16 @@ module.exports = async function(deployer) {
 
     aInst = instances[0];
     bInst = instances[1];
-  
-    cInst = C.deployed(0, aInst.address);
+    await deployer.deploy(C, 0, aInst.address);
+    cInst = await C.deployed();
+    await deployer.deploy(D, 'Test 721', 'TEST', {
+        "id": 0,
+        "description": "My NFT",
+        "external_url": "https://forum.openzeppelin.com/t/create-an-nft-and-deploy-to-a-public-testnet-using-truffle/2961",
+        "image": "https://twemoji.maxcdn.com/svg/1f40e.svg",
+        "name": "My NFT 0"
+      });
+    dInst = await D.deployed();
     //set contractData
     // Data which will write in a file.
     //console.log("abi: ", JSON.stringify(aInst.abi));

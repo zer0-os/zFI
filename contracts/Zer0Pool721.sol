@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.1;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./oz/util/SafeMath.sol";
 
 contract Zer0Pool721 {
     using SafeMath for uint256;
