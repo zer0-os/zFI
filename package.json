@@ -8,7 +8,7 @@
     "clean": "hardhat clean",
     "compile": "hardhat compile"
   },
-  "dependencies": {
+  "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "2.1.1",
     "@nomiclabs/hardhat-waffle": "2.0.1",
@@ -19,7 +19,8 @@
     "@typechain/hardhat": "2.0.2",
     "dotenv": "10.0.0",
     "ethers": "5.4.1",
-    "hardhat": "2.6.4",
+    "prettier": "2.3.1",
+    "prettier-plugin-solidity": "1.0.0-beta.13",
     "solidity-coverage": "0.7.16",
     "ts-node": "10.0.0",
     "typechain": "5.0.0",
