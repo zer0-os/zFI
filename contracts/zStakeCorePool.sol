@@ -91,6 +91,10 @@ contract zStakeCorePool is zStakePoolBase {
         return weightToReward(user.totalWeight, vaultRewardsPerWeight) - user.subVaultRewards;
     }
 
+    function checkVaultRewardsPerWeight() public view returns (uint256) {
+        return vaultRewardsPerWeight;
+    }
+
     /**
      * @dev Executed only by the factory owner to Set the vault
      *

@@ -23,6 +23,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   functions: {
     "balanceOf(address)": FunctionFragment;
     "blockNumber()": FunctionFragment;
+    "checkVaultRewardsPerWeight()": FunctionFragment;
     "factory()": FunctionFragment;
     "getDeposit(address,uint256)": FunctionFragment;
     "getDepositsLength(address)": FunctionFragment;
@@ -57,6 +58,10 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
     functionFragment: "blockNumber",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "checkVaultRewardsPerWeight",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "factory", values?: undefined): string;
@@ -149,6 +154,10 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "blockNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "checkVaultRewardsPerWeight",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
@@ -297,6 +306,8 @@ export class ZStakeCorePool extends BaseContract {
 
     blockNumber(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    checkVaultRewardsPerWeight(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     factory(overrides?: CallOverrides): Promise<[string]>;
 
     getDeposit(
@@ -434,6 +445,8 @@ export class ZStakeCorePool extends BaseContract {
 
   blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
+  checkVaultRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
+
   factory(overrides?: CallOverrides): Promise<string>;
 
   getDeposit(
@@ -568,6 +581,8 @@ export class ZStakeCorePool extends BaseContract {
     balanceOf(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
+
+    checkVaultRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
     factory(overrides?: CallOverrides): Promise<string>;
 
@@ -790,6 +805,8 @@ export class ZStakeCorePool extends BaseContract {
 
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
+    checkVaultRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
+
     factory(overrides?: CallOverrides): Promise<BigNumber>;
 
     getDeposit(
@@ -910,6 +927,10 @@ export class ZStakeCorePool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     blockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    checkVaultRewardsPerWeight(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

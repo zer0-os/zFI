@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
-import { expect } from "chai"
 import * as chai from "chai";
+import { solidity } from "ethereum-waffle"
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { MockContract, MockContractFactory, smock } from "@defi-wonderland/smock";
 
@@ -11,8 +11,9 @@ import {
   EscrowedERC20__factory,
   ERC20,
   ERC20__factory } from "../typechain";
+import { expect } from "chai";
 
-chai.use(smock.matchers);
+chai.use(solidity);
 
 describe("zStake Tests", function () {
   let creator: SignerWithAddress;
@@ -60,33 +61,20 @@ describe("zStake Tests", function () {
     );
   });
   it("Successfully get pending rewards", async function () {
-
-    const account = staker.address;
-    const stakerData = {
+    const data = {
       tokenAmount: ethers.BigNumber.from("1000"),
-      totalWeight: ethers.BigNumber.from("50"),
-      subYieldRewards: ethers.BigNumber.from("10"),
-      subVaultRewards: ethers.BigNumber.from("10"),
-      // deposits: ethers.BigNumber.from(""),
+      totalWeight: ethers.BigNumber.from("50000000000000"), // 50*10^12
+      subYieldRewards: ethers.BigNumber.from("10000000000000"), // 10*10^12
+      subVaultRewards: ethers.BigNumber.from("10000000000000"), // 10*10^12
     }
     await mockZStakeCorePool.setVariable("users", {
-      account: stakerData
+      [staker.address]: data
     });
+    await mockZStakeCorePool.setVariable("vaultRewardsPerWeight", ethers.BigNumber.from("10000000000000"));
 
-    const res = await mockZStakeCorePool.pendingVaultRewards(staker.address);
-    console.log(res);
-    // await zStakePoolBase.connect(creator).stake(ethers.utils.parseEther(amount), lockUntil, true);
-    // const Greeter = await ethers.getContractFactory("Greeter");
-    // const greeter = await Greeter.deploy("Hello, world!");
-    // await greeter.deployed();
-
-    // expect(await greeter.greet()).to.equal("Hello, world!");
-
-    // const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
-
-    // // wait until the transaction is mined
-    // await setGreetingTx.wait();
-
-    // expect(await greeter.greet()).to.equal("Hola, mundo!");
+    const vaultRewards = await mockZStakeCorePool.pendingVaultRewards(staker.address);
+    const formattedVaultRewards = ethers.utils.formatUnits(vaultRewards.toString(), 12);
+    console.log(formattedVaultRewards);
+    expect(formattedVaultRewards).to.equal(490.0);
   });
 });
