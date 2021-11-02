@@ -209,7 +209,7 @@ const _abi = [
     name: "factory",
     outputs: [
       {
-        internalType: "contract IlluviumPoolFactory",
+        internalType: "contract zStakePoolFactory",
         name: "",
         type: "address",
       },

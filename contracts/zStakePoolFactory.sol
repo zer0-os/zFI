@@ -22,14 +22,14 @@ import "./token/EscrowedERC20.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin
  */
-contract IlluviumPoolFactory is Ownable, zStakeAware {
+contract zStakePoolFactory is Ownable, zStakeAware {
     /**
      * @dev Smart contract unique identifier, a random number
      * @dev Should be regenerated each time smart contact source code is changed
      *      and changes smart contract itself is to be redeployed
      * @dev Generated using https://www.random.org/bytes/
      */
-    uint256 public constant FACTORY_UID = 0xa50d227c30cd13d60a11ccc6ae5eec570cb1d5ac6579ea7762be6a1a6fa3625a;
+    // uint256 public constant FACTORY_UID = 0xa50d227c30cd13d60a11ccc6ae5eec570cb1d5ac6579ea7762be6a1a6fa3625a;
 
     /// @dev Auxiliary data structure used only in getPoolData() view function
     struct PoolData {

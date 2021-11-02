@@ -19,9 +19,8 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface IlluviumPoolFactoryInterface extends ethers.utils.Interface {
+interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   functions: {
-    "FACTORY_UID()": FunctionFragment;
     "blockNumber()": FunctionFragment;
     "blocksPerUpdate()": FunctionFragment;
     "changePoolWeight(address,uint32)": FunctionFragment;
@@ -45,10 +44,6 @@ interface IlluviumPoolFactoryInterface extends ethers.utils.Interface {
     "wildPerBlock()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "FACTORY_UID",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "blockNumber",
     values?: undefined
@@ -113,10 +108,6 @@ interface IlluviumPoolFactoryInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "FACTORY_UID",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "blockNumber",
     data: BytesLike
@@ -194,7 +185,7 @@ interface IlluviumPoolFactoryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "WildRatioUpdated"): EventFragment;
 }
 
-export class IlluviumPoolFactory extends BaseContract {
+export class ZStakePoolFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -235,11 +226,9 @@ export class IlluviumPoolFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IlluviumPoolFactoryInterface;
+  interface: ZStakePoolFactoryInterface;
 
   functions: {
-    FACTORY_UID(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     blockNumber(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     blocksPerUpdate(overrides?: CallOverrides): Promise<[number]>;
@@ -321,8 +310,6 @@ export class IlluviumPoolFactory extends BaseContract {
     wildPerBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
-  FACTORY_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
   blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
   blocksPerUpdate(overrides?: CallOverrides): Promise<number>;
@@ -399,8 +386,6 @@ export class IlluviumPoolFactory extends BaseContract {
   wildPerBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    FACTORY_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
     blocksPerUpdate(overrides?: CallOverrides): Promise<number>;
@@ -518,8 +503,6 @@ export class IlluviumPoolFactory extends BaseContract {
   };
 
   estimateGas: {
-    FACTORY_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
     blocksPerUpdate(overrides?: CallOverrides): Promise<BigNumber>;
@@ -593,8 +576,6 @@ export class IlluviumPoolFactory extends BaseContract {
   };
 
   populateTransaction: {
-    FACTORY_UID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     blockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     blocksPerUpdate(overrides?: CallOverrides): Promise<PopulatedTransaction>;

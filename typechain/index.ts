@@ -14,7 +14,7 @@ export type { Ownable } from "./Ownable";
 export type { ZStakeAware } from "./ZStakeAware";
 export type { ZStakeCorePool } from "./ZStakeCorePool";
 export type { ZStakePoolBase } from "./ZStakePoolBase";
-export type { IlluviumPoolFactory } from "./IlluviumPoolFactory";
+export type { ZStakePoolFactory } from "./ZStakePoolFactory";
 
 export { ICorePool__factory } from "./factories/ICorePool__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
@@ -29,4 +29,4 @@ export { Ownable__factory } from "./factories/Ownable__factory";
 export { ZStakeAware__factory } from "./factories/ZStakeAware__factory";
 export { ZStakeCorePool__factory } from "./factories/ZStakeCorePool__factory";
 export { ZStakePoolBase__factory } from "./factories/ZStakePoolBase__factory";
-export { IlluviumPoolFactory__factory } from "./factories/IlluviumPoolFactory__factory";
+export { ZStakePoolFactory__factory } from "./factories/ZStakePoolFactory__factory";

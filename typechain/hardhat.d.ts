@@ -65,9 +65,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZStakePoolBase__factory>;
     getContractFactory(
-      name: "IlluviumPoolFactory",
+      name: "ZStakePoolFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IlluviumPoolFactory__factory>;
+    ): Promise<Contracts.ZStakePoolFactory__factory>;
 
     // default types
     getContractFactory(

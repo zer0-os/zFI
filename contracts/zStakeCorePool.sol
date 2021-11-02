@@ -61,7 +61,7 @@ contract zStakeCorePool is zStakePoolBase {
      *
      * @param _ilv ILV ERC20 Token IlluviumERC20 address
      * @param _silv sILV ERC20 Token EscrowedIlluviumERC20 address
-     * @param _factory Pool factory IlluviumPoolFactory instance/address
+     * @param _factory Pool factory zStakePoolFactory instance/address
      * @param _poolToken token the pool operates on, for example ILV or ILV/ETH pair
      * @param _initBlock initial block used to calculate the rewards
      * @param _weight number representing a weight of the pool, actual weight fraction
@@ -70,7 +70,7 @@ contract zStakeCorePool is zStakePoolBase {
     constructor(
         address _ilv,
         address _silv,
-        IlluviumPoolFactory _factory,
+        zStakePoolFactory _factory,
         address _poolToken,
         uint64 _initBlock,
         uint32 _weight

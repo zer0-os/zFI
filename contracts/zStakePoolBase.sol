@@ -15,7 +15,7 @@ import "./token/EscrowedERC20.sol";
  *      be it a flash pool (temporary pool like SNX) or a core pool (permanent pool like ILV/ETH or ILV pool)
  *
  * @dev Deployment and initialization.
- *      Any pool deployed must be bound to the deployed pool factory (IlluviumPoolFactory)
+ *      Any pool deployed must be bound to the deployed pool factory (zStakePoolFactory)
  *      Additionally, 3 token instance addresses must be defined on deployment:
  *          - ILV token address
  *          - sILV token address, used to mint sILV rewards
@@ -51,8 +51,8 @@ abstract contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
     /// @dev Link to sILV ERC20 Token EscrowedIlluviumERC20 instance
     address public immutable override swild;
 
-    /// @dev Link to the pool factory IlluviumPoolFactory instance
-    IlluviumPoolFactory public immutable factory;
+    /// @dev Link to the pool factory zStakePoolFactory instance
+    zStakePoolFactory public immutable factory;
 
     /// @dev Link to the pool token instance, for example ILV or ILV/ETH pair
     address public immutable override poolToken;
@@ -154,7 +154,7 @@ abstract contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
      *
      * @param _wild ILV ERC20 Token IlluviumERC20 address
      * @param _swild sILV ERC20 Token EscrowedIlluviumERC20 address
-     * @param _factory Pool factory IlluviumPoolFactory instance/address
+     * @param _factory Pool factory zStakePoolFactory instance/address
      * @param _poolToken token the pool operates on, for example ILV or ILV/ETH pair
      * @param _initBlock initial block used to calculate the rewards
      *      note: _initBlock can be set to the future effectively meaning _sync() calls will do nothing
@@ -164,7 +164,7 @@ abstract contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
     constructor(
         address _wild,
         address _swild,
-        IlluviumPoolFactory _factory,
+        zStakePoolFactory _factory,
         address _poolToken,
         uint64 _initBlock,
         uint32 _weight
