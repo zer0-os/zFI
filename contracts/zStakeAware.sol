@@ -24,7 +24,7 @@ abstract contract zStakeAware is ILinkedToWILD {
   constructor(address _wild) {
     // verify WILD address is set and is correct
     require(_wild != address(0), "WILD address not set");
-    require(zStakeERC20(_wild).TOKEN_UID() == 0xbe96a9a320977f7f9ece655f560a40a0d9173f0148d998977e21e01e50d7f922, "unexpected TOKEN_UID");
+    // require(zStakeERC20(_wild).TOKEN_UID() == 0xbe96a9a320977f7f9ece655f560a40a0d9173f0148d998977e21e01e50d7f922, "unexpected TOKEN_UID");
 
     // write WILD address
     wild = _wild;

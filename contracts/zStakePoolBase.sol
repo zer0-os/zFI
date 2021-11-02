@@ -176,19 +176,6 @@ abstract contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
         require(_initBlock > 0, "init block not set");
         require(_weight > 0, "pool weight not set");
 
-        // verify sILV instance supplied
-        require(
-            EscrowedIlluviumERC20(_swild).TOKEN_UID() ==
-                0x00415d8163ba17aa3f5677b9f4f6e9c243ae08760efae1fe11d6b0ebe279e67b,
-            "unexpected sILV TOKEN_UID"
-        );
-
-        // verify IlluviumPoolFactory instance supplied
-        require(
-            _factory.FACTORY_UID() == 0xa50d227c30cd13d60a11ccc6ae5eec570cb1d5ac6579ea7762be6a1a6fa3625a,
-            "unexpected FACTORY_UID"
-        );
-
         // save the inputs into internal state variables
         swild = _wild;
         factory = _factory;
@@ -776,7 +763,7 @@ abstract contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
      */
     function mintSWild(address _to, uint256 _value) private {
         // just delegate call to the target
-        EscrowedIlluviumERC20(swild).mint(_to, _value);
+        EscrowedERC20(swild).mint(_to, _value);
     }
 
     /**

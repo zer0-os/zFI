@@ -33,9 +33,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Receiver__factory>;
     getContractFactory(
-      name: "EscrowedIlluviumERC20",
+      name: "EscrowedERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.EscrowedIlluviumERC20__factory>;
+    ): Promise<Contracts.EscrowedERC20__factory>;
     getContractFactory(
       name: "ZStakeERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions

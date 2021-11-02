@@ -143,13 +143,6 @@ contract IlluviumPoolFactory is Ownable, zStakeAware {
         require(_initBlock > 0, "init block not set");
         require(_endBlock > _initBlock, "invalid end block: must be greater than init block");
 
-        // verify sILV instance supplied
-        require(
-            EscrowedIlluviumERC20(_swild).TOKEN_UID() ==
-                0x00415d8163ba17aa3f5677b9f4f6e9c243ae08760efae1fe11d6b0ebe279e67b,
-            "unexpected sILV TOKEN_UID"
-        );
-
         // save the inputs into internal state variables
         swild = _swild;
         wildPerBlock = _wildPerBlock;

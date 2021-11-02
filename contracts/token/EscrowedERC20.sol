@@ -4,14 +4,14 @@ pragma solidity ^0.8.1;
 import "../utils/ERC20.sol";
 import "../utils/AccessControl.sol";
 
-contract EscrowedIlluviumERC20 is ERC20("Escrowed Illuvium", "sILV"), AccessControl {
+contract EscrowedERC20 is ERC20("Escrowed Illuvium", "sILV"), AccessControl {
   /**
    * @dev Smart contract unique identifier, a random number
    * @dev Should be regenerated each time smart contact source code is changed
    *      and changes smart contract itself is to be redeployed
    * @dev Generated using https://www.random.org/bytes/
    */
-  uint256 public constant TOKEN_UID = 0x00415d8163ba17aa3f5677b9f4f6e9c243ae08760efae1fe11d6b0ebe279e67b;
+  // uint256 public constant TOKEN_UID = 0x00415d8163ba17aa3f5677b9f4f6e9c243ae08760efae1fe11d6b0ebe279e67b;
 
   /**
    * @notice Must be called by ROLE_TOKEN_CREATOR addresses.

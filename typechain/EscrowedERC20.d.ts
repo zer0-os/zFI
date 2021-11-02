@@ -19,11 +19,10 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface EscrowedIlluviumERC20Interface extends ethers.utils.Interface {
+interface EscrowedERC20Interface extends ethers.utils.Interface {
   functions: {
     "ROLE_ACCESS_MANAGER()": FunctionFragment;
     "ROLE_TOKEN_CREATOR()": FunctionFragment;
-    "TOKEN_UID()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -55,7 +54,6 @@ interface EscrowedIlluviumERC20Interface extends ethers.utils.Interface {
     functionFragment: "ROLE_TOKEN_CREATOR",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "TOKEN_UID", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -128,7 +126,6 @@ interface EscrowedIlluviumERC20Interface extends ethers.utils.Interface {
     functionFragment: "ROLE_TOKEN_CREATOR",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "TOKEN_UID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -186,7 +183,7 @@ interface EscrowedIlluviumERC20Interface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class EscrowedIlluviumERC20 extends BaseContract {
+export class EscrowedERC20 extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -227,14 +224,12 @@ export class EscrowedIlluviumERC20 extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: EscrowedIlluviumERC20Interface;
+  interface: EscrowedERC20Interface;
 
   functions: {
     ROLE_ACCESS_MANAGER(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<[number]>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     allowance(
       owner: string,
@@ -337,8 +332,6 @@ export class EscrowedIlluviumERC20 extends BaseContract {
 
   ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<number>;
 
-  TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
   allowance(
     owner: string,
     spender: string,
@@ -439,8 +432,6 @@ export class EscrowedIlluviumERC20 extends BaseContract {
     ROLE_ACCESS_MANAGER(overrides?: CallOverrides): Promise<BigNumber>;
 
     ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<number>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -571,8 +562,6 @@ export class EscrowedIlluviumERC20 extends BaseContract {
 
     ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: string,
       spender: string,
@@ -678,8 +667,6 @@ export class EscrowedIlluviumERC20 extends BaseContract {
     ROLE_TOKEN_CREATOR(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
