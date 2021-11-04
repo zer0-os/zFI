@@ -181,8 +181,9 @@ describe("zStakeCorePool Tests", function () {
     mockZStakePoolFactory.getPoolAddress.returns(mockZStakeCorePool.address);
     mockZStakePoolFactory.poolExists.returns(true);
 
-    const balance = ethers.utils.parseUnits("500000000", 18)
+    const balance = ethers.utils.parseUnits("250000000", 18)
     mockERC20.balanceOf.returns(balance);
+    mockZStakeERC20.balanceOf.returns(balance)
     // const val = await mockZStakePoolBase.connect(staker).testFunc();
     // console.log("poolFactory.getPoolAddress", val);
     await mockZStakePoolBase.connect(staker).stake(amount, lockUntil, false);
