@@ -37,6 +37,7 @@ interface ZStakePoolBaseInterface extends ethers.utils.Interface {
     "stake(uint256,uint64,bool)": FunctionFragment;
     "swild()": FunctionFragment;
     "sync()": FunctionFragment;
+    "testFunc()": FunctionFragment;
     "unstake(uint256,uint256,bool)": FunctionFragment;
     "updateStakeLock(uint256,uint64,bool)": FunctionFragment;
     "users(address)": FunctionFragment;
@@ -93,6 +94,7 @@ interface ZStakePoolBaseInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "swild", values?: undefined): string;
   encodeFunctionData(functionFragment: "sync", values?: undefined): string;
+  encodeFunctionData(functionFragment: "testFunc", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unstake",
     values: [BigNumberish, BigNumberish, boolean]
@@ -154,6 +156,7 @@ interface ZStakePoolBaseInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "swild", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sync", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "testFunc", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateStakeLock",
@@ -305,6 +308,8 @@ export class ZStakePoolBase extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    testFunc(overrides?: CallOverrides): Promise<[string]>;
+
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
@@ -413,6 +418,8 @@ export class ZStakePoolBase extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  testFunc(overrides?: CallOverrides): Promise<string>;
+
   unstake(
     _depositId: BigNumberish,
     _amount: BigNumberish,
@@ -512,6 +519,8 @@ export class ZStakePoolBase extends BaseContract {
     swild(overrides?: CallOverrides): Promise<string>;
 
     sync(overrides?: CallOverrides): Promise<void>;
+
+    testFunc(overrides?: CallOverrides): Promise<string>;
 
     unstake(
       _depositId: BigNumberish,
@@ -681,6 +690,8 @@ export class ZStakePoolBase extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    testFunc(overrides?: CallOverrides): Promise<BigNumber>;
+
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
@@ -776,6 +787,8 @@ export class ZStakePoolBase extends BaseContract {
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    testFunc(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     unstake(
       _depositId: BigNumberish,

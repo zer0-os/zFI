@@ -36,9 +36,9 @@ abstract contract zStakeAware is ILinkedToWILD {
    *
    * @dev Reentrancy safe due to the IlluviumERC20 design
    */
-  function transferIlv(address _to, uint256 _value) internal {
+  function transferWild(address _to, uint256 _value) internal {
     // just delegate call to the target
-    transferIlvFrom(address(this), _to, _value);
+    transferWildFrom(address(this), _to, _value);
   }
 
   /**
@@ -47,7 +47,7 @@ abstract contract zStakeAware is ILinkedToWILD {
    *
    * @dev Reentrancy safe due to the IlluviumERC20 design
    */
-  function transferIlvFrom(address _from, address _to, uint256 _value) internal {
+  function transferWildFrom(address _from, address _to, uint256 _value) internal {
     // just delegate call to the target
     zStakeERC20(wild).transferFrom(_from, _to, _value);
   }

@@ -35,7 +35,6 @@ interface ZStakeERC20Interface extends ethers.utils.Interface {
     "ROLE_ERC20_SENDER()": FunctionFragment;
     "ROLE_TOKEN_CREATOR()": FunctionFragment;
     "ROLE_TOKEN_DESTROYER()": FunctionFragment;
-    "TOKEN_UID()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -128,7 +127,6 @@ interface ZStakeERC20Interface extends ethers.utils.Interface {
     functionFragment: "ROLE_TOKEN_DESTROYER",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "TOKEN_UID", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -305,7 +303,6 @@ interface ZStakeERC20Interface extends ethers.utils.Interface {
     functionFragment: "ROLE_TOKEN_DESTROYER",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "TOKEN_UID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -492,8 +489,6 @@ export class ZStakeERC20 extends BaseContract {
     ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<[number]>;
 
     ROLE_TOKEN_DESTROYER(overrides?: CallOverrides): Promise<[number]>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     allowance(
       _owner: string,
@@ -708,8 +703,6 @@ export class ZStakeERC20 extends BaseContract {
 
   ROLE_TOKEN_DESTROYER(overrides?: CallOverrides): Promise<number>;
 
-  TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
   allowance(
     _owner: string,
     _spender: string,
@@ -908,8 +901,6 @@ export class ZStakeERC20 extends BaseContract {
     ROLE_TOKEN_CREATOR(overrides?: CallOverrides): Promise<number>;
 
     ROLE_TOKEN_DESTROYER(overrides?: CallOverrides): Promise<number>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       _owner: string,
@@ -1204,8 +1195,6 @@ export class ZStakeERC20 extends BaseContract {
 
     ROLE_TOKEN_DESTROYER(overrides?: CallOverrides): Promise<BigNumber>;
 
-    TOKEN_UID(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       _owner: string,
       _spender: string,
@@ -1421,8 +1410,6 @@ export class ZStakeERC20 extends BaseContract {
     ROLE_TOKEN_DESTROYER(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    TOKEN_UID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       _owner: string,

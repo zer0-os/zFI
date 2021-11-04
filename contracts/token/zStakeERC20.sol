@@ -51,14 +51,6 @@ import "../utils/AccessControl.sol";
  */
 contract zStakeERC20 is AccessControl {
   /**
-   * @dev Smart contract unique identifier, a random number
-   * @dev Should be regenerated each time smart contact source code is changed
-   *      and changes smart contract itself is to be redeployed
-   * @dev Generated using https://www.random.org/bytes/ with 32 bytes
-   */
-  uint256 public constant TOKEN_UID = 0xbe96a9a320977f7f9ece655f560a40a0d9173f0148d998977e21e01e50d7f922;
-
-  /**
    * @notice Name of the token: Illuvium
    *
    * @notice ERC20 name of the token (long name)
