@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.1;
+pragma solidity ^0.8.9;
 
 import "../utils/ERC20.sol";
 import "../utils/AccessControl.sol";
@@ -20,7 +20,10 @@ contract EscrowedERC20 is ERC20("Escrowed Illuvium", "sILV"), AccessControl {
    * @param amount number of tokens to be minted.
    */
   function mint(address recipient, uint256 amount) external {
-    require(isSenderInRole(ROLE_TOKEN_CREATOR), "insufficient privileges (ROLE_TOKEN_CREATOR required)");
+    require(
+      isSenderInRole(ROLE_TOKEN_CREATOR),
+      "insufficient privileges (ROLE_TOKEN_CREATOR required)"
+    );
     _mint(recipient, amount);
   }
 

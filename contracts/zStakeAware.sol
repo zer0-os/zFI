@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.1;
+pragma solidity ^0.8.9;
 
 import "./token/zStakeERC20.sol";
 import "./interfaces/ILinkedToWILD.sol";
@@ -47,7 +47,11 @@ abstract contract zStakeAware is ILinkedToWILD {
    *
    * @dev Reentrancy safe due to the IlluviumERC20 design
    */
-  function transferWildFrom(address _from, address _to, uint256 _value) internal {
+  function transferWildFrom(
+    address _from,
+    address _to,
+    uint256 _value
+  ) internal {
     // just delegate call to the target
     zStakeERC20(wild).transferFrom(_from, _to, _value);
   }
@@ -62,5 +66,4 @@ abstract contract zStakeAware is ILinkedToWILD {
     // just delegate call to the target
     zStakeERC20(wild).mint(_to, _value);
   }
-
 }

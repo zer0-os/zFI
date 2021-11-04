@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.4;
+pragma solidity 0.8.9;
 
 import "./ILinkedToWILD.sol";
 
@@ -12,20 +12,20 @@ import "./ILinkedToWILD.sol";
  */
 interface IPool is ILinkedToWILD {
   /**
-    * @dev Deposit is a key data structure used in staking,
-    *      it represents a unit of stake with its amount, weight and term (time interval)
-    */
+   * @dev Deposit is a key data structure used in staking,
+   *      it represents a unit of stake with its amount, weight and term (time interval)
+   */
   struct Deposit {
-      // @dev token amount staked
-      uint256 tokenAmount;
-      // @dev stake weight
-      uint256 weight;
-      // @dev locking period - from
-      uint64 lockedFrom;
-      // @dev locking period - until
-      uint64 lockedUntil;
-      // @dev indicates if the stake was created as a yield reward
-      bool isYield;
+    // @dev token amount staked
+    uint256 tokenAmount;
+    // @dev stake weight
+    uint256 weight;
+    // @dev locking period - from
+    uint64 lockedFrom;
+    // @dev locking period - until
+    uint64 lockedUntil;
+    // @dev indicates if the stake was created as a yield reward
+    bool isYield;
   }
 
   // for the rest of the functions see Soldoc in IlluviumPoolBase
@@ -48,20 +48,23 @@ interface IPool is ILinkedToWILD {
 
   function balanceOf(address _user) external view returns (uint256);
 
-  function getDeposit(address _user, uint256 _depositId) external view returns (Deposit memory);
+  function getDeposit(address _user, uint256 _depositId)
+    external
+    view
+    returns (Deposit memory);
 
   function getDepositsLength(address _user) external view returns (uint256);
 
   function stake(
-      uint256 _amount,
-      uint64 _lockedUntil,
-      bool useSILV
+    uint256 _amount,
+    uint64 _lockedUntil,
+    bool useSILV
   ) external;
 
   function unstake(
-      uint256 _depositId,
-      uint256 _amount,
-      bool useSILV
+    uint256 _depositId,
+    uint256 _amount,
+    bool useSILV
   ) external;
 
   function sync() external;

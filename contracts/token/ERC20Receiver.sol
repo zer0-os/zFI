@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.1;
+pragma solidity ^0.8.9;
 
 /**
  * @title ERC20 token receiver interface
@@ -29,5 +29,10 @@ interface ERC20Receiver {
    * @param _data additional data with no specified format
    * @return `bytes4(keccak256("onERC20Received(address,address,uint256,bytes)"))` unless throwing
    */
-  function onERC20Received(address _operator, address _from, uint256 _value, bytes calldata _data) external returns(bytes4);
+  function onERC20Received(
+    address _operator,
+    address _from,
+    uint256 _value,
+    bytes calldata _data
+  ) external returns (bytes4);
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.1;
+pragma solidity ^0.8.9;
 
 import "./interfaces/IPool.sol";
 import "./interfaces/ICorePool.sol";
@@ -45,7 +45,7 @@ contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
     Deposit[] deposits;
   }
 
-  function isFlashPool() external view virtual override returns(bool) {
+  function isFlashPool() external view virtual override returns (bool) {
     return false;
   }
 
@@ -463,7 +463,7 @@ contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
     // );
 
     // update smart contract state
-    // _sync();
+    _sync();
 
     // get a link to user data struct, we will write to it later
     User storage user = users[_staker];
@@ -644,6 +644,7 @@ contract zStakePoolBase is IPool, zStakeAware, ReentrancyGuard {
     address wildPool = factory.getPoolAddress(wild);
     return wildPool;
   }
+
   /**
    * @dev Used internally, mostly by children implementations, see processRewards()
    *
