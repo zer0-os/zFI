@@ -161,31 +161,29 @@ describe("zStakeCorePool Tests", function () {
     await expect(tx).to.be.revertedWith("zero input")
   });
   it("stake: Successfully stakes a specific value", async () => {
-    const amount = ethers.BigNumber.from("10000000000000000000");
-    const n = ethers.provider.blockNumber
-    const lockUntil = n + 50;
+    const amount = ethers.utils.parseUnits("10", 18);
+    const blockNumber = ethers.provider.blockNumber
+    const lockUntil = blockNumber + 50;
 
     const data = {
       tokenAmount: ethers.BigNumber.from("1000"),
-      totalWeight: ethers.BigNumber.from("50000000000000"), // 50*10^12
-      subYieldRewards: ethers.BigNumber.from("10000000000000"), // 10*10^12
-      subVaultRewards: ethers.BigNumber.from("10000000000000"), // 10*10^12
-      // deposits: ethers.utils.arrayify([])
-      // deposits array somehow?
-      // RuntimeError: abort(Error: array types not yet supported. Follow this issue for more info https://github.com/defi-wonderland/smock/issues/31)
+      totalWeight: ethers.utils.parseUnits("50", 12), // 50*10^12
+      subYieldRewards: ethers.utils.parseUnits("10", 12), // 10*10^12
+      subVaultRewards: ethers.utils.parseUnits("10", 12), // 10*10^12
     }
 
     mockZStakePoolBase.setVariable("users", {
       [staker.address]: data
     });
-    const yieldRewardsPerWeight = ethers.BigNumber.from("10000000000000"); // 10*10^12
+
+    const yieldRewardsPerWeight = ethers.utils.parseUnits("10", 12); // 10*10^12
     mockZStakePoolBase.setVariable("yieldRewardsPerWeight", yieldRewardsPerWeight);
     mockZStakePoolFactory.getPoolAddress.returns(mockZStakeCorePool.address);
     mockZStakePoolFactory.poolExists.returns(true);
 
-    const balance = ethers.utils.parseUnits("500000000.0", 18)
+    const balance = ethers.utils.parseUnits("500000000", 18)
     mockERC20.balanceOf.returns(balance);
-    //   const val = await mockZStakePoolBase.connect(staker).testFunc();
+    // const val = await mockZStakePoolBase.connect(staker).testFunc();
     // console.log("poolFactory.getPoolAddress", val);
     await mockZStakePoolBase.connect(staker).stake(amount, lockUntil, false);
   })
