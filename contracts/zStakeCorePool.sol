@@ -172,7 +172,7 @@ contract zStakeCorePool is zStakePoolBase {
     _sync();
     User storage user = users[_staker];
     if (user.tokenAmount > 0) {
-      _processRewards(_staker, true, false);
+      _processRewards(_staker, false);
     }
     uint256 depositWeight = _amount * YEAR_STAKE_WEIGHT_MULTIPLIER;
     Deposit memory newDeposit = Deposit({
@@ -280,7 +280,7 @@ contract zStakeCorePool is zStakePoolBase {
     user.subVaultRewards = weightToReward(user.totalWeight, vaultRewardsPerWeight);
 
     // transfer fails if pool WILD balance is not enough - which is a desired behavior
-    IERC20.transferFrom(address(this), _staker, pendingVaultClaim);
+    IERC20(wild).transferFrom(address(this), _staker, pendingVaultClaim);
 
     emit VaultRewardsClaimed(msg.sender, _staker, pendingVaultClaim);
   }

@@ -12,5 +12,6 @@
       }
     }
   ],
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "printWidth": 100
 }

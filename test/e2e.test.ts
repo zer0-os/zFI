@@ -3,8 +3,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import * as hre from "hardhat";
 import { ethers } from "hardhat";
 import {
-  EscrowedERC20,
-  EscrowedERC20__factory,
   MockToken__factory,
   ZStakeCorePool__factory,
   ZStakePoolFactory__factory,
@@ -21,15 +19,8 @@ describe("me", () => {
 
     console.log(wildToken.address);
 
-    // const stakedLPToken = await new EscrowedERC20__factory(signers[0]).deploy();
-
-    const stakedWildToken = await new EscrowedERC20__factory(
-      signers[0]
-    ).deploy();
-
     const poolFactory = await new ZStakePoolFactory__factory(signers[0]).deploy(
       wildToken.address,
-      stakedWildToken.address,
       ethers.utils.parseEther("10"),
       5, // ?
       12739260, // ?
@@ -38,19 +29,13 @@ describe("me", () => {
 
     let tx = await poolFactory.createPool(wildToken.address, 12739260, 1);
     let event = await getEvent(tx, "PoolRegistered", poolFactory);
-    const wildStakingPool = ZStakeCorePool__factory.connect(
-      event.args["poolAddress"],
-      signers[0]
-    );
+    const wildStakingPool = ZStakeCorePool__factory.connect(event.args["poolAddress"], signers[0]);
 
     tx = await poolFactory.createPool(lpToken.address, 12739260, 999999999);
 
     event = await getEvent(tx, "PoolRegistered", poolFactory);
 
-    const lpStakingPool = ZStakeCorePool__factory.connect(
-      event.args["poolAddress"],
-      signers[0]
-    );
+    const lpStakingPool = ZStakeCorePool__factory.connect(event.args["poolAddress"], signers[0]);
 
     // await stakedWildToken.updateRole(
     //   lpStakingPool.address,
@@ -67,26 +52,18 @@ describe("me", () => {
     await lpToken.mintForUser(user2.address, ethers.utils.parseEther("30"));
     await lpToken.mintForUser(user3.address, ethers.utils.parseEther("30"));
 
-    await lpToken
-      .connect(user1)
-      .approve(lpStakingPool.address, ethers.constants.MaxUint256);
+    await lpToken.connect(user1).approve(lpStakingPool.address, ethers.constants.MaxUint256);
 
-    await lpToken
-      .connect(user2)
-      .approve(lpStakingPool.address, ethers.constants.MaxUint256);
+    await lpToken.connect(user2).approve(lpStakingPool.address, ethers.constants.MaxUint256);
 
     await hre.ethers.provider.send("evm_setAutomine", [false]);
     //await hre.ethers.provider.send("evm_setIntervalMining", [5000]);
 
     console.log("user 1 stake");
-    await lpStakingPool
-      .connect(user1)
-      .stake(ethers.utils.parseEther("1"), 0, false);
+    await lpStakingPool.connect(user1).stake(ethers.utils.parseEther("1"), 0);
 
     console.log(`user 2 stake tokens`);
-    await lpStakingPool
-      .connect(user2)
-      .stake(ethers.utils.parseEther("1"), 0, false);
+    await lpStakingPool.connect(user2).stake(ethers.utils.parseEther("1"), 0);
 
     await hre.ethers.provider.send("evm_mine", []);
 

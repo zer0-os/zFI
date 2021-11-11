@@ -28,12 +28,11 @@ interface IPoolInterface extends ethers.utils.Interface {
     "lastYieldDistribution()": FunctionFragment;
     "pendingYieldRewards(address)": FunctionFragment;
     "poolToken()": FunctionFragment;
-    "processRewards(bool)": FunctionFragment;
+    "processRewards()": FunctionFragment;
     "setWeight(uint32)": FunctionFragment;
-    "stake(uint256,uint64,bool)": FunctionFragment;
-    "swild()": FunctionFragment;
+    "stake(uint256,uint64)": FunctionFragment;
     "sync()": FunctionFragment;
-    "unstake(uint256,uint256,bool)": FunctionFragment;
+    "unstake(uint256,uint256)": FunctionFragment;
     "usersLockingWeight()": FunctionFragment;
     "weight()": FunctionFragment;
     "wild()": FunctionFragment;
@@ -64,7 +63,7 @@ interface IPoolInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "poolToken", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "processRewards",
-    values: [boolean]
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "setWeight",
@@ -72,13 +71,12 @@ interface IPoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
-    values: [BigNumberish, BigNumberish, boolean]
+    values: [BigNumberish, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "swild", values?: undefined): string;
   encodeFunctionData(functionFragment: "sync", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unstake",
-    values: [BigNumberish, BigNumberish, boolean]
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "usersLockingWeight",
@@ -116,7 +114,6 @@ interface IPoolInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "setWeight", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "swild", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sync", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(
@@ -212,7 +209,6 @@ export class IPool extends BaseContract {
     poolToken(overrides?: CallOverrides): Promise<[string]>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -224,11 +220,8 @@ export class IPool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    swild(overrides?: CallOverrides): Promise<[string]>;
 
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -237,7 +230,6 @@ export class IPool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -283,7 +275,6 @@ export class IPool extends BaseContract {
   poolToken(overrides?: CallOverrides): Promise<string>;
 
   processRewards(
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -295,11 +286,8 @@ export class IPool extends BaseContract {
   stake(
     _amount: BigNumberish,
     _lockedUntil: BigNumberish,
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  swild(overrides?: CallOverrides): Promise<string>;
 
   sync(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -308,7 +296,6 @@ export class IPool extends BaseContract {
   unstake(
     _depositId: BigNumberish,
     _amount: BigNumberish,
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -353,25 +340,21 @@ export class IPool extends BaseContract {
 
     poolToken(overrides?: CallOverrides): Promise<string>;
 
-    processRewards(useSILV: boolean, overrides?: CallOverrides): Promise<void>;
+    processRewards(overrides?: CallOverrides): Promise<void>;
 
     setWeight(_weight: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    swild(overrides?: CallOverrides): Promise<string>;
 
     sync(overrides?: CallOverrides): Promise<void>;
 
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -412,7 +395,6 @@ export class IPool extends BaseContract {
     poolToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -424,11 +406,8 @@ export class IPool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    swild(overrides?: CallOverrides): Promise<BigNumber>;
 
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -437,7 +416,6 @@ export class IPool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -481,7 +459,6 @@ export class IPool extends BaseContract {
     poolToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -493,11 +470,8 @@ export class IPool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    swild(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -506,7 +480,6 @@ export class IPool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

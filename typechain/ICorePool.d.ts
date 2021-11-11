@@ -29,14 +29,13 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     "pendingYieldRewards(address)": FunctionFragment;
     "poolToken()": FunctionFragment;
     "poolTokenReserve()": FunctionFragment;
-    "processRewards(bool)": FunctionFragment;
+    "processRewards()": FunctionFragment;
     "receiveVaultRewards(uint256)": FunctionFragment;
     "setWeight(uint32)": FunctionFragment;
-    "stake(uint256,uint64,bool)": FunctionFragment;
+    "stake(uint256,uint64)": FunctionFragment;
     "stakeAsPool(address,uint256)": FunctionFragment;
-    "swild()": FunctionFragment;
     "sync()": FunctionFragment;
-    "unstake(uint256,uint256,bool)": FunctionFragment;
+    "unstake(uint256,uint256)": FunctionFragment;
     "usersLockingWeight()": FunctionFragment;
     "vaultRewardsPerToken()": FunctionFragment;
     "weight()": FunctionFragment;
@@ -72,7 +71,7 @@ interface ICorePoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "processRewards",
-    values: [boolean]
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "receiveVaultRewards",
@@ -84,17 +83,16 @@ interface ICorePoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
-    values: [BigNumberish, BigNumberish, boolean]
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "stakeAsPool",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "swild", values?: undefined): string;
   encodeFunctionData(functionFragment: "sync", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unstake",
-    values: [BigNumberish, BigNumberish, boolean]
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "usersLockingWeight",
@@ -148,7 +146,6 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     functionFragment: "stakeAsPool",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "swild", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sync", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(
@@ -250,7 +247,6 @@ export class ICorePool extends BaseContract {
     poolTokenReserve(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -267,7 +263,6 @@ export class ICorePool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -277,8 +272,6 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    swild(overrides?: CallOverrides): Promise<[string]>;
-
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -286,7 +279,6 @@ export class ICorePool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -336,7 +328,6 @@ export class ICorePool extends BaseContract {
   poolTokenReserve(overrides?: CallOverrides): Promise<BigNumber>;
 
   processRewards(
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -353,7 +344,6 @@ export class ICorePool extends BaseContract {
   stake(
     _amount: BigNumberish,
     _lockedUntil: BigNumberish,
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -363,8 +353,6 @@ export class ICorePool extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  swild(overrides?: CallOverrides): Promise<string>;
-
   sync(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -372,7 +360,6 @@ export class ICorePool extends BaseContract {
   unstake(
     _depositId: BigNumberish,
     _amount: BigNumberish,
-    useSILV: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -421,7 +408,7 @@ export class ICorePool extends BaseContract {
 
     poolTokenReserve(overrides?: CallOverrides): Promise<BigNumber>;
 
-    processRewards(useSILV: boolean, overrides?: CallOverrides): Promise<void>;
+    processRewards(overrides?: CallOverrides): Promise<void>;
 
     receiveVaultRewards(
       _amount: BigNumberish,
@@ -433,7 +420,6 @@ export class ICorePool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -443,14 +429,11 @@ export class ICorePool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    swild(overrides?: CallOverrides): Promise<string>;
-
     sync(overrides?: CallOverrides): Promise<void>;
 
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -495,7 +478,6 @@ export class ICorePool extends BaseContract {
     poolTokenReserve(overrides?: CallOverrides): Promise<BigNumber>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -512,7 +494,6 @@ export class ICorePool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -522,8 +503,6 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    swild(overrides?: CallOverrides): Promise<BigNumber>;
-
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -531,7 +510,6 @@ export class ICorePool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -579,7 +557,6 @@ export class ICorePool extends BaseContract {
     poolTokenReserve(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     processRewards(
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -596,7 +573,6 @@ export class ICorePool extends BaseContract {
     stake(
       _amount: BigNumberish,
       _lockedUntil: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -606,8 +582,6 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    swild(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     sync(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -615,7 +589,6 @@ export class ICorePool extends BaseContract {
     unstake(
       _depositId: BigNumberish,
       _amount: BigNumberish,
-      useSILV: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

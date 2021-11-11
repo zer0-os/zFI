@@ -168,13 +168,7 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "useSILV",
-        type: "bool",
-      },
-    ],
+    inputs: [],
     name: "processRewards",
     outputs: [],
     stateMutability: "nonpayable",
@@ -218,11 +212,6 @@ const _abi = [
         name: "_lockedUntil",
         type: "uint64",
       },
-      {
-        internalType: "bool",
-        name: "useSILV",
-        type: "bool",
-      },
     ],
     name: "stake",
     outputs: [],
@@ -249,19 +238,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "swild",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "sync",
     outputs: [],
     stateMutability: "nonpayable",
@@ -278,11 +254,6 @@ const _abi = [
         internalType: "uint256",
         name: "_amount",
         type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "useSILV",
-        type: "bool",
       },
     ],
     name: "unstake",

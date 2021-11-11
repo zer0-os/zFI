@@ -9,14 +9,14 @@ import "./interfaces/IERC20.sol";
 /**
  * @title Illuvium Pool Factory
  *
- * @notice ILV Pool Factory manages Illuvium Yield farming pools, provides a single
+ * @notice WILD Pool Factory manages Illuvium Yield farming pools, provides a single
  *      public interface to access the pools, provides an interface for the pools
  *      to mint yield rewards, access pool-related info, update weights, etc.
  *
  * @notice The factory is authorized (via its owner) to register new pools, change weights
  *      of the existing pools, removing the pools (by changing their weights to zero)
  *
- * @dev The factory requires ROLE_TOKEN_CREATOR permission on the ILV token to mint yield
+ * @dev The factory requires ROLE_TOKEN_CREATOR permission on the WILD token to mint yield
  *      (see `mintYieldTo` function)
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin
@@ -27,18 +27,18 @@ contract zStakePoolFactory is Ownable {
 
   /// @dev Auxiliary data structure used only in getPoolData() view function
   struct PoolData {
-    // @dev pool token address (like ILV)
+    // @dev pool token address (like WILD)
     address poolToken;
     // @dev pool address (like deployed core pool instance)
     address poolAddress;
-    // @dev pool weight (200 for ILV pools, 800 for ILV/ETH pools - set during deployment)
+    // @dev pool weight (200 for WILD pools, 800 for WILD/ETH pools - set during deployment)
     uint32 weight;
     // @dev flash pool flag
     bool isFlashPool;
   }
 
   /**
-   * @dev ILV/block determines yield farming reward base
+   * @dev WILD/block determines yield farming reward base
    *      used by the yield pools controlled by the factory
    */
   uint192 public wildPerBlock;
@@ -50,29 +50,26 @@ contract zStakePoolFactory is Ownable {
   uint32 public totalWeight;
 
   /**
-   * @dev ILV/block decreases by 3% every blocks/update (set to 91252 blocks during deployment);
-   *      an update is triggered by executing `updateILVPerBlock` public function
+   * @dev WILD/block decreases by 3% every blocks/update (set to 91252 blocks during deployment);
+   *      an update is triggered by executing `updateWILDPerBlock` public function
    */
-  uint32 public immutable blocksPerUpdate;
+  uint32 public blocksPerUpdate;
 
   /**
-   * @dev End block is the last block when ILV/block can be decreased;
+   * @dev End block is the last block when WILD/block can be decreased;
    *      it is implied that yield farming stops after that block
    */
   uint32 public endBlock;
 
   /**
-   * @dev Each time the ILV/block ratio gets updated, the block number
+   * @dev Each time the WILD/block ratio gets updated, the block number
    *      when the operation has occurred gets recorded into `lastRatioUpdate`
    * @dev This block number is then used to check if blocks/update `blocksPerUpdate`
    *      has passed when decreasing yield reward by 3%
    */
   uint32 public lastRatioUpdate;
 
-  /// @dev sILV token address is used to create ILV core pool(s)
-  address public immutable swild;
-
-  /// @dev Maps pool token address (like ILV) -> pool address (like core pool instance)
+  /// @dev Maps pool token address (like WILD) -> pool address (like core pool instance)
   mapping(address => address) public pools;
 
   /// @dev Keeps track of registered pool addresses, maps pool address -> exists flag
@@ -82,7 +79,7 @@ contract zStakePoolFactory is Ownable {
    * @dev Fired in createPool() and registerPool()
    *
    * @param _by an address which executed an action
-   * @param poolToken pool token address (like ILV)
+   * @param poolToken pool token address (like WILD)
    * @param poolAddress deployed pool instance address
    * @param weight pool weight
    * @param isFlashPool flag indicating if pool is a flash pool
@@ -105,18 +102,18 @@ contract zStakePoolFactory is Ownable {
   event WeightUpdated(address indexed _by, address indexed poolAddress, uint32 weight);
 
   /**
-   * @dev Fired in updateILVPerBlock()
+   * @dev Fired in updateWILDPerBlock()
    *
    * @param _by an address which executed an action
-   * @param newIlvPerBlock new ILV/block value
+   * @param newIlvPerBlock new WILD/block value
    */
   event WildRatioUpdated(address indexed _by, uint256 newIlvPerBlock);
 
   /**
    * @dev Creates/deploys a factory instance
    *
-   * @param _wild ILV ERC20 token address
-   * @param _wildPerBlock initial ILV/block value for rewards
+   * @param _wild WILD ERC20 token address
+   * @param _wildPerBlock initial WILD/block value for rewards
    * @param _blocksPerUpdate how frequently the rewards gets updated (decreased by 3%), blocks
    * @param _initBlock block number to measure _blocksPerUpdate from
    * @param _endBlock block number when farming stops and rewards cannot be updated anymore
@@ -129,7 +126,7 @@ contract zStakePoolFactory is Ownable {
     uint32 _endBlock
   ) {
     // verify the inputs are set
-    require(_wildPerBlock > 0, "ILV/block not set");
+    require(_wildPerBlock > 0, "WILD/block not set");
     require(_blocksPerUpdate > 0, "blocks/update not set");
     require(_initBlock > 0, "init block not set");
     require(_endBlock > _initBlock, "invalid end block: must be greater than init block");
@@ -147,7 +144,7 @@ contract zStakePoolFactory is Ownable {
    *
    * @dev A shortcut for `pools` mapping
    *
-   * @param poolToken pool token address (like ILV) to query pool address for
+   * @param poolToken pool token address (like WILD) to query pool address for
    * @return pool address for the token specified
    */
   function getPoolAddress(address poolToken) external view returns (address) {
@@ -186,15 +183,15 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
-   * @dev Verifies if `blocksPerUpdate` has passed since last ILV/block
-   *      ratio update and if ILV/block reward can be decreased by 3%
+   * @dev Verifies if `blocksPerUpdate` has passed since last WILD/block
+   *      ratio update and if WILD/block reward can be decreased by 3%
    *
-   * @return true if enough time has passed and `updateILVPerBlock` can be executed
+   * @return true if enough time has passed and `updateWILDPerBlock` can be executed
    */
   function shouldUpdateRatio() public view returns (bool) {
     // if yield farming period has ended
     if (blockNumber() > endBlock) {
-      // ILV/block reward cannot be updated anymore
+      // WILD/block reward cannot be updated anymore
       return false;
     }
 
@@ -207,7 +204,7 @@ contract zStakePoolFactory is Ownable {
    *
    * @dev Can be executed by the pool factory owner only
    *
-   * @param poolToken pool token address (like ILV, or ILV/ETH pair)
+   * @param poolToken pool token address (like WILD, or WILD/ETH pair)
    * @param initBlock init block to be used for the pool created
    * @param weight weight of the pool to be created
    */
@@ -251,14 +248,14 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
-   * @notice Decreases ILV/block reward by 3%, can be executed
+   * @notice Decreases WILD/block reward by 3%, can be executed
    *      no more than once per `blocksPerUpdate` blocks
    */
   function updateWILDPerBlock() external {
     // checks if ratio can be updated i.e. if blocks/update (91252 blocks) have passed
     require(shouldUpdateRatio(), "too frequent");
 
-    // decreases ILV/block reward by 3%
+    // decreases WILD/block reward by 3%
     wildPerBlock = (wildPerBlock * 97) / 100;
 
     // set current block as the last ratio update block
@@ -269,19 +266,19 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
-   * @dev Mints ILV tokens; executed by ILV Pool only
+   * @dev Mints WILD tokens; executed by WILD Pool only
    *
    * @dev Requires factory to have ROLE_TOKEN_CREATOR permission
-   *      on the ILV ERC20 token instance
+   *      on the WILD ERC20 token instance
    *
    * @param _to an address to mint tokens to
-   * @param _amount amount of ILV tokens to mint
+   * @param _amount amount of WILD tokens to mint
    */
   function mintYieldTo(address _to, uint256 _amount) external {
     // verify that sender is a pool registered withing the factory
     require(poolExists[msg.sender], "access denied");
 
-    // mint ILV tokens as required
+    // mint WILD tokens as required
     IERC20(wild).transfer(_to, _amount);
   }
 

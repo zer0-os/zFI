@@ -33,14 +33,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Receiver__factory>;
     getContractFactory(
-      name: "EscrowedERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.EscrowedERC20__factory>;
-    getContractFactory(
-      name: "ZStakeERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZStakeERC20__factory>;
-    getContractFactory(
       name: "AccessControl",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.AccessControl__factory>;
@@ -56,10 +48,6 @@ declare module "hardhat/types/runtime" {
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
-    getContractFactory(
-      name: "ZStakeAware",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZStakeAware__factory>;
     getContractFactory(
       name: "ZStakeCorePool",
       signerOrOptions?: ethers.Signer | FactoryOptions
