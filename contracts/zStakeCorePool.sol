@@ -7,7 +7,7 @@ import "./zStakePoolBase.sol";
 /**
  * @title Illuvium Core Pool
  *
- * @notice Core pools represent permanent pools like ILV or ILV/ETH Pair pool,
+ * @notice Core pools represent permanent pools like WILD or WILD/ETH Pair pool,
  *      core pools allow staking for arbitrary periods of time up to 1 year
  *
  * @dev See IlluviumPoolBase for more details
@@ -27,9 +27,9 @@ contract zStakeCorePool is zStakePoolBase {
   uint256 public vaultRewardsPerWeight;
 
   /// @dev Pool tokens value available in the pool;
-  ///      pool token examples are ILV (ILV core pool) or ILV/ETH pair (LP core pool)
-  /// @dev For LP core pool this value doesnt' count for ILV tokens received as Vault rewards
-  ///      while for ILV core pool it does count for such tokens as well
+  ///      pool token examples are WILD (WILD core pool) or WILD/ETH pair (LP core pool)
+  /// @dev For LP core pool this value doesnt' count for WILD tokens received as Vault rewards
+  ///      while for WILD core pool it does count for such tokens as well
   uint256 public poolTokenReserve;
 
   /**
@@ -47,11 +47,7 @@ contract zStakeCorePool is zStakePoolBase {
    * @param _to an address which received a reward
    * @param amount amount of reward received
    */
-  event VaultRewardsClaimed(
-    address indexed _by,
-    address indexed _to,
-    uint256 amount
-  );
+  event VaultRewardsClaimed(address indexed _by, address indexed _to, uint256 amount);
 
   /**
    * @dev Fired in setVault()
@@ -63,22 +59,20 @@ contract zStakeCorePool is zStakePoolBase {
   /**
    * @dev Creates/deploys an instance of the core pool
    *
-   * @param _ilv ILV ERC20 Token IlluviumERC20 address
-   * @param _silv sILV ERC20 Token EscrowedIlluviumERC20 address
+   * @param _ilv WILD ERC20 Token IlluviumERC20 address
    * @param _factory Pool factory zStakePoolFactory instance/address
-   * @param _poolToken token the pool operates on, for example ILV or ILV/ETH pair
+   * @param _poolToken token the pool operates on, for example WILD or WILD/ETH pair
    * @param _initBlock initial block used to calculate the rewards
    * @param _weight number representing a weight of the pool, actual weight fraction
    *      is calculated as that number divided by the total pools weight and doesn't exceed one
    */
   constructor(
     address _ilv,
-    address _silv,
     zStakePoolFactory _factory,
     address _poolToken,
     uint64 _initBlock,
     uint32 _weight
-  ) zStakePoolBase(_ilv, _silv, _factory, _poolToken, _initBlock, _weight) {}
+  ) zStakePoolBase(_ilv, _factory, _poolToken, _initBlock, _weight) {}
 
   /**
    * @notice Calculates current vault rewards value available for address specified
@@ -89,16 +83,10 @@ contract zStakeCorePool is zStakePoolBase {
    * @param _staker an address to calculate vault rewards value for
    * @return pending calculated vault reward value for the given address
    */
-  function pendingVaultRewards(address _staker)
-    public
-    view
-    returns (uint256 pending)
-  {
+  function pendingVaultRewards(address _staker) public view returns (uint256 pending) {
     User memory user = users[_staker];
 
-    return
-      weightToReward(user.totalWeight, vaultRewardsPerWeight) -
-      user.subVaultRewards;
+    return weightToReward(user.totalWeight, vaultRewardsPerWeight) - user.subVaultRewards;
   }
 
   function checkVaultRewardsPerWeight() public view returns (uint256) {
@@ -125,12 +113,12 @@ contract zStakeCorePool is zStakePoolBase {
   }
 
   /**
-   * @dev Executed by the vault to transfer vault rewards ILV from the vault
+   * @dev Executed by the vault to transfer vault rewards WILD from the vault
    *      into the pool
    *
-   * @dev This function is executed only for ILV core pools
+   * @dev This function is executed only for WILD core pools
    *
-   * @param _rewardsAmount amount of ILV rewards to transfer into the pool
+   * @param _rewardsAmount amount of WILD rewards to transfer into the pool
    */
   function receiveVaultRewards(uint256 _rewardsAmount) external {
     require(msg.sender == vault, "access denied");
@@ -143,11 +131,11 @@ contract zStakeCorePool is zStakePoolBase {
     // msg.sender == mockEscrowedERC20.signer
     // address(this) == mockZStakeCorePool.address
     // rewardsAmount ==
-    transferWildFrom(msg.sender, address(this), _rewardsAmount);
+    IERC20(wild).transferFrom(msg.sender, address(this), _rewardsAmount);
 
     vaultRewardsPerWeight += rewardToWeight(_rewardsAmount, usersLockingWeight);
 
-    // update `poolTokenReserve` only if this is a ILV Core Pool
+    // update `poolTokenReserve` only if this is a WILD Core Pool
     if (poolToken == wild) {
       poolTokenReserve += _rewardsAmount;
     }
@@ -167,23 +155,14 @@ contract zStakeCorePool is zStakePoolBase {
    * @dev Executed internally when "staking as a pool" (`stakeAsPool`)
    * @dev When timing conditions are not met (executed too frequently, or after factory
    *      end block), function doesn't throw and exits silently
-   *
-   * @dev _useSWILD flag has a context of yield rewards only
-   *
-   * @param _useSWILD flag indicating whether to mint sILV token as a reward or not;
-   *      when set to true - sILV reward is minted immediately and sent to sender,
-   *      when set to false - new ILV reward deposit gets created if pool is an ILV pool
-   *      (poolToken is ILV token), or new pool deposit gets created together with sILV minted
-   *      when pool is not an ILV pool (poolToken is not an ILV token)
    */
-  function processRewards(bool _useSWILD) external override {
-    _processRewards(msg.sender, _useSWILD, true);
+  function processRewards() external override {
+    _processRewards(msg.sender, true);
   }
 
   /**
    * @dev Executed internally by the pool itself (from the parent `IlluviumPoolBase` smart contract)
    *      as part of yield rewards processing logic (`IlluviumPoolBase._processRewards` function)
-   * @dev Executed when _useSWILD is false and pool is not an ILV pool - see `IlluviumPoolBase._processRewards`
    *
    * @param _staker an address which stakes (the yield reward)
    * @param _amount amount to be staked (yield reward amount)
@@ -209,14 +188,8 @@ contract zStakeCorePool is zStakePoolBase {
 
     usersLockingWeight += depositWeight;
 
-    user.subYieldRewards = weightToReward(
-      user.totalWeight,
-      yieldRewardsPerWeight
-    );
-    user.subVaultRewards = weightToReward(
-      user.totalWeight,
-      vaultRewardsPerWeight
-    );
+    user.subYieldRewards = weightToReward(user.totalWeight, yieldRewardsPerWeight);
+    user.subVaultRewards = weightToReward(user.totalWeight, vaultRewardsPerWeight);
 
     // update `poolTokenReserve` only if this is a LP Core Pool (stakeAsPool can be executed only for LP pool)
     poolTokenReserve += _amount;
@@ -232,15 +205,11 @@ contract zStakeCorePool is zStakePoolBase {
     address _staker,
     uint256 _amount,
     uint64 _lockedUntil,
-    bool _useSWILD,
     bool _isYield
   ) internal override {
-    super._stake(_staker, _amount, _lockedUntil, _useSWILD, _isYield);
+    super._stake(_staker, _amount, _lockedUntil, _isYield);
     User storage user = users[_staker];
-    user.subVaultRewards = weightToReward(
-      user.totalWeight,
-      vaultRewardsPerWeight
-    );
+    user.subVaultRewards = weightToReward(user.totalWeight, vaultRewardsPerWeight);
 
     poolTokenReserve += _amount;
   }
@@ -254,8 +223,7 @@ contract zStakeCorePool is zStakePoolBase {
   function _unstake(
     address _staker,
     uint256 _depositId,
-    uint256 _amount,
-    bool _useSWILD
+    uint256 _amount
   ) internal override {
     User storage user = users[_staker];
     Deposit memory stakeDeposit = user.deposits[_depositId];
@@ -264,29 +232,26 @@ contract zStakeCorePool is zStakePoolBase {
       "deposit not yet unlocked"
     );
     poolTokenReserve -= _amount;
-    super._unstake(_staker, _depositId, _amount, _useSWILD);
-    user.subVaultRewards = weightToReward(
-      user.totalWeight,
-      vaultRewardsPerWeight
-    );
+    super._unstake(_staker, _depositId, _amount);
+    user.subVaultRewards = weightToReward(user.totalWeight, vaultRewardsPerWeight);
   }
 
   /**
    * @inheritdoc zStakePoolBase
    *
    * @dev Additionally to the parent smart contract, processes vault rewards of the holder,
-   *      and for ILV pool updates (increases) pool token reserve (pool tokens value available in the pool)
+   *      and for WILD pool updates (increases) pool token reserve (pool tokens value available in the pool)
    */
-  function _processRewards(
-    address _staker,
-    bool _useSWILD,
-    bool _withUpdate
-  ) internal override returns (uint256 pendingYield) {
+  function _processRewards(address _staker, bool _withUpdate)
+    internal
+    override
+    returns (uint256 pendingYield)
+  {
     _processVaultRewards(_staker);
-    pendingYield = super._processRewards(_staker, _useSWILD, _withUpdate);
+    pendingYield = super._processRewards(_staker, _withUpdate);
 
-    // update `poolTokenReserve` only if this is a ILV Core Pool
-    if (poolToken == wild && !_useSWILD) {
+    // update `poolTokenReserve` only if this is a WILD Core Pool
+    if (poolToken == wild) {
       poolTokenReserve += pendingYield;
     }
   }
@@ -304,7 +269,7 @@ contract zStakeCorePool is zStakePoolBase {
     uint256 wildBalance = IERC20(wild).balanceOf(address(this));
     require(wildBalance >= pendingVaultClaim, "contract WILD balance too low");
 
-    // update `poolTokenReserve` only if this is a ILV Core Pool
+    // update `poolTokenReserve` only if this is a WILD Core Pool
     if (poolToken == wild) {
       // protects against rounding errors
       poolTokenReserve -= pendingVaultClaim > poolTokenReserve
@@ -312,13 +277,10 @@ contract zStakeCorePool is zStakePoolBase {
         : pendingVaultClaim;
     }
 
-    user.subVaultRewards = weightToReward(
-      user.totalWeight,
-      vaultRewardsPerWeight
-    );
+    user.subVaultRewards = weightToReward(user.totalWeight, vaultRewardsPerWeight);
 
-    // transfer fails if pool ILV balance is not enough - which is a desired behavior
-    transferWild(_staker, pendingVaultClaim);
+    // transfer fails if pool WILD balance is not enough - which is a desired behavior
+    IERC20.transferFrom(address(this), _staker, pendingVaultClaim);
 
     emit VaultRewardsClaimed(msg.sender, _staker, pendingVaultClaim);
   }

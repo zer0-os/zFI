@@ -36,14 +36,14 @@ describe("me", () => {
       19856916 // ?
     );
 
-    let tx = await poolFactory.createPool(wildToken.address, 12739260, 800);
+    let tx = await poolFactory.createPool(wildToken.address, 12739260, 1);
     let event = await getEvent(tx, "PoolRegistered", poolFactory);
     const wildStakingPool = ZStakeCorePool__factory.connect(
       event.args["poolAddress"],
       signers[0]
     );
 
-    tx = await poolFactory.createPool(lpToken.address, 12739260, 800);
+    tx = await poolFactory.createPool(lpToken.address, 12739260, 999999999);
 
     event = await getEvent(tx, "PoolRegistered", poolFactory);
 
@@ -60,21 +60,53 @@ describe("me", () => {
     console.log(lpStakingPool.address);
 
     const user1 = signers[1];
+    const user2 = signers[2];
+    const user3 = signers[3];
 
     await lpToken.mintForUser(user1.address, ethers.utils.parseEther("30"));
+    await lpToken.mintForUser(user2.address, ethers.utils.parseEther("30"));
+    await lpToken.mintForUser(user3.address, ethers.utils.parseEther("30"));
 
     await lpToken
       .connect(user1)
       .approve(lpStakingPool.address, ethers.constants.MaxUint256);
 
-    console.log("stake 1");
+    await lpToken
+      .connect(user2)
+      .approve(lpStakingPool.address, ethers.constants.MaxUint256);
+
+    await hre.ethers.provider.send("evm_setAutomine", [false]);
+    //await hre.ethers.provider.send("evm_setIntervalMining", [5000]);
+
+    console.log("user 1 stake");
     await lpStakingPool
       .connect(user1)
       .stake(ethers.utils.parseEther("1"), 0, false);
 
-    console.log("stake 2");
+    console.log(`user 2 stake tokens`);
     await lpStakingPool
-      .connect(user1)
+      .connect(user2)
       .stake(ethers.utils.parseEther("1"), 0, false);
+
+    await hre.ethers.provider.send("evm_mine", []);
+
+    await hre.ethers.provider.send("evm_setAutomine", [true]);
+
+    console.log(`mine 10 blocks`);
+
+    for (let i = 0; i < 10; ++i) {
+      await hre.ethers.provider.send("evm_mine", []);
+    }
+
+    console.log(
+      `user1 pyr: ${ethers.utils.formatEther(
+        await lpStakingPool.pendingYieldRewards(user1.address)
+      )}`
+    );
+    console.log(
+      `user2 pyr: ${ethers.utils.formatEther(
+        await lpStakingPool.pendingYieldRewards(user2.address)
+      )}`
+    );
   });
 });

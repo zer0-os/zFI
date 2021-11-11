@@ -30,8 +30,6 @@ interface IPool is ILinkedToWILD {
 
   // for the rest of the functions see Soldoc in IlluviumPoolBase
 
-  function swild() external view returns (address);
-
   function poolToken() external view returns (address);
 
   function isFlashPool() external view returns (bool);
@@ -48,28 +46,17 @@ interface IPool is ILinkedToWILD {
 
   function balanceOf(address _user) external view returns (uint256);
 
-  function getDeposit(address _user, uint256 _depositId)
-    external
-    view
-    returns (Deposit memory);
+  function getDeposit(address _user, uint256 _depositId) external view returns (Deposit memory);
 
   function getDepositsLength(address _user) external view returns (uint256);
 
-  function stake(
-    uint256 _amount,
-    uint64 _lockedUntil,
-    bool useSILV
-  ) external;
+  function stake(uint256 _amount, uint64 _lockedUntil) external;
 
-  function unstake(
-    uint256 _depositId,
-    uint256 _amount,
-    bool useSILV
-  ) external;
+  function unstake(uint256 _depositId, uint256 _amount) external;
 
   function sync() external;
 
-  function processRewards(bool useSILV) external;
+  function processRewards() external;
 
   function setWeight(uint32 _weight) external;
 }

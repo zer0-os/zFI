@@ -2,10 +2,9 @@
 pragma solidity ^0.8.9;
 
 import "./interfaces/IPool.sol";
-import "./zStakeAware.sol";
 import "./zStakeCorePool.sol";
 import "./utils/Ownable.sol";
-import "./token/EscrowedERC20.sol";
+import "./interfaces/IERC20.sol";
 
 /**
  * @title Illuvium Pool Factory
@@ -22,14 +21,9 @@ import "./token/EscrowedERC20.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin
  */
-contract zStakePoolFactory is Ownable, zStakeAware {
-  /**
-   * @dev Smart contract unique identifier, a random number
-   * @dev Should be regenerated each time smart contact source code is changed
-   *      and changes smart contract itself is to be redeployed
-   * @dev Generated using https://www.random.org/bytes/
-   */
-  // uint256 public constant FACTORY_UID = 0xa50d227c30cd13d60a11ccc6ae5eec570cb1d5ac6579ea7762be6a1a6fa3625a;
+contract zStakePoolFactory is Ownable {
+  /// @dev The WILD token
+  address public immutable wild;
 
   /// @dev Auxiliary data structure used only in getPoolData() view function
   struct PoolData {
@@ -108,11 +102,7 @@ contract zStakePoolFactory is Ownable, zStakeAware {
    * @param poolAddress deployed pool instance address
    * @param weight new pool weight
    */
-  event WeightUpdated(
-    address indexed _by,
-    address indexed poolAddress,
-    uint32 weight
-  );
+  event WeightUpdated(address indexed _by, address indexed poolAddress, uint32 weight);
 
   /**
    * @dev Fired in updateILVPerBlock()
@@ -126,7 +116,6 @@ contract zStakePoolFactory is Ownable, zStakeAware {
    * @dev Creates/deploys a factory instance
    *
    * @param _wild ILV ERC20 token address
-   * @param _swild sILV ERC20 token address
    * @param _wildPerBlock initial ILV/block value for rewards
    * @param _blocksPerUpdate how frequently the rewards gets updated (decreased by 3%), blocks
    * @param _initBlock block number to measure _blocksPerUpdate from
@@ -134,24 +123,19 @@ contract zStakePoolFactory is Ownable, zStakeAware {
    */
   constructor(
     address _wild,
-    address _swild,
     uint192 _wildPerBlock,
     uint32 _blocksPerUpdate,
     uint32 _initBlock,
     uint32 _endBlock
-  ) zStakeAware(_wild) {
+  ) {
     // verify the inputs are set
-    require(_swild != address(0), "sILV address not set");
     require(_wildPerBlock > 0, "ILV/block not set");
     require(_blocksPerUpdate > 0, "blocks/update not set");
     require(_initBlock > 0, "init block not set");
-    require(
-      _endBlock > _initBlock,
-      "invalid end block: must be greater than init block"
-    );
+    require(_endBlock > _initBlock, "invalid end block: must be greater than init block");
 
     // save the inputs into internal state variables
-    swild = _swild;
+    wild = _wild;
     wildPerBlock = _wildPerBlock;
     blocksPerUpdate = _blocksPerUpdate;
     lastRatioUpdate = _initBlock;
@@ -178,11 +162,7 @@ contract zStakePoolFactory is Ownable, zStakeAware {
    * @param _poolToken pool token address to query pool information for
    * @return pool information packed in a PoolData struct
    */
-  function getPoolData(address _poolToken)
-    public
-    view
-    returns (PoolData memory)
-  {
+  function getPoolData(address _poolToken) public view returns (PoolData memory) {
     // get the pool address from the mapping
     address poolAddr = pools[_poolToken];
 
@@ -237,14 +217,7 @@ contract zStakePoolFactory is Ownable, zStakeAware {
     uint32 weight
   ) external virtual onlyOwner {
     // create/deploy new core pool instance
-    IPool pool = new zStakeCorePool(
-      wild,
-      swild,
-      this,
-      poolToken,
-      initBlock,
-      weight
-    );
+    IPool pool = new zStakeCorePool(wild, this, poolToken, initBlock, weight);
 
     // register it within a factory
     registerPool(address(pool));
@@ -281,7 +254,7 @@ contract zStakePoolFactory is Ownable, zStakeAware {
    * @notice Decreases ILV/block reward by 3%, can be executed
    *      no more than once per `blocksPerUpdate` blocks
    */
-  function updateILVPerBlock() external {
+  function updateWILDPerBlock() external {
     // checks if ratio can be updated i.e. if blocks/update (91252 blocks) have passed
     require(shouldUpdateRatio(), "too frequent");
 
@@ -309,7 +282,7 @@ contract zStakePoolFactory is Ownable, zStakeAware {
     require(poolExists[msg.sender], "access denied");
 
     // mint ILV tokens as required
-    mintWild(_to, _amount);
+    IERC20(wild).transfer(_to, _amount);
   }
 
   /**
