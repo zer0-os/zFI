@@ -25,6 +25,9 @@ contract zStakePoolFactory is Ownable {
   /// @dev The WILD token
   address public immutable wild;
 
+  /// @dev The vault that cointains WILD tokens which are to be given as staking rewards.
+  address public rewardVault;
+
   /// @dev Auxiliary data structure used only in getPoolData() view function
   struct PoolData {
     // @dev pool token address (like WILD)
@@ -113,6 +116,7 @@ contract zStakePoolFactory is Ownable {
    * @dev Creates/deploys a factory instance
    *
    * @param _wild WILD ERC20 token address
+   * @param _rewardsVault The vault which contains WILD tokens that are staking rewards
    * @param _wildPerBlock initial WILD/block value for rewards
    * @param _blocksPerUpdate how frequently the rewards gets updated (decreased by 3%), blocks
    * @param _initBlock block number to measure _blocksPerUpdate from
@@ -120,6 +124,7 @@ contract zStakePoolFactory is Ownable {
    */
   constructor(
     address _wild,
+    address _rewardsVault,
     uint192 _wildPerBlock,
     uint32 _blocksPerUpdate,
     uint32 _initBlock,
@@ -133,6 +138,7 @@ contract zStakePoolFactory is Ownable {
 
     // save the inputs into internal state variables
     wild = _wild;
+    rewardVault = _rewardsVault;
     wildPerBlock = _wildPerBlock;
     blocksPerUpdate = _blocksPerUpdate;
     lastRatioUpdate = _initBlock;
@@ -266,20 +272,19 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
-   * @dev Mints WILD tokens; executed by WILD Pool only
+   * @dev Transfers WILD tokens from the rewards vault. Executed by WILD Pool only
    *
-   * @dev Requires factory to have ROLE_TOKEN_CREATOR permission
-   *      on the WILD ERC20 token instance
+   * @dev Requires factory to have allowance on rewardVault
    *
    * @param _to an address to mint tokens to
-   * @param _amount amount of WILD tokens to mint
+   * @param _amount amount of WILD tokens to transfer
    */
-  function mintYieldTo(address _to, uint256 _amount) external {
+  function transferRewardYield(address _to, uint256 _amount) external {
     // verify that sender is a pool registered withing the factory
     require(poolExists[msg.sender], "access denied");
 
-    // mint WILD tokens as required
-    IERC20(wild).transfer(_to, _amount);
+    // transfer WILD tokens as required
+    IERC20(wild).transferFrom(rewardVault, _to, _amount);
   }
 
   /**

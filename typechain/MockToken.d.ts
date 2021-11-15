@@ -31,6 +31,8 @@ interface MockTokenInterface extends ethers.utils.Interface {
     "mintForUser(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
+    "tfCallCount()": FunctionFragment;
+    "tfCallCountReset()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
@@ -64,6 +66,14 @@ interface MockTokenInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "tfCallCount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tfCallCountReset",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -99,6 +109,14 @@ interface MockTokenInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "tfCallCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tfCallCountReset",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -202,6 +220,12 @@ export class MockToken extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
+    tfCallCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    tfCallCountReset(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
@@ -258,6 +282,12 @@ export class MockToken extends BaseContract {
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
+  tfCallCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  tfCallCountReset(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
@@ -313,6 +343,10 @@ export class MockToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
+
+    tfCallCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tfCallCountReset(overrides?: CallOverrides): Promise<void>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -391,6 +425,12 @@ export class MockToken extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
+    tfCallCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tfCallCountReset(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
@@ -452,6 +492,12 @@ export class MockToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tfCallCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tfCallCountReset(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

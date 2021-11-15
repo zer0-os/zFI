@@ -29,15 +29,16 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     "getPoolAddress(address)": FunctionFragment;
     "getPoolData(address)": FunctionFragment;
     "lastRatioUpdate()": FunctionFragment;
-    "mintYieldTo(address,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "poolExists(address)": FunctionFragment;
     "pools(address)": FunctionFragment;
     "registerPool(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "rewardVault()": FunctionFragment;
     "shouldUpdateRatio()": FunctionFragment;
     "totalWeight()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "transferRewardYield(address,uint256)": FunctionFragment;
     "updateWILDPerBlock()": FunctionFragment;
     "wild()": FunctionFragment;
     "wildPerBlock()": FunctionFragment;
@@ -69,10 +70,6 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     functionFragment: "lastRatioUpdate",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "mintYieldTo",
-    values: [string, BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "poolExists", values: [string]): string;
   encodeFunctionData(functionFragment: "pools", values: [string]): string;
@@ -82,6 +79,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rewardVault",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -95,6 +96,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferRewardYield",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "updateWILDPerBlock",
@@ -132,10 +137,6 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     functionFragment: "lastRatioUpdate",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "mintYieldTo",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "poolExists", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pools", data: BytesLike): Result;
@@ -148,6 +149,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "rewardVault",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "shouldUpdateRatio",
     data: BytesLike
   ): Result;
@@ -157,6 +162,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferRewardYield",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -266,12 +275,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     lastRatioUpdate(overrides?: CallOverrides): Promise<[number]>;
 
-    mintYieldTo(
-      _to: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     poolExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
@@ -287,12 +290,20 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    rewardVault(overrides?: CallOverrides): Promise<[string]>;
+
     shouldUpdateRatio(overrides?: CallOverrides): Promise<[boolean]>;
 
     totalWeight(overrides?: CallOverrides): Promise<[number]>;
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    transferRewardYield(
+      _to: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -340,12 +351,6 @@ export class ZStakePoolFactory extends BaseContract {
 
   lastRatioUpdate(overrides?: CallOverrides): Promise<number>;
 
-  mintYieldTo(
-    _to: string,
-    _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   owner(overrides?: CallOverrides): Promise<string>;
 
   poolExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
@@ -361,12 +366,20 @@ export class ZStakePoolFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  rewardVault(overrides?: CallOverrides): Promise<string>;
+
   shouldUpdateRatio(overrides?: CallOverrides): Promise<boolean>;
 
   totalWeight(overrides?: CallOverrides): Promise<number>;
 
   transferOwnership(
     newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  transferRewardYield(
+    _to: string,
+    _amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -417,12 +430,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     lastRatioUpdate(overrides?: CallOverrides): Promise<number>;
 
-    mintYieldTo(
-      _to: string,
-      _amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     owner(overrides?: CallOverrides): Promise<string>;
 
     poolExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
@@ -433,12 +440,20 @@ export class ZStakePoolFactory extends BaseContract {
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
+    rewardVault(overrides?: CallOverrides): Promise<string>;
+
     shouldUpdateRatio(overrides?: CallOverrides): Promise<boolean>;
 
     totalWeight(overrides?: CallOverrides): Promise<number>;
 
     transferOwnership(
       newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    transferRewardYield(
+      _to: string,
+      _amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -525,12 +540,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     lastRatioUpdate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    mintYieldTo(
-      _to: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     poolExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -546,12 +555,20 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    rewardVault(overrides?: CallOverrides): Promise<BigNumber>;
+
     shouldUpdateRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    transferRewardYield(
+      _to: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -596,12 +613,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     lastRatioUpdate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    mintYieldTo(
-      _to: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     poolExists(
@@ -623,12 +634,20 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    rewardVault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     shouldUpdateRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalWeight(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferRewardYield(
+      _to: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -19,7 +19,7 @@
     "@openzeppelin/hardhat-upgrades": "1.8.2",
     "@typechain/ethers-v5": "7.0.1",
     "@typechain/hardhat": "2.0.2",
-    "@types/chai": "^4.2.22",
+    "@types/chai": "4.2.22",
     "@types/mocha": "^9.0.0",
     "chai": "4.3.4",
     "dotenv": "10.0.0",

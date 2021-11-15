@@ -526,7 +526,7 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
       // Make it so it transfers tokens from escrow rewards pool to staker
 
       // mint the yield via the factory
-      factory.mintYieldTo(msg.sender, _amount);
+      factory.transferRewardYield(msg.sender, _amount);
     } else {
       // otherwise just return tokens back to holder
       transferPoolToken(msg.sender, _amount);

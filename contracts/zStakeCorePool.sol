@@ -161,8 +161,8 @@ contract zStakeCorePool is zStakePoolBase {
   }
 
   /**
-   * @dev Executed internally by the pool itself (from the parent `IlluviumPoolBase` smart contract)
-   *      as part of yield rewards processing logic (`IlluviumPoolBase._processRewards` function)
+   * @dev Executed internally by the pool itself (from the parent `zStakePoolBase` smart contract)
+   *      as part of yield rewards processing logic (`zStakePoolBase._processRewards` function)
    *
    * @param _staker an address which stakes (the yield reward)
    * @param _amount amount to be staked (yield reward amount)
