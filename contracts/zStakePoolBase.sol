@@ -8,7 +8,7 @@ import "./zStakePoolFactory.sol";
 import "./utils/SafeERC20.sol";
 
 /**
- * @title WILD Pool Base
+ * @title WILD Pool Base - Fork of Illuvium Pool Base
  *
  * @notice An abstract contract containing common logic for any pool,
  *      be it a flash pool (temporary pool like SNX) or a core pool (permanent pool like WILD/ETH or WILD pool)
@@ -37,8 +37,6 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
     uint256 totalWeight;
     // @dev Auxiliary variable for yield calculation
     uint256 subYieldRewards;
-    // @dev Auxiliary variable for vault rewards calculation
-    uint256 subVaultRewards;
     // @dev An array of holder's deposits
     Deposit[] deposits;
   }

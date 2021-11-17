@@ -319,11 +319,10 @@ export class ZStakePoolBase extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [BigNumber, BigNumber, BigNumber] & {
         tokenAmount: BigNumber;
         totalWeight: BigNumber;
         subYieldRewards: BigNumber;
-        subVaultRewards: BigNumber;
       }
     >;
 
@@ -423,11 +422,10 @@ export class ZStakePoolBase extends BaseContract {
     arg0: string,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber] & {
+    [BigNumber, BigNumber, BigNumber] & {
       tokenAmount: BigNumber;
       totalWeight: BigNumber;
       subYieldRewards: BigNumber;
-      subVaultRewards: BigNumber;
     }
   >;
 
@@ -520,11 +518,10 @@ export class ZStakePoolBase extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [BigNumber, BigNumber, BigNumber] & {
         tokenAmount: BigNumber;
         totalWeight: BigNumber;
         subYieldRewards: BigNumber;
-        subVaultRewards: BigNumber;
       }
     >;
 

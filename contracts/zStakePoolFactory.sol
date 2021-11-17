@@ -7,19 +7,17 @@ import "./utils/Ownable.sol";
 import "./interfaces/IERC20.sol";
 
 /**
- * @title Illuvium Pool Factory
+ * @title WILD Pool Factory - Fork of Illuvium Pool Factory
  *
- * @notice WILD Pool Factory manages Illuvium Yield farming pools, provides a single
+ * @notice WILD Pool Factory manages WILD Yield farming pools, provides a single
  *      public interface to access the pools, provides an interface for the pools
  *      to mint yield rewards, access pool-related info, update weights, etc.
  *
  * @notice The factory is authorized (via its owner) to register new pools, change weights
  *      of the existing pools, removing the pools (by changing their weights to zero)
  *
- * @dev The factory requires ROLE_TOKEN_CREATOR permission on the WILD token to mint yield
- *      (see `mintYieldTo` function)
  *
- * @author Pedro Bergamini, reviewed by Basil Gorin
+ * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
 contract zStakePoolFactory is Ownable {
   /// @dev The WILD token

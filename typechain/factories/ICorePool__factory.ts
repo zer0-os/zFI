@@ -177,19 +177,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-    ],
-    name: "receiveVaultRewards",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "_weight",
         type: "uint32",
@@ -264,19 +251,6 @@ const _abi = [
   {
     inputs: [],
     name: "usersLockingWeight",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "vaultRewardsPerToken",
     outputs: [
       {
         internalType: "uint256",
