@@ -204,11 +204,9 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
     // if smart contract state was not updated recently, `yieldRewardsPerWeight` value
     // is outdated and we need to recalculate it in order to calculate pending rewards correctly
     if (blockNumber() > lastYieldDistribution && usersLockingWeight != 0) {
-      uint256 endBlock = factory.endBlock();
-      uint256 multiplier = blockNumber() > endBlock
-        ? endBlock - lastYieldDistribution
-        : blockNumber() - lastYieldDistribution;
-      uint256 wildRewards = (multiplier * weight * factory.wildPerBlock()) / factory.totalWeight();
+      uint256 multiplier = blockNumber() - lastYieldDistribution;
+      uint256 wildRewards = (multiplier * weight * factory.getWildPerBlock()) /
+        factory.totalWeight();
 
       // recalculated value for `yieldRewardsPerWeight`
       newYieldRewardsPerWeight =
@@ -541,17 +539,6 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
    *      updates factory state via `updateWILDPerBlock`
    */
   function _sync() internal virtual {
-    // update WILD per block value in factory if required
-    if (factory.shouldUpdateRatio()) {
-      factory.updateWILDPerBlock();
-    }
-
-    // check bound conditions and if these are not met -
-    // exit silently, without emitting an event
-    uint256 endBlock = factory.endBlock();
-    if (lastYieldDistribution >= endBlock) {
-      return;
-    }
     if (blockNumber() <= lastYieldDistribution) {
       return;
     }
@@ -562,9 +549,9 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
     }
 
     // to calculate the reward we need to know how many blocks passed, and reward per block
-    uint256 currentBlock = blockNumber() > endBlock ? endBlock : blockNumber();
+    uint256 currentBlock = blockNumber();
     uint256 blocksPassed = currentBlock - lastYieldDistribution;
-    uint256 wildPerBlock = factory.wildPerBlock();
+    uint256 wildPerBlock = factory.getWildPerBlock();
 
     // calculate the reward
     uint256 wildReward = (blocksPassed * wildPerBlock * weight) / factory.totalWeight();

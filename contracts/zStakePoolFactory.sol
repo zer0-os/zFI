@@ -42,33 +42,13 @@ contract zStakePoolFactory is Ownable {
    * @dev WILD/block determines yield farming reward base
    *      used by the yield pools controlled by the factory
    */
-  uint192 public wildPerBlock;
+  uint256 internal wildPerBlock;
 
   /**
    * @dev The yield is distributed proportionally to pool weights;
    *      total weight is here to help in determining the proportion
    */
   uint32 public totalWeight;
-
-  /**
-   * @dev WILD/block decreases by 3% every blocks/update (set to 91252 blocks during deployment);
-   *      an update is triggered by executing `updateWILDPerBlock` public function
-   */
-  uint32 public blocksPerUpdate;
-
-  /**
-   * @dev End block is the last block when WILD/block can be decreased;
-   *      it is implied that yield farming stops after that block
-   */
-  uint32 public endBlock;
-
-  /**
-   * @dev Each time the WILD/block ratio gets updated, the block number
-   *      when the operation has occurred gets recorded into `lastRatioUpdate`
-   * @dev This block number is then used to check if blocks/update `blocksPerUpdate`
-   *      has passed when decreasing yield reward by 3%
-   */
-  uint32 public lastRatioUpdate;
 
   /// @dev Maps pool token address (like WILD) -> pool address (like core pool instance)
   mapping(address => address) public pools;
@@ -138,9 +118,6 @@ contract zStakePoolFactory is Ownable {
     wild = _wild;
     rewardVault = _rewardsVault;
     wildPerBlock = _wildPerBlock;
-    blocksPerUpdate = _blocksPerUpdate;
-    lastRatioUpdate = _initBlock;
-    endBlock = _endBlock;
   }
 
   /**
@@ -184,23 +161,6 @@ contract zStakePoolFactory is Ownable {
         weight: weight,
         isFlashPool: isFlashPool
       });
-  }
-
-  /**
-   * @dev Verifies if `blocksPerUpdate` has passed since last WILD/block
-   *      ratio update and if WILD/block reward can be decreased by 3%
-   *
-   * @return true if enough time has passed and `updateWILDPerBlock` can be executed
-   */
-  function shouldUpdateRatio() public view returns (bool) {
-    // if yield farming period has ended
-    if (blockNumber() > endBlock) {
-      // WILD/block reward cannot be updated anymore
-      return false;
-    }
-
-    // check if blocks/update (91252 blocks) have passed since last update
-    return blockNumber() >= lastRatioUpdate + blocksPerUpdate;
   }
 
   /**
@@ -252,24 +212,6 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
-   * @notice Decreases WILD/block reward by 3%, can be executed
-   *      no more than once per `blocksPerUpdate` blocks
-   */
-  function updateWILDPerBlock() external {
-    // checks if ratio can be updated i.e. if blocks/update (91252 blocks) have passed
-    require(shouldUpdateRatio(), "too frequent");
-
-    // decreases WILD/block reward by 3%
-    wildPerBlock = (wildPerBlock * 97) / 100;
-
-    // set current block as the last ratio update block
-    lastRatioUpdate = uint32(blockNumber());
-
-    // emit an event
-    emit WildRatioUpdated(msg.sender, wildPerBlock);
-  }
-
-  /**
    * @dev Transfers WILD tokens from the rewards vault. Executed by WILD Pool only
    *
    * @dev Requires factory to have allowance on rewardVault
@@ -315,5 +257,9 @@ contract zStakePoolFactory is Ownable {
   function blockNumber() public view virtual returns (uint256) {
     // return current block number
     return block.number;
+  }
+
+  function getWildPerBlock() public view returns (uint256) {
+    return wildPerBlock;
   }
 }
