@@ -6,6 +6,8 @@ import "./zStakeCorePool.sol";
 import "./utils/Ownable.sol";
 import "./interfaces/IERC20.sol";
 
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
 /**
  * @title WILD Pool Factory - Fork of Illuvium Pool Factory
  *
@@ -19,9 +21,9 @@ import "./interfaces/IERC20.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-contract zStakePoolFactory is Ownable {
+contract zStakePoolFactory is OwnableUpgradeable {
   /// @dev The WILD token
-  address public immutable wild;
+  address public wild;
 
   /// @dev The vault that cointains WILD tokens which are to be given as staking rewards.
   address public rewardVault;
@@ -96,23 +98,16 @@ contract zStakePoolFactory is Ownable {
    * @param _wild WILD ERC20 token address
    * @param _rewardsVault The vault which contains WILD tokens that are staking rewards
    * @param _wildPerBlock initial WILD/block value for rewards
-   * @param _blocksPerUpdate how frequently the rewards gets updated (decreased by 3%), blocks
-   * @param _initBlock block number to measure _blocksPerUpdate from
-   * @param _endBlock block number when farming stops and rewards cannot be updated anymore
    */
-  constructor(
+  function initialize(
     address _wild,
     address _rewardsVault,
-    uint192 _wildPerBlock,
-    uint32 _blocksPerUpdate,
-    uint32 _initBlock,
-    uint32 _endBlock
-  ) {
+    uint192 _wildPerBlock
+  ) public initializer {
+    __Ownable_init();
+
     // verify the inputs are set
     require(_wildPerBlock > 0, "WILD/block not set");
-    require(_blocksPerUpdate > 0, "blocks/update not set");
-    require(_initBlock > 0, "init block not set");
-    require(_endBlock > _initBlock, "invalid end block: must be greater than init block");
 
     // save the inputs into internal state variables
     wild = _wild;
@@ -249,6 +244,16 @@ contract zStakePoolFactory is Ownable {
   }
 
   /**
+   * @dev Changes the amount of wild given per block
+   *
+   * @param perBlock Amount of wild given per block
+   */
+  function changeWildPerBlock(uint256 perBlock) external {
+    require(wildPerBlock != perBlock, "No change");
+    wildPerBlock = perBlock;
+  }
+
+  /**
    * @dev Testing time-dependent functionality is difficult and the best way of
    *      doing it is to override block number in helper test smart contracts
    *
@@ -259,6 +264,11 @@ contract zStakePoolFactory is Ownable {
     return block.number;
   }
 
+  /**
+   * @dev Returns amount of wild to be given per block, may be upgraded in the future
+   *
+   * @return Amount of WILD tokens to reward per block
+   */
   function getWildPerBlock() public view returns (uint256) {
     return wildPerBlock;
   }
