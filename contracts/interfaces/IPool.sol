@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-import "./ILinkedToWILD.sol";
-
 /**
- * @title Illuvium Pool
+ * @title Staking Pool - Fork of Illuvium
  *
- * @notice An abstraction representing a pool, see IlluviumPoolBase for details
+ * @notice An abstraction representing a pool, see zStakePoolBase for details
  *
- * @author Pedro Bergamini, reviewed by Basil Gorin
+ * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-interface IPool is ILinkedToWILD {
+interface IPool {
   /**
    * @dev Deposit is a key data structure used in staking,
    *      it represents a unit of stake with its amount, weight and term (time interval)
@@ -28,7 +26,7 @@ interface IPool is ILinkedToWILD {
     bool isYield;
   }
 
-  // for the rest of the functions see Soldoc in IlluviumPoolBase
+  function wild() external view returns (address);
 
   function poolToken() external view returns (address);
 

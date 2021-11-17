@@ -159,7 +159,7 @@ contract zStakePoolFactory is OwnableUpgradeable {
   }
 
   /**
-   * @dev Creates a core pool (IlluviumCorePool) and registers it within the factory
+   * @dev Creates a core pool (zStakeCorePool) and registers it within the factory
    *
    * @dev Can be executed by the pool factory owner only
    *

@@ -27,7 +27,7 @@ contract zStakeCorePool is zStakePoolBase {
   /**
    * @dev Creates/deploys an instance of the core pool
    *
-   * @param _ilv WILD ERC20 Token IlluviumERC20 address
+   * @param _ilv WILD ERC20 Token address
    * @param _factory Pool factory zStakePoolFactory instance/address
    * @param _poolToken token the pool operates on, for example WILD or WILD/ETH pair
    * @param _initBlock initial block used to calculate the rewards
