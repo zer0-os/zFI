@@ -23,10 +23,12 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   functions: {
     "blockNumber()": FunctionFragment;
     "changePoolWeight(address,uint32)": FunctionFragment;
+    "changeWildPerBlock(uint256)": FunctionFragment;
     "createPool(address,uint64,uint32)": FunctionFragment;
     "getPoolAddress(address)": FunctionFragment;
     "getPoolData(address)": FunctionFragment;
     "getWildPerBlock()": FunctionFragment;
+    "initialize(address,address,uint192)": FunctionFragment;
     "owner()": FunctionFragment;
     "poolExists(address)": FunctionFragment;
     "pools(address)": FunctionFragment;
@@ -48,6 +50,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "changeWildPerBlock",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createPool",
     values: [string, BigNumberish, BigNumberish]
   ): string;
@@ -59,6 +65,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "getWildPerBlock",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "poolExists", values: [string]): string;
@@ -97,6 +107,10 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     functionFragment: "changePoolWeight",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "changeWildPerBlock",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "createPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPoolAddress",
@@ -110,6 +124,7 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     functionFragment: "getWildPerBlock",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "poolExists", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pools", data: BytesLike): Result;
@@ -204,6 +219,11 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    changeWildPerBlock(
+      perBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     createPool(
       poolToken: string,
       initBlock: BigNumberish,
@@ -231,6 +251,13 @@ export class ZStakePoolFactory extends BaseContract {
     >;
 
     getWildPerBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    initialize(
+      _wild: string,
+      _rewardsVault: string,
+      _wildPerBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -273,6 +300,11 @@ export class ZStakePoolFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  changeWildPerBlock(
+    perBlock: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   createPool(
     poolToken: string,
     initBlock: BigNumberish,
@@ -295,6 +327,13 @@ export class ZStakePoolFactory extends BaseContract {
   >;
 
   getWildPerBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+  initialize(
+    _wild: string,
+    _rewardsVault: string,
+    _wildPerBlock: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -337,6 +376,11 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    changeWildPerBlock(
+      perBlock: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     createPool(
       poolToken: string,
       initBlock: BigNumberish,
@@ -362,6 +406,13 @@ export class ZStakePoolFactory extends BaseContract {
     >;
 
     getWildPerBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initialize(
+      _wild: string,
+      _rewardsVault: string,
+      _wildPerBlock: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -444,6 +495,11 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    changeWildPerBlock(
+      perBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     createPool(
       poolToken: string,
       initBlock: BigNumberish,
@@ -462,6 +518,13 @@ export class ZStakePoolFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     getWildPerBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initialize(
+      _wild: string,
+      _rewardsVault: string,
+      _wildPerBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -505,6 +568,11 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    changeWildPerBlock(
+      perBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     createPool(
       poolToken: string,
       initBlock: BigNumberish,
@@ -523,6 +591,13 @@ export class ZStakePoolFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getWildPerBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    initialize(
+      _wild: string,
+      _rewardsVault: string,
+      _wildPerBlock: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
