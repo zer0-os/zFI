@@ -7,6 +7,8 @@ import "./ReentrancyGuard.sol";
 import "./zStakePoolFactory.sol";
 import "./utils/SafeERC20.sol";
 
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
 /**
  * @title WILD Pool Base - Fork of Illuvium Pool Base
  *
@@ -28,7 +30,7 @@ import "./utils/SafeERC20.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-contract zStakePoolBase is IPool, ReentrancyGuard {
+abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
   /// @dev Data structure representing token holder using a pool
   struct User {
     // @dev Total staked amount
@@ -46,16 +48,16 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
   }
 
   /// @dev The WILD token
-  address public immutable override wild;
+  address public override wild;
 
   /// @dev Token holder storage, maps token holder address to their data record
   mapping(address => User) public users;
 
   /// @dev Link to the pool factory zStakePoolFactory instance
-  zStakePoolFactory public immutable factory;
+  zStakePoolFactory public factory;
 
   /// @dev Link to the pool token instance, for example WILD or WILD/ETH pair
-  address public immutable override poolToken;
+  address public override poolToken;
 
   /// @dev Pool weight
   uint32 public override weight;
@@ -168,13 +170,15 @@ contract zStakePoolBase is IPool, ReentrancyGuard {
    * @param _weight number representing a weight of the pool, actual weight fraction
    *      is calculated as that number divided by the total pools weight and doesn't exceed one
    */
-  constructor(
+  function __zStakePoolBase__init(
     address _wild,
     zStakePoolFactory _factory,
     address _poolToken,
     uint64 _initBlock,
     uint32 _weight
-  ) {
+  ) public initializer {
+    __Ownable_init();
+
     // verify the inputs are set
     require(address(_factory) != address(0), "WILD Pool fct address not set");
     require(_poolToken != address(0), "pool token address not set");

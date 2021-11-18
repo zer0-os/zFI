@@ -25,10 +25,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "ILinkedToWILD",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILinkedToWILD__factory>;
-    getContractFactory(
       name: "IPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPool__factory>;

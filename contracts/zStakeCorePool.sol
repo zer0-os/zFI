@@ -24,6 +24,8 @@ contract zStakeCorePool is zStakePoolBase {
   ///      while for WILD core pool it does count for such tokens as well
   uint256 public poolTokenReserve;
 
+  uint256 public rewardLockPeriod = 365 days;
+
   /**
    * @dev Creates/deploys an instance of the core pool
    *
@@ -34,13 +36,15 @@ contract zStakeCorePool is zStakePoolBase {
    * @param _weight number representing a weight of the pool, actual weight fraction
    *      is calculated as that number divided by the total pools weight and doesn't exceed one
    */
-  constructor(
+  function initialize(
     address _ilv,
     zStakePoolFactory _factory,
     address _poolToken,
     uint64 _initBlock,
     uint32 _weight
-  ) zStakePoolBase(_ilv, _factory, _poolToken, _initBlock, _weight) {}
+  ) initializer public {
+    __zStakePoolBase__init(_ilv, _factory, _poolToken, _initBlock, _weight);
+  }
 
   /**
    * @notice Service function to calculate and pay pending vault and yield rewards to the sender
@@ -77,7 +81,7 @@ contract zStakeCorePool is zStakePoolBase {
     Deposit memory newDeposit = Deposit({
       tokenAmount: _amount,
       lockedFrom: uint64(now256()),
-      lockedUntil: uint64(now256() + 365 days),
+      lockedUntil: uint64(now256() + rewardLockPeriod),
       weight: depositWeight,
       isYield: true
     });
@@ -91,6 +95,14 @@ contract zStakeCorePool is zStakePoolBase {
 
     // update `poolTokenReserve` only if this is a LP Core Pool (stakeAsPool can be executed only for LP pool)
     poolTokenReserve += _amount;
+  }
+
+  /**
+   * @dev Allows for the rewardLockPeriod to be modified.
+   */
+  function changeRewardLockPeriod(uint256 _rewardLockPeriod) onlyOwner external {
+    require(rewardLockPeriod != _rewardLockPeriod, "same rewardLockPeriod");
+    rewardLockPeriod = _rewardLockPeriod;
   }
 
   /**

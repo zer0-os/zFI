@@ -24,7 +24,6 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     "blockNumber()": FunctionFragment;
     "changePoolWeight(address,uint32)": FunctionFragment;
     "changeWildPerBlock(uint256)": FunctionFragment;
-    "createPool(address,uint64,uint32)": FunctionFragment;
     "getPoolAddress(address)": FunctionFragment;
     "getPoolData(address)": FunctionFragment;
     "getWildPerBlock()": FunctionFragment;
@@ -52,10 +51,6 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "changeWildPerBlock",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createPool",
-    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getPoolAddress",
@@ -111,7 +106,6 @@ interface ZStakePoolFactoryInterface extends ethers.utils.Interface {
     functionFragment: "changeWildPerBlock",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "createPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPoolAddress",
     data: BytesLike
@@ -224,13 +218,6 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    createPool(
-      poolToken: string,
-      initBlock: BigNumberish,
-      weight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     getPoolAddress(
       poolToken: string,
       overrides?: CallOverrides
@@ -305,13 +292,6 @@ export class ZStakePoolFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  createPool(
-    poolToken: string,
-    initBlock: BigNumberish,
-    weight: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   getPoolAddress(poolToken: string, overrides?: CallOverrides): Promise<string>;
 
   getPoolData(
@@ -378,13 +358,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     changeWildPerBlock(
       perBlock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    createPool(
-      poolToken: string,
-      initBlock: BigNumberish,
-      weight: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -500,13 +473,6 @@ export class ZStakePoolFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    createPool(
-      poolToken: string,
-      initBlock: BigNumberish,
-      weight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     getPoolAddress(
       poolToken: string,
       overrides?: CallOverrides
@@ -570,13 +536,6 @@ export class ZStakePoolFactory extends BaseContract {
 
     changeWildPerBlock(
       perBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    createPool(
-      poolToken: string,
-      initBlock: BigNumberish,
-      weight: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

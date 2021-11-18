@@ -21,24 +21,31 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   functions: {
+    "__zStakePoolBase__init(address,address,address,uint64,uint32)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "blockNumber()": FunctionFragment;
+    "changeRewardLockPeriod(uint256)": FunctionFragment;
     "factory()": FunctionFragment;
     "getDeposit(address,uint256)": FunctionFragment;
     "getDepositsLength(address)": FunctionFragment;
+    "initialize(address,address,address,uint64,uint32)": FunctionFragment;
     "isFlashPool()": FunctionFragment;
     "lastYieldDistribution()": FunctionFragment;
     "now256()": FunctionFragment;
+    "owner()": FunctionFragment;
     "pendingYieldRewards(address)": FunctionFragment;
     "poolToken()": FunctionFragment;
     "poolTokenReserve()": FunctionFragment;
     "processRewards()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "rewardLockPeriod()": FunctionFragment;
     "rewardToWeight(uint256,uint256)": FunctionFragment;
     "setWeight(uint32)": FunctionFragment;
     "stake(uint256,uint64)": FunctionFragment;
     "stakeAsPool(address,uint256)": FunctionFragment;
     "sync()": FunctionFragment;
     "testFunc()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
     "unstake(uint256,uint256)": FunctionFragment;
     "updateStakeLock(uint256,uint64)": FunctionFragment;
     "users(address)": FunctionFragment;
@@ -49,10 +56,18 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     "yieldRewardsPerWeight()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "__zStakePoolBase__init",
+    values: [string, string, string, BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
     functionFragment: "blockNumber",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeRewardLockPeriod",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "factory", values?: undefined): string;
   encodeFunctionData(
@@ -64,6 +79,10 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "initialize",
+    values: [string, string, string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isFlashPool",
     values?: undefined
   ): string;
@@ -72,6 +91,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "now256", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "pendingYieldRewards",
     values: [string]
@@ -83,6 +103,14 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "processRewards",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rewardLockPeriod",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -103,6 +131,10 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "sync", values?: undefined): string;
   encodeFunctionData(functionFragment: "testFunc", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "unstake",
     values: [BigNumberish, BigNumberish]
@@ -127,9 +159,17 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "__zStakePoolBase__init",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "blockNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "changeRewardLockPeriod",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
@@ -138,6 +178,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     functionFragment: "getDepositsLength",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isFlashPool",
     data: BytesLike
@@ -147,6 +188,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "now256", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "pendingYieldRewards",
     data: BytesLike
@@ -161,6 +203,14 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rewardLockPeriod",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "rewardToWeight",
     data: BytesLike
   ): Result;
@@ -172,6 +222,10 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "sync", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "testFunc", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateStakeLock",
@@ -194,6 +248,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
+    "OwnershipTransferred(address,address)": EventFragment;
     "PoolWeightUpdated(address,uint32,uint32)": EventFragment;
     "StakeLockUpdated(address,uint256,uint64,uint64)": EventFragment;
     "Staked(address,address,uint256)": EventFragment;
@@ -202,6 +257,7 @@ interface ZStakeCorePoolInterface extends ethers.utils.Interface {
     "YieldClaimed(address,address,uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolWeightUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StakeLockUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
@@ -254,9 +310,23 @@ export class ZStakeCorePool extends BaseContract {
   interface: ZStakeCorePoolInterface;
 
   functions: {
+    __zStakePoolBase__init(
+      _wild: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     balanceOf(_user: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     blockNumber(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    changeRewardLockPeriod(
+      _rewardLockPeriod: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     factory(overrides?: CallOverrides): Promise<[string]>;
 
@@ -281,11 +351,22 @@ export class ZStakeCorePool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    initialize(
+      _ilv: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     isFlashPool(overrides?: CallOverrides): Promise<[boolean]>;
 
     lastYieldDistribution(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     now256(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     pendingYieldRewards(
       _staker: string,
@@ -299,6 +380,12 @@ export class ZStakeCorePool extends BaseContract {
     processRewards(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    rewardLockPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     rewardToWeight(
       reward: BigNumberish,
@@ -328,6 +415,11 @@ export class ZStakeCorePool extends BaseContract {
     ): Promise<ContractTransaction>;
 
     testFunc(overrides?: CallOverrides): Promise<[string]>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     unstake(
       _depositId: BigNumberish,
@@ -367,9 +459,23 @@ export class ZStakeCorePool extends BaseContract {
     yieldRewardsPerWeight(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
+  __zStakePoolBase__init(
+    _wild: string,
+    _factory: string,
+    _poolToken: string,
+    _initBlock: BigNumberish,
+    _weight: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   balanceOf(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
+
+  changeRewardLockPeriod(
+    _rewardLockPeriod: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   factory(overrides?: CallOverrides): Promise<string>;
 
@@ -392,11 +498,22 @@ export class ZStakeCorePool extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  initialize(
+    _ilv: string,
+    _factory: string,
+    _poolToken: string,
+    _initBlock: BigNumberish,
+    _weight: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   isFlashPool(overrides?: CallOverrides): Promise<boolean>;
 
   lastYieldDistribution(overrides?: CallOverrides): Promise<BigNumber>;
 
   now256(overrides?: CallOverrides): Promise<BigNumber>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
 
   pendingYieldRewards(
     _staker: string,
@@ -410,6 +527,12 @@ export class ZStakeCorePool extends BaseContract {
   processRewards(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  rewardLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
   rewardToWeight(
     reward: BigNumberish,
@@ -439,6 +562,11 @@ export class ZStakeCorePool extends BaseContract {
   ): Promise<ContractTransaction>;
 
   testFunc(overrides?: CallOverrides): Promise<string>;
+
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   unstake(
     _depositId: BigNumberish,
@@ -478,9 +606,23 @@ export class ZStakeCorePool extends BaseContract {
   yieldRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    __zStakePoolBase__init(
+      _wild: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     balanceOf(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
+
+    changeRewardLockPeriod(
+      _rewardLockPeriod: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     factory(overrides?: CallOverrides): Promise<string>;
 
@@ -503,11 +645,22 @@ export class ZStakeCorePool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    initialize(
+      _ilv: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     isFlashPool(overrides?: CallOverrides): Promise<boolean>;
 
     lastYieldDistribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     now256(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
 
     pendingYieldRewards(
       _staker: string,
@@ -519,6 +672,10 @@ export class ZStakeCorePool extends BaseContract {
     poolTokenReserve(overrides?: CallOverrides): Promise<BigNumber>;
 
     processRewards(overrides?: CallOverrides): Promise<void>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    rewardLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     rewardToWeight(
       reward: BigNumberish,
@@ -543,6 +700,11 @@ export class ZStakeCorePool extends BaseContract {
     sync(overrides?: CallOverrides): Promise<void>;
 
     testFunc(overrides?: CallOverrides): Promise<string>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     unstake(
       _depositId: BigNumberish,
@@ -583,6 +745,14 @@ export class ZStakeCorePool extends BaseContract {
   };
 
   filters: {
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
     PoolWeightUpdated(
       _by?: string | null,
       _fromVal?: null,
@@ -649,9 +819,23 @@ export class ZStakeCorePool extends BaseContract {
   };
 
   estimateGas: {
+    __zStakePoolBase__init(
+      _wild: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     balanceOf(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     blockNumber(overrides?: CallOverrides): Promise<BigNumber>;
+
+    changeRewardLockPeriod(
+      _rewardLockPeriod: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     factory(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -666,11 +850,22 @@ export class ZStakeCorePool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    initialize(
+      _ilv: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     isFlashPool(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastYieldDistribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     now256(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     pendingYieldRewards(
       _staker: string,
@@ -684,6 +879,12 @@ export class ZStakeCorePool extends BaseContract {
     processRewards(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    rewardLockPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     rewardToWeight(
       reward: BigNumberish,
@@ -713,6 +914,11 @@ export class ZStakeCorePool extends BaseContract {
     ): Promise<BigNumber>;
 
     testFunc(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     unstake(
       _depositId: BigNumberish,
@@ -744,12 +950,26 @@ export class ZStakeCorePool extends BaseContract {
   };
 
   populateTransaction: {
+    __zStakePoolBase__init(
+      _wild: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     balanceOf(
       _user: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     blockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    changeRewardLockPeriod(
+      _rewardLockPeriod: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -764,6 +984,15 @@ export class ZStakeCorePool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    initialize(
+      _ilv: string,
+      _factory: string,
+      _poolToken: string,
+      _initBlock: BigNumberish,
+      _weight: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     isFlashPool(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     lastYieldDistribution(
@@ -771,6 +1000,8 @@ export class ZStakeCorePool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     now256(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pendingYieldRewards(
       _staker: string,
@@ -784,6 +1015,12 @@ export class ZStakeCorePool extends BaseContract {
     processRewards(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rewardLockPeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rewardToWeight(
       reward: BigNumberish,
@@ -813,6 +1050,11 @@ export class ZStakeCorePool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     testFunc(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     unstake(
       _depositId: BigNumberish,

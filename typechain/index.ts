@@ -4,7 +4,6 @@
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
 export type { ICorePool } from "./ICorePool";
 export type { IERC20 } from "./IERC20";
-export type { ILinkedToWILD } from "./ILinkedToWILD";
 export type { IPool } from "./IPool";
 export type { ERC20Receiver } from "./ERC20Receiver";
 export type { AccessControl } from "./AccessControl";
@@ -18,7 +17,6 @@ export type { ZStakePoolFactory } from "./ZStakePoolFactory";
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
 export { ICorePool__factory } from "./factories/ICorePool__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
-export { ILinkedToWILD__factory } from "./factories/ILinkedToWILD__factory";
 export { IPool__factory } from "./factories/IPool__factory";
 export { ERC20Receiver__factory } from "./factories/ERC20Receiver__factory";
 export { AccessControl__factory } from "./factories/AccessControl__factory";

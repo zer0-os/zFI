@@ -159,27 +159,6 @@ contract zStakePoolFactory is OwnableUpgradeable {
   }
 
   /**
-   * @dev Creates a core pool (zStakeCorePool) and registers it within the factory
-   *
-   * @dev Can be executed by the pool factory owner only
-   *
-   * @param poolToken pool token address (like WILD, or WILD/ETH pair)
-   * @param initBlock init block to be used for the pool created
-   * @param weight weight of the pool to be created
-   */
-  function createPool(
-    address poolToken,
-    uint64 initBlock,
-    uint32 weight
-  ) external virtual onlyOwner {
-    // create/deploy new core pool instance
-    IPool pool = new zStakeCorePool(wild, this, poolToken, initBlock, weight);
-
-    // register it within a factory
-    registerPool(address(pool));
-  }
-
-  /**
    * @dev Registers an already deployed pool instance within the factory
    *
    * @dev Can be executed by the pool factory owner only
