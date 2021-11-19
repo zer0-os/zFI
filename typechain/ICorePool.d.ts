@@ -30,6 +30,7 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     "poolToken()": FunctionFragment;
     "poolTokenReserve()": FunctionFragment;
     "processRewards()": FunctionFragment;
+    "rewardToken()": FunctionFragment;
     "setWeight(uint32)": FunctionFragment;
     "stake(uint256,uint64)": FunctionFragment;
     "stakeAsPool(address,uint256)": FunctionFragment;
@@ -37,7 +38,6 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     "unstake(uint256,uint256)": FunctionFragment;
     "usersLockingWeight()": FunctionFragment;
     "weight()": FunctionFragment;
-    "wild()": FunctionFragment;
     "yieldRewardsPerWeight()": FunctionFragment;
   };
 
@@ -72,6 +72,10 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "rewardToken",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setWeight",
     values: [BigNumberish]
   ): string;
@@ -93,7 +97,6 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "weight", values?: undefined): string;
-  encodeFunctionData(functionFragment: "wild", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "yieldRewardsPerWeight",
     values?: undefined
@@ -126,6 +129,10 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     functionFragment: "processRewards",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "rewardToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setWeight", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(
@@ -139,7 +146,6 @@ interface ICorePoolInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "weight", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "wild", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "yieldRewardsPerWeight",
     data: BytesLike
@@ -232,6 +238,8 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    rewardToken(overrides?: CallOverrides): Promise<[string]>;
+
     setWeight(
       _weight: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -262,8 +270,6 @@ export class ICorePool extends BaseContract {
     usersLockingWeight(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     weight(overrides?: CallOverrides): Promise<[number]>;
-
-    wild(overrides?: CallOverrides): Promise<[string]>;
 
     yieldRewardsPerWeight(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
@@ -306,6 +312,8 @@ export class ICorePool extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  rewardToken(overrides?: CallOverrides): Promise<string>;
+
   setWeight(
     _weight: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -336,8 +344,6 @@ export class ICorePool extends BaseContract {
   usersLockingWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
   weight(overrides?: CallOverrides): Promise<number>;
-
-  wild(overrides?: CallOverrides): Promise<string>;
 
   yieldRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -378,6 +384,8 @@ export class ICorePool extends BaseContract {
 
     processRewards(overrides?: CallOverrides): Promise<void>;
 
+    rewardToken(overrides?: CallOverrides): Promise<string>;
+
     setWeight(_weight: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     stake(
@@ -403,8 +411,6 @@ export class ICorePool extends BaseContract {
     usersLockingWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
     weight(overrides?: CallOverrides): Promise<number>;
-
-    wild(overrides?: CallOverrides): Promise<string>;
 
     yieldRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
   };
@@ -442,6 +448,8 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    rewardToken(overrides?: CallOverrides): Promise<BigNumber>;
+
     setWeight(
       _weight: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -472,8 +480,6 @@ export class ICorePool extends BaseContract {
     usersLockingWeight(overrides?: CallOverrides): Promise<BigNumber>;
 
     weight(overrides?: CallOverrides): Promise<BigNumber>;
-
-    wild(overrides?: CallOverrides): Promise<BigNumber>;
 
     yieldRewardsPerWeight(overrides?: CallOverrides): Promise<BigNumber>;
   };
@@ -514,6 +520,8 @@ export class ICorePool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    rewardToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     setWeight(
       _weight: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -546,8 +554,6 @@ export class ICorePool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     weight(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    wild(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     yieldRewardsPerWeight(
       overrides?: CallOverrides

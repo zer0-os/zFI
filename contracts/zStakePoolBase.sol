@@ -10,23 +10,21 @@ import "./utils/SafeERC20.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /**
- * @title WILD Pool Base - Fork of Illuvium Pool Base
+ * @title Pool Base - Fork of Illuvium Pool Base
  *
- * @notice An abstract contract containing common logic for any pool,
- *      be it a flash pool (temporary pool like SNX) or a core pool (permanent pool like WILD/ETH or WILD pool)
+ * @notice An abstract contract containing common logic for a staking pool
  *
  * @dev Deployment and initialization.
  *      Any pool deployed must be bound to the deployed pool factory (zStakePoolFactory)
  *      Additionally, 3 token instance addresses must be defined on deployment:
- *          - WILD token address
- *          - pool token address, it can be WILD token address, WILD/ETH pair address, and others
+ *          - Reward token address
+ *          - pool token address, it can be the reward token address, LP pair address, and others
  *
  * @dev Pool weight defines the fraction of the yield current pool receives among the other pools,
  *      pool factory is responsible for the weight synchronization between the pools.
- * @dev The weight is logically 10% for WILD pool and 90% for WILD/ETH pool.
+ * @dev The weight is logically 10% for reward token pool and 90% for LP pool.
  *      Since Solidity doesn't support fractions the weight is defined by the division of
  *      pool weight by total pools weight (sum of all registered pools within the factory)
- * @dev For WILD Pool we use 100 as weight and for WILD/ETH pool - 900.
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
@@ -47,8 +45,8 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     return false;
   }
 
-  /// @dev The WILD token
-  address public override wild;
+  /// @dev The reward token
+  address public override rewardToken;
 
   /// @dev Token holder storage, maps token holder address to their data record
   mapping(address => User) public users;
@@ -72,6 +70,9 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
 
   /// @dev Used to calculate yield rewards, keeps track of the tokens weight locked in staking
   uint256 public override usersLockingWeight;
+
+  /// @dev The duration of time to lock rewards
+  uint256 public rewardLockPeriod;
 
   /**
    * @dev Stake weight is proportional to deposit amount and time locked, precisely
@@ -162,7 +163,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
   /**
    * @dev Overridden in sub-contracts to construct the pool
    *
-   * @param _wild WILD ERC20 Token address
+   * @param _rewardToken Reward ERC20 Token address
    * @param _factory Pool factory zStakePoolFactory instance/address
    * @param _poolToken token the pool operates on, for example WILD or WILD/ETH pair
    * @param _initBlock initial block used to calculate the rewards
@@ -171,7 +172,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    *      is calculated as that number divided by the total pools weight and doesn't exceed one
    */
   function __zStakePoolBase__init(
-    address _wild,
+    address _rewardToken,
     zStakePoolFactory _factory,
     address _poolToken,
     uint64 _initBlock,
@@ -180,7 +181,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     __Ownable_init();
 
     // verify the inputs are set
-    require(address(_factory) != address(0), "WILD Pool fct address not set");
+    require(address(_factory) != address(0), "factory address not set");
     require(_poolToken != address(0), "pool token address not set");
     require(_initBlock > 0, "init block not set");
     require(_weight > 0, "pool weight not set");
@@ -189,10 +190,11 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     factory = _factory;
     poolToken = _poolToken;
     weight = _weight;
-    wild = _wild;
+    rewardToken = _rewardToken;
 
     // init the dependent internal state variables
     lastYieldDistribution = _initBlock;
+    rewardLockPeriod = 365 days;
   }
 
   /**
@@ -209,12 +211,12 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     // is outdated and we need to recalculate it in order to calculate pending rewards correctly
     if (blockNumber() > lastYieldDistribution && usersLockingWeight != 0) {
       uint256 multiplier = blockNumber() - lastYieldDistribution;
-      uint256 wildRewards = (multiplier * weight * factory.getWildPerBlock()) /
+      uint256 rewards = (multiplier * weight * factory.getRewardTokensPerBlock()) /
         factory.totalWeight();
 
       // recalculated value for `yieldRewardsPerWeight`
       newYieldRewardsPerWeight =
-        rewardToWeight(wildRewards, usersLockingWeight) +
+        rewardToWeight(rewards, usersLockingWeight) +
         yieldRewardsPerWeight;
     } else {
       // if smart contract state is up to date, we don't recalculate
@@ -466,6 +468,15 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     emit Staked(msg.sender, _staker, _amount);
   }
 
+  
+  /**
+   * @dev Allows for the rewardLockPeriod to be modified.
+   */
+  function changeRewardLockPeriod(uint256 _rewardLockPeriod) onlyOwner external {
+    require(rewardLockPeriod != _rewardLockPeriod, "same rewardLockPeriod");
+    rewardLockPeriod = _rewardLockPeriod;
+  }
+
   /**
    * @dev Used internally, mostly by children implementations, see unstake()
    *
@@ -540,7 +551,6 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    * @dev Used internally, mostly by children implementations, see sync()
    *
    * @dev Updates smart contract state (`yieldRewardsPerWeight`, `lastYieldDistribution`),
-   *      updates factory state via `updateWILDPerBlock`
    */
   function _sync() internal virtual {
     if (blockNumber() <= lastYieldDistribution) {
@@ -555,22 +565,17 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     // to calculate the reward we need to know how many blocks passed, and reward per block
     uint256 currentBlock = blockNumber();
     uint256 blocksPassed = currentBlock - lastYieldDistribution;
-    uint256 wildPerBlock = factory.getWildPerBlock();
+    uint256 rewardPerBlock = factory.getRewardTokensPerBlock();
 
     // calculate the reward
-    uint256 wildReward = (blocksPassed * wildPerBlock * weight) / factory.totalWeight();
+    uint256 rewardAmount = (blocksPassed * rewardPerBlock * weight) / factory.totalWeight();
 
     // update rewards per weight and `lastYieldDistribution`
-    yieldRewardsPerWeight += rewardToWeight(wildReward, usersLockingWeight);
+    yieldRewardsPerWeight += rewardToWeight(rewardAmount, usersLockingWeight);
     lastYieldDistribution = uint64(currentBlock);
 
     // emit an event
     emit Synchronized(msg.sender, yieldRewardsPerWeight, lastYieldDistribution);
-  }
-
-  function testFunc() external view returns (address) {
-    address wildPool = factory.getPoolAddress(wild);
-    return wildPool;
   }
 
   /**
@@ -599,21 +604,21 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     // get link to a user data structure, we will write into it later
     User storage user = users[_staker];
 
-    if (poolToken == wild) {
+    if (poolToken == rewardToken) {
       // calculate pending yield weight,
       // 2e6 is the bonus weight when staking for 1 year
       uint256 depositWeight = pendingYield * YEAR_STAKE_WEIGHT_MULTIPLIER;
 
-      // if the pool is WILD Pool - create new WILD deposit
+      // if the pool is the Reward Token Pool - create new Reward Token deposit
       // and save it - push it into deposits array
       Deposit memory newDeposit = Deposit({
         tokenAmount: pendingYield,
         lockedFrom: uint64(now256()),
-        lockedUntil: uint64(now256() + 365 days), // staking yield for 1 year
+        lockedUntil: uint64(now256() + rewardLockPeriod), // staking yield for 1 year
         weight: depositWeight,
         isYield: true
       });
-      user.deposits.push(newDeposit); // will be a problem
+      user.deposits.push(newDeposit);
 
       // update user record
       user.tokenAmount += pendingYield;
@@ -623,9 +628,9 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
       usersLockingWeight += depositWeight;
     } else {
       // for other pools - stake as pool
-      // This will stake the rewards into the WILD pool
-      address wildPool = factory.getPoolAddress(wild);
-      ICorePool(wildPool).stakeAsPool(_staker, pendingYield);
+      // This will stake the rewards into the reward token pool
+      address rewardPool = factory.getPoolAddress(rewardToken);
+      ICorePool(rewardPool).stakeAsPool(_staker, pendingYield);
     }
 
     // update users's record for `subYieldRewards` if requested
@@ -692,10 +697,10 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
 
   /**
    * @dev Converts stake weight (not to be mixed with the pool weight) to
-   *      WILD reward value, applying the 10^12 division on weight
+   *      token reward value, applying the 10^12 division on weight
    *
    * @param _weight stake weight
-   * @param rewardPerWeight WILD reward per weight
+   * @param rewardPerWeight reward per weight
    * @return reward value normalized to 10^12
    */
   function weightToReward(uint256 _weight, uint256 rewardPerWeight) public pure returns (uint256) {
@@ -704,10 +709,10 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
   }
 
   /**
-   * @dev Converts reward WILD value to stake weight (not to be mixed with the pool weight),
+   * @dev Converts reward value to stake weight (not to be mixed with the pool weight),
    *      applying the 10^12 multiplication on the reward
    *      - OR -
-   * @dev Converts reward WILD value to reward/weight if stake weight is supplied as second
+   * @dev Converts reward value to reward/weight if stake weight is supplied as second
    *      function parameter instead of reward/weight
    *
    * @param reward yield reward

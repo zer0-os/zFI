@@ -9,9 +9,9 @@ import "./interfaces/IERC20.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /**
- * @title WILD Pool Factory - Fork of Illuvium Pool Factory
+ * @title Pool Factory - Fork of Illuvium Pool Factory
  *
- * @notice WILD Pool Factory manages WILD Yield farming pools, provides a single
+ * @notice Pool Factory manages Yield farming pools, provides a single
  *      public interface to access the pools, provides an interface for the pools
  *      to mint yield rewards, access pool-related info, update weights, etc.
  *
@@ -22,10 +22,10 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
 contract zStakePoolFactory is OwnableUpgradeable {
-  /// @dev The WILD token
-  address public wild;
+  /// @dev The reward token
+  address public rewardToken;
 
-  /// @dev The vault that cointains WILD tokens which are to be given as staking rewards.
+  /// @dev The vault that cointains reward tokens which are to be given as staking rewards.
   address public rewardVault;
 
   /// @dev Auxiliary data structure used only in getPoolData() view function
@@ -44,7 +44,7 @@ contract zStakePoolFactory is OwnableUpgradeable {
    * @dev WILD/block determines yield farming reward base
    *      used by the yield pools controlled by the factory
    */
-  uint256 internal wildPerBlock;
+  uint256 internal rewardTokensPerBlock;
 
   /**
    * @dev The yield is distributed proportionally to pool weights;
@@ -95,24 +95,24 @@ contract zStakePoolFactory is OwnableUpgradeable {
   /**
    * @dev Creates/deploys a factory instance
    *
-   * @param _wild WILD ERC20 token address
+   * @param _rewardToken WILD ERC20 token address
    * @param _rewardsVault The vault which contains WILD tokens that are staking rewards
-   * @param _wildPerBlock initial WILD/block value for rewards
+   * @param _rewardTokensPerBlock initial WILD/block value for rewards
    */
   function initialize(
-    address _wild,
+    address _rewardToken,
     address _rewardsVault,
-    uint192 _wildPerBlock
+    uint192 _rewardTokensPerBlock
   ) public initializer {
     __Ownable_init();
 
     // verify the inputs are set
-    require(_wildPerBlock > 0, "WILD/block not set");
+    require(_rewardTokensPerBlock > 0, "WILD/block not set");
 
     // save the inputs into internal state variables
-    wild = _wild;
+    rewardToken = _rewardToken;
     rewardVault = _rewardsVault;
-    wildPerBlock = _wildPerBlock;
+    rewardTokensPerBlock = _rewardTokensPerBlock;
   }
 
   /**
@@ -186,19 +186,19 @@ contract zStakePoolFactory is OwnableUpgradeable {
   }
 
   /**
-   * @dev Transfers WILD tokens from the rewards vault. Executed by WILD Pool only
+   * @dev Transfers reward tokens from the rewards vault. Executed by Reward Token Pool only
    *
    * @dev Requires factory to have allowance on rewardVault
    *
    * @param _to an address to mint tokens to
-   * @param _amount amount of WILD tokens to transfer
+   * @param _amount amount of reward tokens to transfer
    */
   function transferRewardYield(address _to, uint256 _amount) external {
     // verify that sender is a pool registered withing the factory
     require(poolExists[msg.sender], "access denied");
 
     // transfer WILD tokens as required
-    IERC20(wild).transferFrom(rewardVault, _to, _amount);
+    IERC20(rewardToken).transferFrom(rewardVault, _to, _amount);
   }
 
   /**
@@ -227,9 +227,9 @@ contract zStakePoolFactory is OwnableUpgradeable {
    *
    * @param perBlock Amount of wild given per block
    */
-  function changeWildPerBlock(uint256 perBlock) external {
-    require(wildPerBlock != perBlock, "No change");
-    wildPerBlock = perBlock;
+  function changeRewardTokensPerBlock(uint256 perBlock) external {
+    require(rewardTokensPerBlock != perBlock, "No change");
+    rewardTokensPerBlock = perBlock;
   }
 
   /**
@@ -244,11 +244,11 @@ contract zStakePoolFactory is OwnableUpgradeable {
   }
 
   /**
-   * @dev Returns amount of wild to be given per block, may be upgraded in the future
+   * @dev Returns amount of tokens to be given per block, may be upgraded in the future
    *
-   * @return Amount of WILD tokens to reward per block
+   * @return Amount of reward tokens to reward per block
    */
-  function getWildPerBlock() public view returns (uint256) {
-    return wildPerBlock;
+  function getRewardTokensPerBlock() public view returns (uint256) {
+    return rewardTokensPerBlock;
   }
 }

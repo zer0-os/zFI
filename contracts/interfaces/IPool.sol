@@ -26,7 +26,7 @@ interface IPool {
     bool isYield;
   }
 
-  function wild() external view returns (address);
+  function rewardToken() external view returns (address);
 
   function poolToken() external view returns (address);
 

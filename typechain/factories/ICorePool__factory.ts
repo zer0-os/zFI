@@ -175,6 +175,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "rewardToken",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint32",
@@ -269,19 +282,6 @@ const _abi = [
         internalType: "uint32",
         name: "",
         type: "uint32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "wild",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",

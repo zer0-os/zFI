@@ -24,12 +24,10 @@ contract zStakeCorePool is zStakePoolBase {
   ///      while for WILD core pool it does count for such tokens as well
   uint256 public poolTokenReserve;
 
-  uint256 public rewardLockPeriod = 365 days;
-
   /**
    * @dev Creates/deploys an instance of the core pool
    *
-   * @param _ilv WILD ERC20 Token address
+   * @param _rewardToken WILD ERC20 Token address
    * @param _factory Pool factory zStakePoolFactory instance/address
    * @param _poolToken token the pool operates on, for example WILD or WILD/ETH pair
    * @param _initBlock initial block used to calculate the rewards
@@ -37,13 +35,13 @@ contract zStakeCorePool is zStakePoolBase {
    *      is calculated as that number divided by the total pools weight and doesn't exceed one
    */
   function initialize(
-    address _ilv,
+    address _rewardToken,
     zStakePoolFactory _factory,
     address _poolToken,
     uint64 _initBlock,
     uint32 _weight
   ) initializer public {
-    __zStakePoolBase__init(_ilv, _factory, _poolToken, _initBlock, _weight);
+    __zStakePoolBase__init(_rewardToken, _factory, _poolToken, _initBlock, _weight);
   }
 
   /**
@@ -98,14 +96,6 @@ contract zStakeCorePool is zStakePoolBase {
   }
 
   /**
-   * @dev Allows for the rewardLockPeriod to be modified.
-   */
-  function changeRewardLockPeriod(uint256 _rewardLockPeriod) onlyOwner external {
-    require(rewardLockPeriod != _rewardLockPeriod, "same rewardLockPeriod");
-    rewardLockPeriod = _rewardLockPeriod;
-  }
-
-  /**
    * @inheritdoc zStakePoolBase
    *
    * @dev Additionally to the parent smart contract, updates vault rewards of the holder,
@@ -147,7 +137,7 @@ contract zStakeCorePool is zStakePoolBase {
    * @inheritdoc zStakePoolBase
    *
    * @dev Additionally to the parent smart contract, processes vault rewards of the holder,
-   *      and for WILD pool updates (increases) pool token reserve (pool tokens value available in the pool)
+   *      and for reward pool pool updates (increases) pool token reserve (pool tokens value available in the pool)
    */
   function _processRewards(address _staker, bool _withUpdate)
     internal
@@ -156,8 +146,8 @@ contract zStakeCorePool is zStakePoolBase {
   {
     pendingYield = super._processRewards(_staker, _withUpdate);
 
-    // update `poolTokenReserve` only if this is a WILD Core Pool
-    if (poolToken == wild) {
+    // update `poolTokenReserve` only if this is the reward Pool
+    if (poolToken == rewardToken) {
       poolTokenReserve += pendingYield;
     }
   }

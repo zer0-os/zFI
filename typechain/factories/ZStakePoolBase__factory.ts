@@ -189,7 +189,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "_wild",
+        name: "_rewardToken",
         type: "address",
       },
       {
@@ -248,6 +248,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_rewardLockPeriod",
+        type: "uint256",
+      },
+    ],
+    name: "changeRewardLockPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -432,6 +445,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "rewardLockPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -453,6 +479,19 @@ const _abi = [
       },
     ],
     stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "rewardToken",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -491,19 +530,6 @@ const _abi = [
     name: "sync",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "testFunc",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -632,19 +658,6 @@ const _abi = [
       },
     ],
     stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "wild",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
