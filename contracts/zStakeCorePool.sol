@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+// import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "./zStakePoolBase.sol";
 
 /**
@@ -15,7 +15,7 @@ import "./zStakePoolBase.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-contract zStakeCorePool is zStakePoolBase, PausableUpgradeable {
+contract zStakeCorePool is zStakePoolBase {
   /// @dev Flag indicating pool type, false means "core pool"
   bool public constant override isFlashPool = false;
 
@@ -65,6 +65,7 @@ contract zStakeCorePool is zStakePoolBase, PausableUpgradeable {
    *      end block), function doesn't throw and exits silently
    */
   function processRewards() external override {
+    require(!paused(), "contract is paused");
     _processRewards(msg.sender, true);
   }
 
@@ -76,6 +77,7 @@ contract zStakeCorePool is zStakePoolBase, PausableUpgradeable {
    * @param _amount amount to be staked (yield reward amount)
    */
   function stakeAsPool(address _staker, uint256 _amount) external {
+    require(!paused(), "contract is paused");
     require(factory.poolExists(msg.sender), "access denied");
     _sync();
     User storage user = users[_staker];
