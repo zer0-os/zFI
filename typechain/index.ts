@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
+export type { PausableUpgradeable } from "./PausableUpgradeable";
 export type { ICorePool } from "./ICorePool";
 export type { IERC20 } from "./IERC20";
 export type { IPool } from "./IPool";
@@ -15,6 +16,7 @@ export type { ZStakePoolBase } from "./ZStakePoolBase";
 export type { ZStakePoolFactory } from "./ZStakePoolFactory";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
+export { PausableUpgradeable__factory } from "./factories/PausableUpgradeable__factory";
 export { ICorePool__factory } from "./factories/ICorePool__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
 export { IPool__factory } from "./factories/IPool__factory";

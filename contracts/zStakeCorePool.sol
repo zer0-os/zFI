@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "./zStakePoolBase.sol";
 
 /**
@@ -14,7 +15,7 @@ import "./zStakePoolBase.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-contract zStakeCorePool is zStakePoolBase {
+contract zStakeCorePool is zStakePoolBase, PausableUpgradeable {
   /// @dev Flag indicating pool type, false means "core pool"
   bool public constant override isFlashPool = false;
 
@@ -42,6 +43,12 @@ contract zStakeCorePool is zStakePoolBase {
     uint32 _weight
   ) initializer public {
     __zStakePoolBase__init(_rewardToken, _factory, _poolToken, _initBlock, _weight);
+  }
+
+   // Call this on the implementation contract (not the proxy)
+  function initializeImplementation() public initializer {
+    __Ownable_init();
+    _pause();
   }
 
   /**
