@@ -44,6 +44,12 @@ contract zStakeCorePool is zStakePoolBase {
     __zStakePoolBase__init(_rewardToken, _factory, _poolToken, _initBlock, _weight);
   }
 
+   // Call this on the implementation contract (not the proxy)
+  function initializeImplementation() public initializer {
+    __Ownable_init();
+    _pause();
+  }
+
   /**
    * @notice Service function to calculate and pay pending vault and yield rewards to the sender
    *
@@ -58,6 +64,7 @@ contract zStakeCorePool is zStakePoolBase {
    *      end block), function doesn't throw and exits silently
    */
   function processRewards() external override {
+    require(!paused(), "contract is paused");
     _processRewards(msg.sender, true);
   }
 
@@ -69,6 +76,7 @@ contract zStakeCorePool is zStakePoolBase {
    * @param _amount amount to be staked (yield reward amount)
    */
   function stakeAsPool(address _staker, uint256 _amount) external {
+    require(!paused(), "contract is paused");
     require(factory.poolExists(msg.sender), "access denied");
     _sync();
     User storage user = users[_staker];

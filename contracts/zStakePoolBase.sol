@@ -3,11 +3,11 @@ pragma solidity ^0.8.9;
 
 import "./interfaces/IPool.sol";
 import "./interfaces/ICorePool.sol";
-import "./ReentrancyGuard.sol";
+import "./ReentrancyGuardUpgradeable.sol";
 import "./zStakePoolFactory.sol";
 import "./utils/SafeERC20.sol";
 
-import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /**
  * @title Pool Base - Fork of Illuvium Pool Base
@@ -28,7 +28,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
+abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUpgradeable, PausableUpgradeable {
   /// @dev Data structure representing token holder using a pool
   struct User {
     // @dev Total staked amount
@@ -284,6 +284,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    * @param _lockUntil stake period as unix timestamp; zero means no locking
    */
   function stake(uint256 _amount, uint64 _lockUntil) external override {
+    require(!paused(), "contract is paused");
     // delegate call to an internal function
     _stake(msg.sender, _amount, _lockUntil, false);
   }
@@ -297,6 +298,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    * @param _amount amount of tokens to unstake
    */
   function unstake(uint256 _depositId, uint256 _amount) external override {
+    require(!paused(), "contract is paused");
     // delegate call to an internal function
     _unstake(msg.sender, _depositId, _amount);
   }
@@ -313,6 +315,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    * @param lockedUntil updated deposit locked until value
    */
   function updateStakeLock(uint256 depositId, uint64 lockedUntil) external {
+    require(!paused(), "contract is paused");
     // sync and call processRewards
     _sync();
     _processRewards(msg.sender, false);
@@ -331,6 +334,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    *      end block), function doesn't throw and exits silently
    */
   function sync() external override {
+    require(!paused(), "contract is paused");
     // delegate call to an internal function
     _sync();
   }
@@ -348,6 +352,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    *
    */
   function processRewards() external virtual override {
+    require(!paused(), "contract is paused");
     // delegate call to an internal function
     _processRewards(msg.sender, true);
   }
@@ -361,6 +366,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
    * @param _weight new weight to set for the pool
    */
   function setWeight(uint32 _weight) external override {
+    require(!paused(), "contract is paused");
     // verify function is executed by the factory
     require(msg.sender == address(factory), "access denied");
 
@@ -468,11 +474,10 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable {
     emit Staked(msg.sender, _staker, _amount);
   }
 
-  
   /**
    * @dev Allows for the rewardLockPeriod to be modified.
    */
-  function changeRewardLockPeriod(uint256 _rewardLockPeriod) onlyOwner external {
+  function changeRewardLockPeriod(uint256 _rewardLockPeriod) external onlyOwner {
     require(rewardLockPeriod != _rewardLockPeriod, "same rewardLockPeriod");
     rewardLockPeriod = _rewardLockPeriod;
   }

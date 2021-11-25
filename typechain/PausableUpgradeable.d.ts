@@ -18,19 +18,25 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface ILinkedToWILDInterface extends ethers.utils.Interface {
+interface PausableUpgradeableInterface extends ethers.utils.Interface {
   functions: {
-    "wild()": FunctionFragment;
+    "paused()": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "wild", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "wild", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Paused(address)": EventFragment;
+    "Unpaused(address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
 }
 
-export class ILinkedToWILD extends BaseContract {
+export class PausableUpgradeable extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -71,25 +77,29 @@ export class ILinkedToWILD extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ILinkedToWILDInterface;
+  interface: PausableUpgradeableInterface;
 
   functions: {
-    wild(overrides?: CallOverrides): Promise<[string]>;
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
   };
 
-  wild(overrides?: CallOverrides): Promise<string>;
+  paused(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
-    wild(overrides?: CallOverrides): Promise<string>;
+    paused(overrides?: CallOverrides): Promise<boolean>;
   };
 
-  filters: {};
+  filters: {
+    Paused(account?: null): TypedEventFilter<[string], { account: string }>;
+
+    Unpaused(account?: null): TypedEventFilter<[string], { account: string }>;
+  };
 
   estimateGas: {
-    wild(overrides?: CallOverrides): Promise<BigNumber>;
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    wild(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -17,6 +17,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OwnableUpgradeable__factory>;
     getContractFactory(
+      name: "PausableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PausableUpgradeable__factory>;
+    getContractFactory(
       name: "ICorePool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ICorePool__factory>;
@@ -28,6 +32,10 @@ declare module "hardhat/types/runtime" {
       name: "IPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPool__factory>;
+    getContractFactory(
+      name: "PausableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PausableUpgradeable__factory>;
     getContractFactory(
       name: "ERC20Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
