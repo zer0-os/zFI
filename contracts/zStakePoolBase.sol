@@ -3,11 +3,10 @@ pragma solidity ^0.8.9;
 
 import "./interfaces/IPool.sol";
 import "./interfaces/ICorePool.sol";
-import "./ReentrancyGuard.sol";
+import "./ReentrancyGuardUpgradeable.sol";
 import "./zStakePoolFactory.sol";
 import "./utils/SafeERC20.sol";
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /**
@@ -29,7 +28,7 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable, PausableUpgradeable {
+abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUpgradeable, PausableUpgradeable {
   /// @dev Data structure representing token holder using a pool
   struct User {
     // @dev Total staked amount
@@ -205,7 +204,6 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable, 
    * @return calculated yield reward value for the given address
    */
   function pendingYieldRewards(address _staker) external view override returns (uint256) {
-    require(!paused(), "contract is paused");
     // `newYieldRewardsPerWeight` will store stored or recalculated value for `yieldRewardsPerWeight`
     uint256 newYieldRewardsPerWeight;
 
@@ -240,7 +238,6 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable, 
    * @return total staked token balance
    */
   function balanceOf(address _user) external view override returns (uint256) {
-    require(!paused(), "contract is paused");
     // read specified user token amount and return
     return users[_user].tokenAmount;
   }
@@ -260,7 +257,6 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable, 
     override
     returns (Deposit memory)
   {
-    require(!paused(), "contract is paused");
     // read deposit at specified index and return
     return users[_user].deposits[_depositId];
   }
@@ -274,7 +270,6 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuard, OwnableUpgradeable, 
    * @return number of deposits for the given address
    */
   function getDepositsLength(address _user) external view override returns (uint256) {
-    require(!paused(), "contract is paused");
     // read deposits array length and return
     return users[_user].deposits.length;
   }

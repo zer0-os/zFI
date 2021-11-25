@@ -21,6 +21,7 @@
   "include": [
     "./test",
     "./src",
+    "./tasks",
     "./scripts",
     "./utilities"
   ],
