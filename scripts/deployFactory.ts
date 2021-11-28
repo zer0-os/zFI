@@ -64,7 +64,7 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main() // TODO how much per block? 5000
+main()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);

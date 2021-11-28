@@ -22,11 +22,6 @@ const initBlock = ethers.BigNumber.from("13704400"); // from latest on etherscan
 const weight = ethers.utils.parseUnits("800", 6);
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
   await hre.run("compile");
 
   logger.log(`Deploying to ${hre.network.name}`);
@@ -60,7 +55,6 @@ async function main() {
   const impl = (await poolProxy.attach(deploymentData.implementationAddress)) as ZStakeCorePool;
   try {
     let tx = await impl.initializeImplementation();
-    // await tx.wait(2); // why should we do this?
   } catch (e) {
     console.log((e as any).message);
   }
