@@ -9,8 +9,10 @@ const logger = getLogger("scripts::deployLiquidityPool");
 // This is what will own the smart contract, having admin access
 // and the ability to upgrade the smart contract
 const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
-const rewardTokenAddress = "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F";
+
+const rewardTokenAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
 const zStakePoolFactory = "0xFD471836031dc5108809D173A067e8486B9047A3";
+const tag = "WILD/ETH LP Staking Pool";
 
 // Pool token is the LP tokens from ETH/WILD v2 on uniswap
 // https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5
@@ -37,7 +39,7 @@ async function main() {
     poolToken,
     initBlock,
     weight,
-    "WILD/ETH LP Staking Pool"
+    tag
   );
 
   const poolProxy = deploymentData.instance;
@@ -51,7 +53,7 @@ async function main() {
 
   const impl = (await poolProxy.attach(deploymentData.implementationAddress)) as ZStakeCorePool;
   try {
-    let tx = await impl.initializeImplementation();
+    await impl.initializeImplementation();
   } catch (e) {
     console.log((e as any).message);
   }

@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import * as hre from "hardhat";
-import { doDeployCorePool, UpgradeableDeployedContract } from "../tasks/deploy";
+import { doDeployCorePool } from "../tasks/deploy";
 import { ZStakeCorePool } from "../typechain";
 import { getLogger } from "../utilities";
 
-const logger = getLogger("scripts::deployLiquidityPool");
+const logger = getLogger("scripts::deployWildPool");
 
 // This is what will own the smart contract, having admin access
 // and the ability to upgrade the smart contract
@@ -14,8 +14,10 @@ const zStakePoolFactory = "0xFD471836031dc5108809D173A067e8486B9047A3";
 
 // WILD staking pool, rewards in WILD
 const poolToken = rewardTokenAddress;
-const initBlock = ethers.BigNumber.from("13704400"); // from latest on etherscan
+
+const initBlock = ethers.BigNumber.from("13704400"); // should be time of deployment + 12 hours (3128 or so blocks)
 const weight = ethers.utils.parseUnits("200", 6);
+const tag = "WILD Staking Pool";
 
 async function main() {
   await hre.run("compile");
@@ -36,7 +38,7 @@ async function main() {
     poolToken,
     initBlock,
     weight,
-    "WILD Staking Pool"
+    tag
   );
 
   const poolProxy = deploymentData.instance;
@@ -50,7 +52,7 @@ async function main() {
 
   const impl = (await poolProxy.attach(deploymentData.implementationAddress)) as ZStakeCorePool;
   try {
-    let tx = await impl.initializeImplementation();
+    await impl.initializeImplementation();
   } catch (e) {
     console.log((e as any).message);
   }
