@@ -1,15 +1,3 @@
-# Basic Sample Hardhat Project
+# zFI Staking Platform
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+The zFI Staking Platform allows users to stake their Wild, as well as their Wild / ETH liquidity tokens given by Uniswap for providing liquidity to the v2 ETH <> WILD pool located [here](https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5)

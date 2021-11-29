@@ -15,10 +15,7 @@ const zStakePoolFactory = "0xFD471836031dc5108809D173A067e8486B9047A3";
 // Pool token is the LP tokens from ETH/WILD v2 on uniswap
 // https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5
 const poolToken = "0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5"; 
-
 const initBlock = ethers.BigNumber.from("13704400"); // from latest on etherscan
-
-// weight is 800 for LP pool
 const weight = ethers.utils.parseUnits("800", 6);
 
 async function main() {
@@ -69,8 +66,6 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-const lpTokenArgs = {};
-
 main()
   .then(() => process.exit(0))
   .catch((error) => {

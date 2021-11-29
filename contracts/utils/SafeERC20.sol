@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "../interfaces/IERC20.sol";
-import "./Address.sol";
+import "./AddressUpgradeable.sol";
 
 /**
  * @title SafeERC20
@@ -14,7 +14,7 @@ import "./Address.sol";
  * which allows you to call the safe operations as `token.safeTransfer(...)`, etc.
  */
 library SafeERC20 {
-  using Address for address;
+  using AddressUpgradeable for address;
 
   function safeTransfer(
     IERC20 token,

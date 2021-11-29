@@ -14,10 +14,7 @@ const zStakePoolFactory = "0xFD471836031dc5108809D173A067e8486B9047A3";
 
 // WILD staking pool, rewards in WILD
 const poolToken = rewardTokenAddress;
-
 const initBlock = ethers.BigNumber.from("13704400"); // from latest on etherscan
-
-// weight is 800 for LP pool
 const weight = ethers.utils.parseUnits("200", 6);
 
 async function main() {
