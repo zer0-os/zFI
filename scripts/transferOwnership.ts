@@ -42,6 +42,10 @@ async function main() {
 
   logger.log(`transferring factory ownership to ${ownerAddress}`);
   await factoryProxy.transferOwnership(ownerAddress);
+
+  // 'transparent proxy' ownership not affected by admin proxy?
+  // logger.log(`transferring proxy admin ownership to ${ownerAddress}`);
+  // await hre.upgrades.admin.transferProxyAdminOwnership(ownerAddress);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

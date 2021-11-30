@@ -2,6 +2,7 @@ import * as hre from "hardhat";
 import * as fs from "fs";
 import { ZStakePoolFactory, ZStakePoolFactory__factory } from "../typechain";
 import { DeploymentOutput, deploymentsFolder, getLogger } from "../utilities";
+import { wait } from "./helpers";
 
 const logger = getLogger("scripts::registerPools");
 
@@ -42,9 +43,12 @@ async function main() {
 
   const pools = deploymentData.pools;
 
-  await factory.registerPool(pools[0].address); // implementation?
+  let tx = await factory.registerPool(pools[0].address);
+  await wait(hre, tx);
   logger.log(`Pool ${pools[0].address} was registered with factory ${factory.address}`);
+  
   await factory.registerPool(pools[1].address);
+  await wait(hre, tx);
   logger.log(`Pool ${pools[1].address} was registered with factory ${factory.address}`);
 }
 

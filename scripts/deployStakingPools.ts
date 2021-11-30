@@ -3,6 +3,7 @@ import * as hre from "hardhat";
 import { doDeployCorePool, UpgradeableDeployedContract } from "../tasks/deploy";
 import { ZStakeCorePool } from "../typechain";
 import { getLogger } from "../utilities";
+import { wait } from "./helpers"
 
 const logger = getLogger("scripts::deployLiquidityPool");
 
@@ -10,9 +11,9 @@ const logger = getLogger("scripts::deployLiquidityPool");
 // and the ability to upgrade the smart contract
 const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
 
-// const factoryAddress = "0x1BC6DFCC108e0E334e466560771ECf9353886Db3"; // kovan
-const factoryAddress = "0xFD471836031dc5108809D173A067e8486B9047A3"; // hardhat
-const rewardTokenAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
+// const factoryAddress = "0xFD471836031dc5108809D173A067e8486B9047A3"; // hardhat
+const factoryAddress = "0x1BC6DFCC108e0E334e466560771ECf9353886Db3"; // kovan
+const rewardVaultAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
 const initBlock = ethers.BigNumber.from("13704400");
 
 // Pool token is WILD contract address
@@ -40,13 +41,12 @@ async function main() {
   const deploymentAccount = accounts[0];
 
   logger.log(`'${deploymentAccount.address}' will be used as the deployment account`);
-
   logger.log(`Deploying ${liquidityPool.tag}`);
   // Deploy LP Staking Pool
   const lpDeploymentData = await doDeployCorePool(
     hre,
     deploymentAccount,
-    rewardTokenAddress,
+    rewardVaultAddress,
     factoryAddress,
     liquidityPool.poolToken,
     initBlock,
@@ -59,7 +59,7 @@ async function main() {
   const wildDeploymentData = await doDeployCorePool(
     hre,
     deploymentAccount,
-    rewardTokenAddress,
+    rewardVaultAddress,
     factoryAddress,
     wildPool.poolToken,
     initBlock,
@@ -83,7 +83,8 @@ async function main() {
   )) as ZStakeCorePool;
 
   try {
-    await impl.initializeImplementation();
+    const tx = await impl.initializeImplementation();
+    await wait(hre, tx);
   } catch (e) {
     console.log((e as any).message);
   }
@@ -91,8 +92,11 @@ async function main() {
   logger.log(`transferring pool ownership to ${ownerAddress}`);
 
   // Deployment addresses will be different, must be called twice
-  await liquidityPoolProxy.transferOwnership(ownerAddress);
-  await wildPoolProxy.transferOwnership(ownerAddress);
+  let tx = await liquidityPoolProxy.transferOwnership(ownerAddress);
+  await wait(hre, tx);
+
+  tx = await wildPoolProxy.transferOwnership(ownerAddress);
+  await wait(hre, tx);
 
   logger.log(`transferring proxy admin ownership to ${ownerAddress}`);
   await hre.upgrades.admin.transferProxyAdminOwnership(ownerAddress);
