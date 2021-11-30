@@ -2,9 +2,9 @@
   "factory": [
     {
       "tag": "zFI Factory",
-      "address": "0x1D47e235d72135e5455252eD4AAA8dFCa97Ef0FD",
+      "address": "0xdF14A0FDd9ec6BdB5736A5938A35436D9F68E051",
       "version": "674c3e170da25857252ee08b7ec422d50d16fa6bc1305d31ab8a2779507ff67c",
-      "date": "2021-11-30T01:12:49.497Z",
+      "date": "2021-11-30T19:05:48.185Z",
       "args": {
         "rewardTokenAddress": "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F",
         "rewardVaultAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
@@ -14,20 +14,20 @@
         }
       },
       "isUpgradable": true,
-      "admin": "0xdD1Be9655c54d9d55ae53a74e641eEE0D08d3e74",
-      "implementation": "0xB9Ad1538E9c0798A06699BA246757F2B829B6b3F"
+      "admin": "0x82fB1322b93F52040eC28e40E5BC5b0C57D8e2a4",
+      "implementation": "0xc284540380eE55Bc428DfCD9AAa1645eb02494b8"
     }
   ],
   "pools": [
     {
       "tag": "WILD/ETH LP Staking Pool",
-      "address": "0xD59B3FfA4E83b4ef97dCf27c1C3B90D5149Bd62A",
+      "address": "0x2150F7B88eA950b1E7E47B31876f577c91eD7868",
       "version": "f6f1fb36e04228fd51d6e1eb8f98b6889a4f495efdf21f9c259cd6a5dd6aae03",
-      "date": "2021-11-30T02:02:11.577Z",
+      "date": "2021-11-30T19:08:46.560Z",
       "args": {
         "rewardTokenAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
-        "factoryAddress": "0x1BC6DFCC108e0E334e466560771ECf9353886Db3",
-        "poolTokenAddress": "0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5",
+        "factoryAddress": "0xdF14A0FDd9ec6BdB5736A5938A35436D9F68E051",
+        "poolTokenAddress": "0xD364C50c33902110230255FE1D730D84FA23e48e",
         "initBlock": {
           "type": "BigNumber",
           "hex": "0xd11cd0"
@@ -38,17 +38,17 @@
         }
       },
       "isUpgradable": true,
-      "admin": "0xBae44fd85F0cD2c79BD22cdEb73c74D24cBaF59C",
-      "implementation": "0x97218913B5D25f9877452140a7b4b24555ca1e9c"
+      "admin": "0x82fB1322b93F52040eC28e40E5BC5b0C57D8e2a4",
+      "implementation": "0x777a3314f618B2A3BCd88bfe60222e8EE551003E"
     },
     {
       "tag": "WILD Staking Pool",
-      "address": "0x41e46d0b6255b07Ed1173108a97147e8a080a40d",
+      "address": "0x3C0ACb650e536C0003740D6d5d4D3620aC367A43",
       "version": "f6f1fb36e04228fd51d6e1eb8f98b6889a4f495efdf21f9c259cd6a5dd6aae03",
-      "date": "2021-11-30T02:02:37.075Z",
+      "date": "2021-11-30T19:08:57.519Z",
       "args": {
         "rewardTokenAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
-        "factoryAddress": "0x1BC6DFCC108e0E334e466560771ECf9353886Db3",
+        "factoryAddress": "0xdF14A0FDd9ec6BdB5736A5938A35436D9F68E051",
         "poolTokenAddress": "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F",
         "initBlock": {
           "type": "BigNumber",
@@ -60,8 +60,8 @@
         }
       },
       "isUpgradable": true,
-      "admin": "0xBae44fd85F0cD2c79BD22cdEb73c74D24cBaF59C",
-      "implementation": "0x97218913B5D25f9877452140a7b4b24555ca1e9c"
+      "admin": "0x82fB1322b93F52040eC28e40E5BC5b0C57D8e2a4",
+      "implementation": "0x777a3314f618B2A3BCd88bfe60222e8EE551003E"
     }
   ]
 }

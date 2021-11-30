@@ -1,6 +1,5 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types"
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-export const wait = async (hre: HardhatRuntimeEnvironment, tx: any) => {
-  if (hre.network.name !== "hardhat")
-    await tx.wait(2);
-}
+export const wait = async (network: string, tx: any) => {
+  if (network !== "hardhat") await tx.wait(2);
+};
