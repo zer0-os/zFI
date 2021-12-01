@@ -4,7 +4,28 @@
       "tag": "zFI Factory",
       "address": "0xFD471836031dc5108809D173A067e8486B9047A3",
       "version": "674c3e170da25857252ee08b7ec422d50d16fa6bc1305d31ab8a2779507ff67c",
+<<<<<<< HEAD
       "date": "2021-12-01T17:52:05.418Z",
+=======
+      "date": "2021-11-30T18:51:40.858Z",
+      "args": {
+        "rewardTokenAddress": "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F",
+        "rewardVaultAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
+        "rewardTokensPerBlock": {
+          "type": "BigNumber",
+          "hex": "0x01"
+        }
+      },
+      "isUpgradable": true,
+      "admin": "0xc351628EB244ec633d5f21fBD6621e1a683B1181",
+      "implementation": "0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650"
+    },
+    {
+      "tag": "zFI Factory",
+      "address": "0xFD471836031dc5108809D173A067e8486B9047A3",
+      "version": "674c3e170da25857252ee08b7ec422d50d16fa6bc1305d31ab8a2779507ff67c",
+      "date": "2021-11-30T18:56:20.648Z",
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
       "args": {
         "rewardTokenAddress": "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F",
         "rewardVaultAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
@@ -23,11 +44,15 @@
       "tag": "WILD/ETH LP Staking Pool",
       "address": "0xFD471836031dc5108809D173A067e8486B9047A3",
       "version": "f6f1fb36e04228fd51d6e1eb8f98b6889a4f495efdf21f9c259cd6a5dd6aae03",
+<<<<<<< HEAD
       "date": "2021-12-01T17:52:43.685Z",
+=======
+      "date": "2021-11-30T18:52:20.114Z",
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
       "args": {
         "rewardTokenAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
         "factoryAddress": "0xFD471836031dc5108809D173A067e8486B9047A3",
-        "poolTokenAddress": "0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5",
+        "poolTokenAddress": "0xD364C50c33902110230255FE1D730D84FA23e48e",
         "initBlock": {
           "type": "BigNumber",
           "hex": "0xd11cd0"
@@ -45,7 +70,11 @@
       "tag": "WILD Staking Pool",
       "address": "0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc",
       "version": "f6f1fb36e04228fd51d6e1eb8f98b6889a4f495efdf21f9c259cd6a5dd6aae03",
+<<<<<<< HEAD
       "date": "2021-12-01T17:52:43.887Z",
+=======
+      "date": "2021-11-30T18:52:20.380Z",
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
       "args": {
         "rewardTokenAddress": "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4",
         "factoryAddress": "0xFD471836031dc5108809D173A067e8486B9047A3",

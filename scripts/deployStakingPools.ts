@@ -1,8 +1,12 @@
 import { ethers } from "ethers";
 import * as hre from "hardhat";
-import { doDeployCorePool, UpgradeableDeployedContract } from "../tasks/deploy";
+import { doDeployCorePool } from "../tasks/deploy";
 import { ZStakeCorePool } from "../typechain";
+<<<<<<< HEAD
 import { DeploymentOutput, getDeploymentData, getLogger } from "../utilities";
+=======
+import { getLogger, getDeploymentData } from "../utilities";
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
 import { wait } from "./helpers";
 
 const logger = getLogger("scripts::deployLiquidityPool");
@@ -21,10 +25,10 @@ const wildPool = {
   tag: "WILD Staking Pool",
 };
 
-// Pool token is the LP tokens from ETH/WILD v2 on uniswap
+// ETH/WILD v2 on uniswap
 // https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5
 const liquidityPool = {
-  poolToken: "0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5",
+  poolToken: "0xD364C50c33902110230255FE1D730D84FA23e48e", // Kovan LOOT Address
   weight: ethers.utils.parseUnits("800", 6),
   tag: "WILD/ETH LP Staking Pool",
 };
@@ -41,6 +45,7 @@ async function main() {
   logger.log(`'${deploymentAccount.address}' will be used as the deployment account`);
   logger.log(`Deploying ${liquidityPool.tag}`);
 
+<<<<<<< HEAD
   const deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
 
   if (!deploymentData.factory)
@@ -48,6 +53,17 @@ async function main() {
 
   const factoryAddress = deploymentData.factory[0].address;
 
+=======
+  const deploymentData = getDeploymentData(hre.network.name);
+
+  if (!deploymentData.factory || !Array.isArray(deploymentData.factory))
+    throw Error("Cannot proceed with pool deployment, the factory must be deployed first");
+
+  const factoryAddress = deploymentData.factory[0].address;
+
+  logger.log(`Deploying using factory address: ${factoryAddress}`);
+
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
   // Deploy LP Staking Pool
   const lpDeploymentData = await doDeployCorePool(
     hre,
@@ -79,7 +95,7 @@ async function main() {
   logger.log(`Deployed LP Staking Pool to ${liquidityPoolProxy.address}`);
   logger.log(`Deployed Wild Staking Pool to ${wildPoolProxy.address}`);
 
-  // Initialize implementation contract, will be the same address for both pools so only do once
+  // Will be the same address for both pools so only do once
   logger.log(
     `Initializing implementation contract at '${lpDeploymentData.implementationAddress}' for security.`
   );
@@ -90,7 +106,7 @@ async function main() {
 
   try {
     const tx = await impl.initializeImplementation();
-    await wait(hre, tx);
+    await wait(hre.network.name, tx);
   } catch (e) {
     console.log((e as any).message);
   }
@@ -99,10 +115,10 @@ async function main() {
 
   // Deployment addresses will be different, must be called twice
   let tx = await liquidityPoolProxy.transferOwnership(ownerAddress);
-  await wait(hre, tx);
+  await wait(hre.network.name, tx);
 
   tx = await wildPoolProxy.transferOwnership(ownerAddress);
-  await wait(hre, tx);
+  await wait(hre.network.name, tx);
 
   logger.log(`transferring proxy admin ownership to ${ownerAddress}`);
   await hre.upgrades.admin.transferProxyAdminOwnership(ownerAddress);

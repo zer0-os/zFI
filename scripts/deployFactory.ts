@@ -2,8 +2,9 @@ import { ethers } from "ethers";
 import * as hre from "hardhat";
 
 import { doDeployFactory, UpgradeableDeployedContract } from "../tasks/deploy";
-import { ZStakeCorePool } from "../typechain";
+import { ZStakeCorePool, ZStakePoolFactory } from "../typechain";
 import { getLogger } from "../utilities";
+import { wait } from "./helpers";
 
 const logger = getLogger("scripts::deployFactory");
 
@@ -13,8 +14,12 @@ const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
 
 // Rewards in WILD, Kovan address
 const rewardTokenAddress = "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F";
+<<<<<<< HEAD
 
 // Vault address provided by Zach
+=======
+// WILD Staking Rewards Pool (from Zach)
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
 const rewardVaultAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
 const rewardTokensPerBlock = ethers.BigNumber.from("1"); // can't be zero
 const tag = "zFI Factory";
@@ -39,18 +44,21 @@ async function main() {
     tag
   );
 
-  const poolProxy = deploymentData.instance;
+  const factoryProxy = deploymentData.instance;
 
-  logger.log(`Deployed contract to ${poolProxy.address}`);
+  logger.log(`Deployed contract to ${factoryProxy.address}`);
 
   // Initialize implementation contract
   logger.log(
     `Initializing implementation contract at '${deploymentData.implementationAddress}' for security.`
   );
 
-  const impl = (await poolProxy.attach(deploymentData.implementationAddress)) as ZStakeCorePool;
+  const impl = (await factoryProxy.attach(
+    deploymentData.implementationAddress
+  )) as ZStakePoolFactory;
   try {
-    await impl.initializeImplementation();
+    const tx = await impl.initializeImplementation();
+    await wait(hre.network.name, tx);
   } catch (e) {
     console.log((e as any).message);
   }

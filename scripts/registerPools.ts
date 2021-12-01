@@ -16,16 +16,17 @@ async function main() {
   const accounts = await hre.ethers.getSigners();
   const deployer = accounts[0];
 
-  logger.log(
-    `Address '${deployer.address}' was used in deployment and will be used in the registration of the pools`
-  );
+  logger.log(`Address '${deployer.address}' will be used in the registration of the pools`);
 
-  const fileName = `${hre.network.name}.json`;
-  const filepath = `${deploymentsFolder}/${fileName}`;
+  const deploymentData = getDeploymentData("kovan");
 
+<<<<<<< HEAD
   let deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
 
   if (!deploymentData.factory && !deploymentData.pools) {
+=======
+  if (!deploymentData.factory || !deploymentData.pools) {
+>>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
     logger.error("zFI Factory, LP Staking Pool, and WILD Staking Pool are not deployed");
     process.exit(1);
   }
@@ -37,11 +38,11 @@ async function main() {
   const pools = deploymentData.pools;
 
   let tx = await factory.registerPool(pools[0].address);
-  await wait(hre, tx);
+  await wait(hre.network.name, tx);
   logger.log(`Pool ${pools[0].address} was registered with factory ${factory.address}`);
-  
+
   await factory.registerPool(pools[1].address);
-  await wait(hre, tx);
+  await wait(hre.network.name, tx);
   logger.log(`Pool ${pools[1].address} was registered with factory ${factory.address}`);
 }
 
