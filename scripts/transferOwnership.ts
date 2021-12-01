@@ -3,7 +3,7 @@ import * as hre from "hardhat";
 import * as fs from "fs";
 
 import { ZStakePoolFactory, ZStakePoolFactory__factory } from "../typechain";
-import { DeploymentOutput, deploymentsFolder, getLogger } from "../utilities";
+import { DeploymentOutput, deploymentsFolder, getDeploymentData, getLogger } from "../utilities";
 
 const logger = getLogger("scripts::transferOwnership");
 
@@ -20,16 +20,7 @@ async function main() {
   const fileName = `${hre.network.name}.json`;
   const filepath = `${deploymentsFolder}/${fileName}`;
 
-  let deploymentData: DeploymentOutput;
-
-  try {
-    deploymentData = JSON.parse(fs.readFileSync(filepath).toString()) as DeploymentOutput;
-  } catch (e) {
-    logger.debug(
-      `Cannot transfer ownership of a contract without pre-existing deployments. Try running the deployment scripts first.`
-    );
-    process.exit(1);
-  }
+  let deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
 
   if (!deploymentData.factory && !deploymentData.pools) {
     logger.error("zFI Factory, LP Staking Pool, and WILD Staking Pool are not deployed");

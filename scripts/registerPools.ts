@@ -1,7 +1,7 @@
 import * as hre from "hardhat";
 import * as fs from "fs";
 import { ZStakePoolFactory, ZStakePoolFactory__factory } from "../typechain";
-import { DeploymentOutput, deploymentsFolder, getLogger } from "../utilities";
+import { DeploymentOutput, deploymentsFolder, getDeploymentData, getLogger } from "../utilities";
 import { wait } from "./helpers";
 
 const logger = getLogger("scripts::registerPools");
@@ -23,14 +23,7 @@ async function main() {
   const fileName = `${hre.network.name}.json`;
   const filepath = `${deploymentsFolder}/${fileName}`;
 
-  let deploymentData: DeploymentOutput;
-
-  try {
-    deploymentData = JSON.parse(fs.readFileSync(filepath).toString()) as DeploymentOutput;
-  } catch (e) {
-    logger.debug(`New deployment for network detected.`);
-    deploymentData = {};
-  }
+  let deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
 
   if (!deploymentData.factory && !deploymentData.pools) {
     logger.error("zFI Factory, LP Staking Pool, and WILD Staking Pool are not deployed");

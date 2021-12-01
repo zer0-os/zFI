@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import * as hre from "hardhat";
+
 import { doDeployFactory, UpgradeableDeployedContract } from "../tasks/deploy";
 import { ZStakeCorePool } from "../typechain";
 import { getLogger } from "../utilities";
@@ -10,8 +11,10 @@ const logger = getLogger("scripts::deployFactory");
 // and the ability to upgrade the smart contract
 const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
 
-// WILD Kovan address
+// Rewards in WILD, Kovan address
 const rewardTokenAddress = "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F";
+
+// Vault address provided by Zach
 const rewardVaultAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
 const rewardTokensPerBlock = ethers.BigNumber.from("1"); // can't be zero
 const tag = "zFI Factory";
