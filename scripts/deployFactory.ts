@@ -14,12 +14,7 @@ const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
 
 // Rewards in WILD, Kovan address
 const rewardTokenAddress = "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F";
-<<<<<<< HEAD
-
-// Vault address provided by Zach
-=======
 // WILD Staking Rewards Pool (from Zach)
->>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
 const rewardVaultAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
 const rewardTokensPerBlock = ethers.BigNumber.from("1"); // can't be zero
 const tag = "zFI Factory";

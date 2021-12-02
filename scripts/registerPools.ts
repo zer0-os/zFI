@@ -20,13 +20,7 @@ async function main() {
 
   const deploymentData = getDeploymentData("kovan");
 
-<<<<<<< HEAD
-  let deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
-
-  if (!deploymentData.factory && !deploymentData.pools) {
-=======
   if (!deploymentData.factory || !deploymentData.pools) {
->>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
     logger.error("zFI Factory, LP Staking Pool, and WILD Staking Pool are not deployed");
     process.exit(1);
   }
