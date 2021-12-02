@@ -2,11 +2,7 @@ import { ethers } from "ethers";
 import * as hre from "hardhat";
 import { doDeployCorePool } from "../tasks/deploy";
 import { ZStakeCorePool } from "../typechain";
-<<<<<<< HEAD
-import { DeploymentOutput, getDeploymentData, getLogger } from "../utilities";
-=======
 import { getLogger, getDeploymentData } from "../utilities";
->>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
 import { wait } from "./helpers";
 
 const logger = getLogger("scripts::deployLiquidityPool");
@@ -45,15 +41,6 @@ async function main() {
   logger.log(`'${deploymentAccount.address}' will be used as the deployment account`);
   logger.log(`Deploying ${liquidityPool.tag}`);
 
-<<<<<<< HEAD
-  const deploymentData: DeploymentOutput = getDeploymentData(hre.network.name);
-
-  if (!deploymentData.factory)
-    throw Error("Cannot deploy the staking pools without first deploying the factory");
-
-  const factoryAddress = deploymentData.factory[0].address;
-
-=======
   const deploymentData = getDeploymentData(hre.network.name);
 
   if (!deploymentData.factory || !Array.isArray(deploymentData.factory))
@@ -63,7 +50,6 @@ async function main() {
 
   logger.log(`Deploying using factory address: ${factoryAddress}`);
 
->>>>>>> 9e4bc6e16e0c4e99ad7975b7693390190c5de7c9
   // Deploy LP Staking Pool
   const lpDeploymentData = await doDeployCorePool(
     hre,

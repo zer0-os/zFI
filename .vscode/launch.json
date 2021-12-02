@@ -11,8 +11,6 @@
     {
       "name": "Launch Script",
       "type": "node-terminal",
-      // Modify this command to execute the script you're debugging
-      "command": "npx hardhat run ./scripts/registerPools.ts",
       "request": "launch",
       "localRoot": "${workspaceFolder}"
     }
