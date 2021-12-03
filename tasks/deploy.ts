@@ -92,7 +92,7 @@ export const doDeployCorePool = async (
   logger.debug(`Saving deployment data...`);
   await saveDeploymentData(
     hre,
-    "pool",
+    "pools",
     deploymentData,
     {
       rewardTokenAddress,

@@ -7,6 +7,12 @@
       "command": "yarn test",
       "request": "launch",
       "localRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Launch Script",
+      "type": "node-terminal",
+      "request": "launch",
+      "localRoot": "${workspaceFolder}"
     }
   ]
 }
