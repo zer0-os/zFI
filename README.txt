@@ -1,3 +1,3 @@
-Zer0 Token Lending Environment
+WILD Token LP Staking Environment
 
-Scalable contract environment for borrowing against any ERC20, 721, or 1155
+Provide liquidity in Uniswap for ETH <> WILD and stake your LP tokens here.
