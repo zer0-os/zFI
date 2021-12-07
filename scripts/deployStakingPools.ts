@@ -11,7 +11,7 @@ const logger = getLogger("scripts::deployLiquidityPool");
 // and the ability to upgrade the smart contract
 const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
 
-const rewardVaultAddress = "0x4Afc79F793fD4445f4fd28E3aa708c1475a43Fc4";
+const rewardTokenAddress = "0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F";
 const initBlock = ethers.BigNumber.from("13704400");
 
 // Pool token is WILD contract address
@@ -54,7 +54,7 @@ async function main() {
   const lpDeploymentData = await doDeployCorePool(
     hre,
     deploymentAccount,
-    rewardVaultAddress,
+    rewardTokenAddress,
     factoryAddress,
     liquidityPool.poolToken,
     initBlock,
@@ -67,7 +67,7 @@ async function main() {
   const wildDeploymentData = await doDeployCorePool(
     hre,
     deploymentAccount,
-    rewardVaultAddress,
+    rewardTokenAddress,
     factoryAddress,
     wildPool.poolToken,
     initBlock,
