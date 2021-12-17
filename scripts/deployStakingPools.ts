@@ -16,24 +16,24 @@ async function main() {
   await hre.run("compile");
 
   let addresses = getAddresses(hre.network.name);
-  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now")
+  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now");
 
-const initBlock = ethers.BigNumber.from("13704400");
+  const initBlock = ethers.BigNumber.from("13820300");
 
-// Pool token is WILD contract address
-const wildPool = {
-  poolToken: addresses.wildToken,
-  weight: ethers.utils.parseUnits("150", 6),
-  tag: "WILD Staking Pool",
-};
+  // Pool token is WILD contract address
+  const wildPool = {
+    poolToken: addresses.wildToken,
+    weight: ethers.utils.parseUnits("150", 6),
+    tag: "WILD Staking Pool",
+  };
 
-// ETH/WILD v2 on uniswap
-// https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5
-const liquidityPool = {
-  poolToken: addresses.lpToken, 
-  weight: ethers.utils.parseUnits("850", 6),
-  tag: "WILD/ETH LP Staking Pool",
-};
+  // ETH/WILD v2 on uniswap
+  // https://v2.info.uniswap.org/pair/0xcaa004418eb42cdf00cb057b7c9e28f0ffd840a5
+  const liquidityPool = {
+    poolToken: addresses.lpToken,
+    weight: ethers.utils.parseUnits("850", 6),
+    tag: "WILD/ETH LP Staking Pool",
+  };
 
   logger.log(`Deploying to ${hre.network.name}`);
 

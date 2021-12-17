@@ -11,7 +11,7 @@ const logger = getLogger("scripts::deployFactory");
 
 async function main() {
   let addresses = getAddresses(hre.network.name);
-  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now")
+  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now");
   await hre.run("compile");
 
   logger.log(`Deploying to ${hre.network.name}`);
