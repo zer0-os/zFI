@@ -1,0 +1,377 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x7fBA2532173FbBf30c517782B1B2E921d1779b28",
+    "txHash": "0x5eda0894b0739e9f3cf62179865293caecb13988b44f336b66fcacd9d144d33b",
+    "deployTransaction": {
+      "hash": "0x5eda0894b0739e9f3cf62179865293caecb13988b44f336b66fcacd9d144d33b",
+      "type": 2,
+      "accessList": [],
+      "blockHash": "0xa9363d3b0a43af31cb393609c023fac340b223d244aa43bbc5d10496cd5af3e1",
+      "blockNumber": 28805732,
+      "transactionIndex": 1,
+      "confirmations": 1,
+      "from": "0xaE3153c9F5883FD2E78031ca2716520748c521dB",
+      "gasPrice": {
+        "type": "BigNumber",
+        "hex": "0x9502f907"
+      },
+      "maxPriorityFeePerGas": {
+        "type": "BigNumber",
+        "hex": "0x9502f900"
+      },
+      "maxFeePerGas": {
+        "type": "BigNumber",
+        "hex": "0x9502f908"
+      },
+      "gasLimit": {
+        "type": "BigNumber",
+        "hex": "0x0762b4"
+      },
+      "to": null,
+      "value": {
+        "type": "BigNumber",
+        "hex": "0x00"
+      },
+      "nonce": 240,
+      "data": "0x608060405234801561001057600080fd5b50600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610759806100616000396000f3fe60806040526004361061007b5760003560e01c80639623609d1161004e5780639623609d1461011157806399a88ec414610124578063f2fde38b14610144578063f3b7dead146101645761007b565b8063204e1c7a14610080578063715018a6146100bc5780637eff275e146100d35780638da5cb5b146100f3575b600080fd5b34801561008c57600080fd5b506100a061009b366004610515565b610184565b6040516001600160a01b03909116815260200160405180910390f35b3480156100c857600080fd5b506100d1610215565b005b3480156100df57600080fd5b506100d16100ee366004610554565b610292565b3480156100ff57600080fd5b506000546001600160a01b03166100a0565b6100d161011f36600461058c565b61031c565b34801561013057600080fd5b506100d161013f366004610554565b6103ad565b34801561015057600080fd5b506100d161015f366004610515565b610405565b34801561017057600080fd5b506100a061017f366004610515565b6104ef565b6000806000836001600160a01b03166040516101aa90635c60da1b60e01b815260040190565b600060405180830381855afa9150503d80600081146101e5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ea565b606091505b5091509150816101f957600080fd5b8080602001905181019061020d9190610538565b949350505050565b6000546001600160a01b031633146102485760405162461bcd60e51b815260040161023f906106c0565b60405180910390fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031633146102bc5760405162461bcd60e51b815260040161023f906106c0565b6040516308f2839760e41b81526001600160a01b038281166004830152831690638f283970906024015b600060405180830381600087803b15801561030057600080fd5b505af1158015610314573d6000803e3d6000fd5b505050505050565b6000546001600160a01b031633146103465760405162461bcd60e51b815260040161023f906106c0565b60405163278f794360e11b81526001600160a01b03841690634f1ef286903490610376908690869060040161065d565b6000604051808303818588803b15801561038f57600080fd5b505af11580156103a3573d6000803e3d6000fd5b5050505050505050565b6000546001600160a01b031633146103d75760405162461bcd60e51b815260040161023f906106c0565b604051631b2ce7f360e11b81526001600160a01b038281166004830152831690633659cfe6906024016102e6565b6000546001600160a01b0316331461042f5760405162461bcd60e51b815260040161023f906106c0565b6001600160a01b0381166104945760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161023f565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6000806000836001600160a01b03166040516101aa906303e1469160e61b815260040190565b600060208284031215610526578081fd5b81356105318161070b565b9392505050565b600060208284031215610549578081fd5b81516105318161070b565b60008060408385031215610566578081fd5b82356105718161070b565b915060208301356105818161070b565b809150509250929050565b6000806000606084860312156105a0578081fd5b83356105ab8161070b565b925060208401356105bb8161070b565b9150604084013567ffffffffffffffff808211156105d7578283fd5b818601915086601f8301126105ea578283fd5b8135818111156105fc576105fc6106f5565b604051601f8201601f19908116603f01168101908382118183101715610624576106246106f5565b8160405282815289602084870101111561063c578586fd5b82602086016020830137856020848301015280955050505050509250925092565b600060018060a01b038416825260206040818401528351806040850152825b818110156106985785810183015185820160600152820161067c565b818111156106a95783606083870101525b50601f01601f191692909201606001949350505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461072057600080fd5b5056fea2646970667358221220d849f96f3086b9f82cdcf665adb8c697ace05638da1c7c16ab2d26293717af6764736f6c63430008020033",
+      "r": "0x6d5ae47d751f3134b2863871fe98a2f0650aa1caae2eb6b4a83a19649ed6b2b5",
+      "s": "0x12bb2e63460a4fa5f8059dbeadeb9de335dfeaa7422eea63d3c52ce817b50964",
+      "v": 0,
+      "creates": "0x7fBA2532173FbBf30c517782B1B2E921d1779b28",
+      "raw": "0x02f908142a81f0849502f900849502f908830762b48080b907ba608060405234801561001057600080fd5b50600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610759806100616000396000f3fe60806040526004361061007b5760003560e01c80639623609d1161004e5780639623609d1461011157806399a88ec414610124578063f2fde38b14610144578063f3b7dead146101645761007b565b8063204e1c7a14610080578063715018a6146100bc5780637eff275e146100d35780638da5cb5b146100f3575b600080fd5b34801561008c57600080fd5b506100a061009b366004610515565b610184565b6040516001600160a01b03909116815260200160405180910390f35b3480156100c857600080fd5b506100d1610215565b005b3480156100df57600080fd5b506100d16100ee366004610554565b610292565b3480156100ff57600080fd5b506000546001600160a01b03166100a0565b6100d161011f36600461058c565b61031c565b34801561013057600080fd5b506100d161013f366004610554565b6103ad565b34801561015057600080fd5b506100d161015f366004610515565b610405565b34801561017057600080fd5b506100a061017f366004610515565b6104ef565b6000806000836001600160a01b03166040516101aa90635c60da1b60e01b815260040190565b600060405180830381855afa9150503d80600081146101e5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ea565b606091505b5091509150816101f957600080fd5b8080602001905181019061020d9190610538565b949350505050565b6000546001600160a01b031633146102485760405162461bcd60e51b815260040161023f906106c0565b60405180910390fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031633146102bc5760405162461bcd60e51b815260040161023f906106c0565b6040516308f2839760e41b81526001600160a01b038281166004830152831690638f283970906024015b600060405180830381600087803b15801561030057600080fd5b505af1158015610314573d6000803e3d6000fd5b505050505050565b6000546001600160a01b031633146103465760405162461bcd60e51b815260040161023f906106c0565b60405163278f794360e11b81526001600160a01b03841690634f1ef286903490610376908690869060040161065d565b6000604051808303818588803b15801561038f57600080fd5b505af11580156103a3573d6000803e3d6000fd5b5050505050505050565b6000546001600160a01b031633146103d75760405162461bcd60e51b815260040161023f906106c0565b604051631b2ce7f360e11b81526001600160a01b038281166004830152831690633659cfe6906024016102e6565b6000546001600160a01b0316331461042f5760405162461bcd60e51b815260040161023f906106c0565b6001600160a01b0381166104945760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161023f565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6000806000836001600160a01b03166040516101aa906303e1469160e61b815260040190565b600060208284031215610526578081fd5b81356105318161070b565b9392505050565b600060208284031215610549578081fd5b81516105318161070b565b60008060408385031215610566578081fd5b82356105718161070b565b915060208301356105818161070b565b809150509250929050565b6000806000606084860312156105a0578081fd5b83356105ab8161070b565b925060208401356105bb8161070b565b9150604084013567ffffffffffffffff808211156105d7578283fd5b818601915086601f8301126105ea578283fd5b8135818111156105fc576105fc6106f5565b604051601f8201601f19908116603f01168101908382118183101715610624576106246106f5565b8160405282815289602084870101111561063c578586fd5b82602086016020830137856020848301015280955050505050509250925092565b600060018060a01b038416825260206040818401528351806040850152825b818110156106985785810183015185820160600152820161067c565b818111156106a95783606083870101525b50601f01601f191692909201606001949350505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461072057600080fd5b5056fea2646970667358221220d849f96f3086b9f82cdcf665adb8c697ace05638da1c7c16ab2d26293717af6764736f6c63430008020033c080a06d5ae47d751f3134b2863871fe98a2f0650aa1caae2eb6b4a83a19649ed6b2b5a012bb2e63460a4fa5f8059dbeadeb9de335dfeaa7422eea63d3c52ce817b50964",
+      "chainId": 42
+    }
+  },
+  "proxies": [
+    {
+      "address": "0x728009503Ed6E8B77bba736fb0C167b26573900a",
+      "txHash": "0x67db2e92b1239697b6e8260ba131ac08d93e4fd32e071b0a0a1a4f69eff24abf",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xd0cb4dAA2775eD28bF89Faf75658aD97fCA2d4AF",
+      "txHash": "0xc2fc059a8cf4eb58db826d65e1c921b7f8a6b8b2d0afe91242c216aaa8cecaa1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xe907cA3B6faB8A063b0EC2094Ff6749a2683f931",
+      "txHash": "0x9017ef31dd6187a53fcd3aa12e733259982be019c5cb9937589d068cf00d7a20",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "674c3e170da25857252ee08b7ec422d50d16fa6bc1305d31ab8a2779507ff67c": {
+      "address": "0x61db9a69cb120c616d2D383E5c7a9860f8b17625",
+      "txHash": "0x22caa4e6a9386730f854cc77beafb7d980aa3f3354a4574c7c4719d1b9fc3f09",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "contracts\\security\\PausableUpgradeable.sol:29"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\security\\PausableUpgradeable.sol:97"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:27"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardVault",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:30"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardTokensPerBlock",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolFactory.sol:48"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "totalWeight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolFactory.sol:54"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "pools",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts\\zStakePoolFactory.sol:57"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "poolExists",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts\\zStakePoolFactory.sol:60"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "f6f1fb36e04228fd51d6e1eb8f98b6889a4f495efdf21f9c259cd6a5dd6aae03": {
+      "address": "0xc7a99C1c48342097e8645D8FaE83E02bcEF8D5ED",
+      "txHash": "0xc9e17d562df9f0b0cc974a211f80b3973568516fa8cbf206079a1157186b1ace",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:68"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "contracts\\security\\PausableUpgradeable.sol:29"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\security\\PausableUpgradeable.sol:97"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:49"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "users",
+            "type": "t_mapping(t_address,t_struct(User)2852_storage)",
+            "src": "contracts\\zStakePoolBase.sol:52"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "factory",
+            "type": "t_contract(zStakePoolFactory)4595",
+            "src": "contracts\\zStakePoolBase.sol:55"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "poolToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:58"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "weight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolBase.sol:61"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "lastYieldDistribution",
+            "type": "t_uint64",
+            "src": "contracts\\zStakePoolBase.sol:64"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "yieldRewardsPerWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:69"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "usersLockingWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:72"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardLockPeriod",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:75"
+          },
+          {
+            "contract": "zStakeCorePool",
+            "label": "poolTokenReserve",
+            "type": "t_uint256",
+            "src": "contracts\\zStakeCorePool.sol:25"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_struct(User)2852_storage)": {
+            "label": "mapping(address => struct zStakePoolBase.User)"
+          },
+          "t_struct(User)2852_storage": {
+            "label": "struct zStakePoolBase.User",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "totalWeight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "subYieldRewards",
+                "type": "t_uint256"
+              },
+              {
+                "label": "deposits",
+                "type": "t_array(t_struct(Deposit)1171_storage)dyn_storage"
+              }
+            ]
+          },
+          "t_array(t_struct(Deposit)1171_storage)dyn_storage": {
+            "label": "struct IPool.Deposit[]"
+          },
+          "t_struct(Deposit)1171_storage": {
+            "label": "struct IPool.Deposit",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "weight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "lockedFrom",
+                "type": "t_uint64"
+              },
+              {
+                "label": "lockedUntil",
+                "type": "t_uint64"
+              },
+              {
+                "label": "isYield",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_uint64": {
+            "label": "uint64"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_contract(zStakePoolFactory)4595": {
+            "label": "contract zStakePoolFactory"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    }
+  }
+}

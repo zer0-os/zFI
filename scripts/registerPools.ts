@@ -3,12 +3,14 @@ import * as fs from "fs";
 import { ZStakePoolFactory, ZStakePoolFactory__factory } from "../typechain";
 import { DeploymentOutput, deploymentsFolder, getDeploymentData, getLogger } from "../utilities";
 import { wait } from "./helpers";
+import { getAddresses } from "./helpers";
 
 const logger = getLogger("scripts::registerPools");
 
-const ownerAddress = "0x5eA627ba4cA4e043D38DE4Ad34b73BB4354daf8d";
-
 async function main() {
+  let addresses = getAddresses(hre.network.name);
+  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now")
+
   await hre.run("compile");
 
   logger.log(`Registering staking pools on ${hre.network.name}`);

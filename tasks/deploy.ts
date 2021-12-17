@@ -43,6 +43,7 @@ const deployUpgradableContract = async (
     initializer: "initialize",
   });
   await instance.deployed();
+  setTimeout(() => { }, 5000);
 
   logger.log(`Deployed contract to ${instance.address}`);
 
