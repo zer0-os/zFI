@@ -9,7 +9,7 @@ const logger = getLogger("scripts::registerPools");
 
 async function main() {
   let addresses = getAddresses(hre.network.name);
-  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now")
+  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now");
 
   await hre.run("compile");
 
@@ -20,7 +20,7 @@ async function main() {
 
   logger.log(`Address '${deployer.address}' will be used in the registration of the pools`);
 
-  const deploymentData = getDeploymentData("kovan");
+  const deploymentData = getDeploymentData("mainnet");
 
   if (!deploymentData.factory || !deploymentData.pools) {
     logger.error("zFI Factory, LP Staking Pool, and WILD Staking Pool are not deployed");
@@ -33,11 +33,11 @@ async function main() {
 
   const pools = deploymentData.pools;
 
-  let tx = await factory.registerPool(pools[0].address);
-  await wait(hre.network.name, tx);
-  logger.log(`Pool ${pools[0].address} was registered with factory ${factory.address}`);
+  // let tx = await factory.registerPool(pools[0].address);
+  // await wait(hre.network.name, tx);
+  // logger.log(`Pool ${pools[0].address} was registered with factory ${factory.address}`);
 
-  await factory.registerPool(pools[1].address);
+  let tx = await factory.registerPool(pools[1].address);
   await wait(hre.network.name, tx);
   logger.log(`Pool ${pools[1].address} was registered with factory ${factory.address}`);
 }

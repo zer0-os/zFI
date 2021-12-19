@@ -1,0 +1,7 @@
+# zFi Smart Contracts
+
+zStake Factory: `0xF133faFd49f4671ac63EE3a3aE7E7C4C9B84cE4a`
+
+WILD/ETH Uniswap Staking Pool: `0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF`
+
+WILD Staking Pool: `0x3aC551725ac98C5DCdeA197cEaaE7cDb8a71a2B4`

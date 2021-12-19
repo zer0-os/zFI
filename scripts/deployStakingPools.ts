@@ -85,22 +85,22 @@ async function main() {
   logger.log(`Deployed Wild Staking Pool to ${wildPoolProxy.address}`);
 
   // Will be the same address for both pools so only do once
-  logger.log(
-    `Initializing implementation contract at '${lpDeploymentData.implementationAddress}' for security.`
-  );
+  // logger.log(
+  //   `Initializing implementation contract at '${lpDeploymentData.implementationAddress}' for security.`
+  // );
 
-  const impl = (await liquidityPoolProxy.attach(
-    lpDeploymentData.implementationAddress
-  )) as ZStakeCorePool;
+  // const impl = (await liquidityPoolProxy.attach(
+  //   lpDeploymentData.implementationAddress
+  // )) as ZStakeCorePool;
 
-  try {
-    const tx = await impl.initializeImplementation();
-    await wait(hre.network.name, tx);
-  } catch (e) {
-    console.log((e as any).message);
-  }
+  // try {
+  //   const tx = await impl.initializeImplementation();
+  //   await wait(hre.network.name, tx);
+  // } catch (e) {
+  //   console.log((e as any).message);
+  // }
 
-  logger.log(`transferring pool ownership to ${addresses.ownerAddress}`);
+  // logger.log(`transferring pool ownership to ${addresses.ownerAddress}`);
 
   // Deployment addresses will be different, must be called twice
   // let tx = await liquidityPoolProxy.transferOwnership(addresses.ownerAddress);

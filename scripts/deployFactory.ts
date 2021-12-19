@@ -23,7 +23,7 @@ async function main() {
   logger.log(`'${deploymentAccount.address}' will be used as the deployment account`);
 
   // Can't be zero, and can be adjusted after deployment
-  const rewardTokensPerBlock = ethers.BigNumber.from("4");
+  const rewardTokensPerBlock = ethers.utils.parseEther("4");
   const tag = "zFI Factory";
 
   const deploymentData: UpgradeableDeployedContract = await doDeployFactory(
