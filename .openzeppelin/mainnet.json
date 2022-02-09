@@ -363,6 +363,406 @@
           }
         }
       }
+    },
+    "cbf12cac47285e10036f8218427bad3daaf090e0c4571648e27accf861caa9b5": {
+      "address": "0x2539CCEd6746cDBFF8bD8D87875e83f743c3cb5A",
+      "txHash": "0xf1bb76f98cca15d929a0488c518426d9abd4b0cb59db4abc650dee6e8ab57bc3",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:68"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:54"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "users",
+            "type": "t_mapping(t_address,t_struct(User)1471_storage)",
+            "src": "contracts\\zStakePoolBase.sol:57"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "factory",
+            "type": "t_contract(zStakePoolFactory)3268",
+            "src": "contracts\\zStakePoolBase.sol:60"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "poolToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:63"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "weight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolBase.sol:66"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "lastYieldDistribution",
+            "type": "t_uint64",
+            "src": "contracts\\zStakePoolBase.sol:69"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "yieldRewardsPerWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:74"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "usersLockingWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:77"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardLockPeriod",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:80"
+          },
+          {
+            "contract": "zStakeCorePool",
+            "label": "poolTokenReserve",
+            "type": "t_uint256",
+            "src": "contracts\\zStakeCorePool.sol:25"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_struct(User)1471_storage)": {
+            "label": "mapping(address => struct zStakePoolBase.User)"
+          },
+          "t_struct(User)1471_storage": {
+            "label": "struct zStakePoolBase.User",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "totalWeight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "subYieldRewards",
+                "type": "t_uint256"
+              },
+              {
+                "label": "deposits",
+                "type": "t_array(t_struct(Deposit)495_storage)dyn_storage"
+              }
+            ]
+          },
+          "t_array(t_struct(Deposit)495_storage)dyn_storage": {
+            "label": "struct IPool.Deposit[]"
+          },
+          "t_struct(Deposit)495_storage": {
+            "label": "struct IPool.Deposit",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "weight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "lockedFrom",
+                "type": "t_uint64"
+              },
+              {
+                "label": "lockedUntil",
+                "type": "t_uint64"
+              },
+              {
+                "label": "isYield",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_uint64": {
+            "label": "uint64"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_contract(zStakePoolFactory)3268": {
+            "label": "contract zStakePoolFactory"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "c6b82c98cc35f9e0bd94fe6c443b790a1b64bcf48e9f34f3fb24eec62bf69cfd": {
+      "address": "0x22bD202186C2AA7e6498D3ae43FFBd4dc674C796",
+      "txHash": "0xfe6398194c1dc8a267965c6672ef9a7f7edcc3c0574519acba66a8cfebf34ed5",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\ReentrancyGuardUpgradeable.sol:68"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "contracts\\security\\PausableUpgradeable.sol:29"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\security\\PausableUpgradeable.sol:97"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:54"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "users",
+            "type": "t_mapping(t_address,t_struct(User)2852_storage)",
+            "src": "contracts\\zStakePoolBase.sol:57"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "factory",
+            "type": "t_contract(zStakePoolFactory)4652",
+            "src": "contracts\\zStakePoolBase.sol:60"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "poolToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolBase.sol:63"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "weight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolBase.sol:66"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "lastYieldDistribution",
+            "type": "t_uint64",
+            "src": "contracts\\zStakePoolBase.sol:69"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "yieldRewardsPerWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:74"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "usersLockingWeight",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:77"
+          },
+          {
+            "contract": "zStakePoolBase",
+            "label": "rewardLockPeriod",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolBase.sol:80"
+          },
+          {
+            "contract": "zStakeCorePool",
+            "label": "poolTokenReserve",
+            "type": "t_uint256",
+            "src": "contracts\\zStakeCorePool.sol:25"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_struct(User)2852_storage)": {
+            "label": "mapping(address => struct zStakePoolBase.User)"
+          },
+          "t_struct(User)2852_storage": {
+            "label": "struct zStakePoolBase.User",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "totalWeight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "subYieldRewards",
+                "type": "t_uint256"
+              },
+              {
+                "label": "deposits",
+                "type": "t_array(t_struct(Deposit)1171_storage)dyn_storage"
+              }
+            ]
+          },
+          "t_array(t_struct(Deposit)1171_storage)dyn_storage": {
+            "label": "struct IPool.Deposit[]"
+          },
+          "t_struct(Deposit)1171_storage": {
+            "label": "struct IPool.Deposit",
+            "members": [
+              {
+                "label": "tokenAmount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "weight",
+                "type": "t_uint256"
+              },
+              {
+                "label": "lockedFrom",
+                "type": "t_uint64"
+              },
+              {
+                "label": "lockedUntil",
+                "type": "t_uint64"
+              },
+              {
+                "label": "isYield",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_uint64": {
+            "label": "uint64"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_contract(zStakePoolFactory)4652": {
+            "label": "contract zStakePoolFactory"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
     }
   }
 }

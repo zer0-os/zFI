@@ -28,7 +28,12 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUpgradeable, PausableUpgradeable {
+abstract contract zStakePoolBase is
+  IPool,
+  ReentrancyGuardUpgradeable,
+  OwnableUpgradeable,
+  PausableUpgradeable
+{
   /// @dev Data structure representing token holder using a pool
   struct User {
     // @dev Total staked amount
@@ -316,11 +321,16 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUp
    */
   function updateStakeLock(uint256 depositId, uint64 lockedUntil) external {
     require(!paused(), "contract is paused");
-    // sync and call processRewards
+    // Sync and give user rewards
     _sync();
     _processRewards(msg.sender, false);
+
     // delegate call to an internal function
     _updateStakeLock(msg.sender, depositId, lockedUntil);
+
+    // Update subyieldrewards so that the user is not owed anything
+    User storage user = users[msg.sender];
+    user.subYieldRewards = weightToReward(user.totalWeight, yieldRewardsPerWeight);
   }
 
   /**
@@ -479,6 +489,7 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUp
    */
   function changeRewardLockPeriod(uint256 _rewardLockPeriod) external onlyOwner {
     require(rewardLockPeriod != _rewardLockPeriod, "same rewardLockPeriod");
+    require(_rewardLockPeriod <= 365 days, "too long lock period");
     rewardLockPeriod = _rewardLockPeriod;
   }
 
@@ -749,6 +760,19 @@ abstract contract zStakePoolBase is IPool, ReentrancyGuardUpgradeable, OwnableUp
   function now256() public view virtual returns (uint256) {
     // return current block timestamp
     return block.timestamp;
+  }
+
+  /**
+   * @dev Sets the pause status of the contract.
+   */
+  function setPauseStatus(bool toPause) public onlyOwner {
+    if (toPause) {
+      require(!paused(), "Pausable: paused");
+      _pause();
+    } else {
+      require(paused(), "Pausable: not paused");
+      _unpause();
+    }
   }
 
   /**
