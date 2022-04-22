@@ -32,6 +32,13 @@ export const getAddresses = (network: string) => {
       wildToken: "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
       lpToken: "0x1A9A8894bc8611a39c7Ed690AED71b7918995F14",
     };
+  } else if (network === "rinkeby") {
+    return {
+      ownerAddress: "0x35888AD3f1C0b39244Bb54746B96Ee84A5d97a53", // astro test
+      rewardVault: "0x35888AD3f1C0b39244Bb54746B96Ee84A5d97a53",
+      wildToken: "0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79",
+      lpToken: "0x5bAbCA2Af93A9887C86161083b8A90160DA068f2",
+    };
   }
 
   return undefined;
