@@ -63,7 +63,7 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       accounts: process.env.TEST_KEY ? [process.env.TEST_KEY] : [],
-      url: "https://rinkeby.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
+      url: "https://goerli.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
     },
     localhost: {
       gas: "auto",

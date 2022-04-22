@@ -16,9 +16,9 @@ async function main() {
   await hre.run("compile");
 
   let addresses = getAddresses(hre.network.name);
-  if (!addresses) throw Error("Only addresses for 'mainnet' and 'kovan' are available right now");
+  if (!addresses) throw Error(`No configuration found for network ${hre.network.name}`);
 
-  const initBlock = ethers.BigNumber.from("13820300");
+  const initBlock = ethers.BigNumber.from("6761634");
 
   // Pool token is WILD contract address
   const wildPool = {
