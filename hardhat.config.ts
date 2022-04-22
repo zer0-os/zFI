@@ -55,6 +55,10 @@ const config: HardhatUserConfig = {
       accounts: { mnemonic: process.env.TESTNET_MNEMONIC || "" },
       url: "https://rinkeby.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
     },
+    goerli: {
+      accounts: process.env.TEST_KEY ? [process.env.TEST_KEY] : [],
+      url: "https://rinkeby.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
+    },
     localhost: {
       gas: "auto",
       gasPrice: "auto",
