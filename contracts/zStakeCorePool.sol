@@ -44,7 +44,7 @@ contract zStakeCorePool is zStakePoolBase {
     __zStakePoolBase__init(_rewardToken, _factory, _poolToken, _initBlock, _weight);
   }
 
-   // Call this on the implementation contract (not the proxy)
+  // Call this on the implementation contract (not the proxy)
   function initializeImplementation() public initializer {
     __Ownable_init();
     _pause();

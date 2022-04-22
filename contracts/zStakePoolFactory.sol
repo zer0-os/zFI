@@ -7,6 +7,7 @@ import "./utils/Ownable.sol";
 import "./interfaces/IERC20.sol";
 
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /**
  * @title Pool Factory - Fork of Illuvium Pool Factory
@@ -21,7 +22,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
  *
  * @author Pedro Bergamini, reviewed by Basil Gorin, modified by Zer0
  */
-contract zStakePoolFactory is OwnableUpgradeable {
+contract zStakePoolFactory is OwnableUpgradeable, PausableUpgradeable {
   /// @dev The reward token
   address public rewardToken;
 
@@ -115,6 +116,12 @@ contract zStakePoolFactory is OwnableUpgradeable {
     rewardTokensPerBlock = _rewardTokensPerBlock;
   }
 
+  // Call this on the implementation contract (not the proxy)
+  function initializeImplementation() public initializer {
+    __Ownable_init();
+    _pause();
+  }
+
   /**
    * @notice Given a pool token retrieves corresponding pool address
    *
@@ -166,6 +173,7 @@ contract zStakePoolFactory is OwnableUpgradeable {
    * @param poolAddr address of the already deployed pool instance
    */
   function registerPool(address poolAddr) public onlyOwner {
+    require(!paused(), "contract is paused");
     // read pool information from the pool smart contract
     // via the pool interface (IPool)
     address poolToken = IPool(poolAddr).poolToken();
@@ -194,6 +202,7 @@ contract zStakePoolFactory is OwnableUpgradeable {
    * @param _amount amount of reward tokens to transfer
    */
   function transferRewardYield(address _to, uint256 _amount) external {
+    require(!paused(), "contract is paused");
     // verify that sender is a pool registered withing the factory
     require(poolExists[msg.sender], "access denied");
 
@@ -209,6 +218,7 @@ contract zStakePoolFactory is OwnableUpgradeable {
    * @param weight new weight value to set to
    */
   function changePoolWeight(address poolAddr, uint32 weight) external {
+    require(!paused(), "contract is paused");
     // verify function is executed either by factory owner or by the pool itself
     require(msg.sender == owner() || poolExists[msg.sender]);
 
@@ -227,7 +237,8 @@ contract zStakePoolFactory is OwnableUpgradeable {
    *
    * @param perBlock Amount of wild given per block
    */
-  function changeRewardTokensPerBlock(uint256 perBlock) onlyOwner external {
+  function changeRewardTokensPerBlock(uint256 perBlock) external {
+    require(!paused(), "contract is paused");
     require(rewardTokensPerBlock != perBlock, "No change");
     rewardTokensPerBlock = perBlock;
   }
