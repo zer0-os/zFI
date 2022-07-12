@@ -1,0 +1,67 @@
+{
+  "factory": [
+    {
+      "tag": "zFI Factory",
+      "address": "0x8CCC39985BB460A62678e5f1Ed04B08c2D02E2C0",
+      "version": "674c3e170da25857252ee08b7ec422d50d16fa6bc1305d31ab8a2779507ff67c",
+      "date": "2022-04-22T19:16:29.832Z",
+      "args": {
+        "rewardTokenAddress": "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
+        "rewardVaultAddress": "0x35888AD3f1C0b39244Bb54746B96Ee84A5d97a53",
+        "rewardTokensPerBlock": {
+          "type": "BigNumber",
+          "hex": "0x3782dace9d900000"
+        }
+      },
+      "isUpgradable": true,
+      "admin": "0x7eAB9E0490CDCC69628C212B3725437eCA6B0936",
+      "implementation": "0x2eb8412723E2E81C239964A4859FcEA4Bd715b72"
+    }
+  ],
+  "pools": [
+    {
+      "tag": "WILD/ETH LP Staking Pool",
+      "address": "0x614E5FfD2D8e936eD29d979dF106081a471e1125",
+      "version": "c6b82c98cc35f9e0bd94fe6c443b790a1b64bcf48e9f34f3fb24eec62bf69cfd",
+      "date": "2022-04-22T19:19:42.472Z",
+      "args": {
+        "rewardTokenAddress": "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
+        "factoryAddress": "0x8CCC39985BB460A62678e5f1Ed04B08c2D02E2C0",
+        "poolTokenAddress": "0x1A9A8894bc8611a39c7Ed690AED71b7918995F14",
+        "initBlock": {
+          "type": "BigNumber",
+          "hex": "0x672ca2"
+        },
+        "weight": {
+          "type": "BigNumber",
+          "hex": "0x32a9f880"
+        }
+      },
+      "isUpgradable": true,
+      "admin": "0x7eAB9E0490CDCC69628C212B3725437eCA6B0936",
+      "implementation": "0xcc8C32E5f5f51205e96d8E1E4f4560B9c6Bc0876"
+    },
+    {
+      "tag": "WILD Staking Pool",
+      "address": "0x0Ab90E0aBca23FdB5e7f447628C6f2BFDB4dE0D0",
+      "version": "c6b82c98cc35f9e0bd94fe6c443b790a1b64bcf48e9f34f3fb24eec62bf69cfd",
+      "date": "2022-04-22T19:20:00.020Z",
+      "args": {
+        "rewardTokenAddress": "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
+        "factoryAddress": "0x8CCC39985BB460A62678e5f1Ed04B08c2D02E2C0",
+        "poolTokenAddress": "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
+        "initBlock": {
+          "type": "BigNumber",
+          "hex": "0x672ca2"
+        },
+        "weight": {
+          "type": "BigNumber",
+          "hex": "0x08f0d180"
+        }
+      },
+      "isUpgradable": true,
+      "admin": "0x7eAB9E0490CDCC69628C212B3725437eCA6B0936",
+      "implementation": "0xcc8C32E5f5f51205e96d8E1E4f4560B9c6Bc0876"
+    }
+  ]
+}

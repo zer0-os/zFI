@@ -7,6 +7,7 @@ import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "solidity-coverage";
+import { ethers } from "ethers";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -33,15 +34,20 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
+      accounts: [
+        {
+          privateKey: `0x${process.env.MAINNET_PRIVATE_KEY}`,
+          balance: ethers.utils.parseEther("1000").toString(),
+        },
+      ],
       forking: {
         url: "https://eth-mainnet.alchemyapi.io/v2/MnO3SuHlzuCydPWE1XhsYZM_pHZP8_ix",
-        blockNumber: 13201766,
       },
     },
     mainnet: {
-      accounts: { mnemonic: process.env.MAINNET_MNEMONIC || "" },
+      accounts: [`0x${process.env.MAINNET_PRIVATE_KEY}`],
       url: `https://mainnet.infura.io/v3/0e6434f252a949719227b5d68caa2657`,
-      gasPrice: 100000000000,
+      gasPrice: 120000000000,
     },
     kovan: {
       accounts: { mnemonic: process.env.TESTNET_MNEMONIC || "" },
@@ -52,8 +58,12 @@ const config: HardhatUserConfig = {
       url: "https://ropsten.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
     },
     rinkeby: {
-      accounts: { mnemonic: process.env.TESTNET_MNEMONIC || "" },
+      accounts: process.env.TEST_KEY ? [process.env.TEST_KEY] : [],
       url: "https://rinkeby.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
+    },
+    goerli: {
+      accounts: process.env.TEST_KEY ? [process.env.TEST_KEY] : [],
+      url: "https://goerli.infura.io/v3/77c3d733140f4c12a77699e24cb30c27",
     },
     localhost: {
       gas: "auto",
@@ -65,6 +75,9 @@ const config: HardhatUserConfig = {
         mnemonic: "test test test test test test test test test test test test",
       },
     },
+  },
+  etherscan: {
+    apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
   },
 };
 export default config;
