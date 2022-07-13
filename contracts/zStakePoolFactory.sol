@@ -237,7 +237,7 @@ contract zStakePoolFactory is OwnableUpgradeable, PausableUpgradeable {
    *
    * @param perBlock Amount of wild given per block
    */
-  function changeRewardTokensPerBlock(uint256 perBlock) external {
+  function changeRewardTokensPerBlock(uint256 perBlock) external onlyOwner {
     require(!paused(), "contract is paused");
     require(rewardTokensPerBlock != perBlock, "No change");
     rewardTokensPerBlock = perBlock;

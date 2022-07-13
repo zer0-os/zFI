@@ -763,6 +763,118 @@
           }
         }
       }
+    },
+    "b9f17c2e923aab903ca8d0f792588e8d889e091d81ca26f8230db257300ec1ba": {
+      "address": "0x98e33452d0005f3375F7db93f7dcD15D2B9b7943",
+      "txHash": "0xa3d7b6289a15ec34e546ba3408e43acc64fdb5f57b0e0889ae74660c8c62b389",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "contracts\\security\\PausableUpgradeable.sol:29"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts\\security\\PausableUpgradeable.sol:97"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:27"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardVault",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:30"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardTokensPerBlock",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolFactory.sol:48"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "totalWeight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolFactory.sol:54"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "pools",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts\\zStakePoolFactory.sol:57"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "poolExists",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts\\zStakePoolFactory.sol:60"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
     }
   }
 }
