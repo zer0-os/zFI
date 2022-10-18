@@ -46,8 +46,9 @@ async function main() {
 
   const deploymentData = getDeploymentData(hre.network.name);
 
-  if (!deploymentData.factory || !Array.isArray(deploymentData.factory))
+  if (!deploymentData.factory || !Array.isArray(deploymentData.factory)) {
     throw Error("Cannot proceed with pool deployment, the factory must be deployed first");
+  }
 
   const factoryAddress = deploymentData.factory[0].address;
 
@@ -83,6 +84,13 @@ async function main() {
 
   logger.log(`Deployed LP Staking Pool to ${liquidityPoolProxy.address}`);
   logger.log(`Deployed Wild Staking Pool to ${wildPoolProxy.address}`);
+
+  const wildStakingPoolImplementation =
+    await hre.upgrades.erc1967.getImplementationAddress(wildPoolProxy.address);
+  await hre.run("verify:verify", { address: wildStakingPoolImplementation });
+  const lpStakingPoolImplementation =
+    await hre.upgrades.erc1967.getImplementationAddress(liquidityPoolProxy.address);
+  await hre.run("verify:verify", { address: lpStakingPoolImplementation });
 
   // Will be the same address for both pools so only do once
   // logger.log(

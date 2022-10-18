@@ -54,6 +54,13 @@ async function main() {
   } catch (e) {
     console.log((e as any).message);
   }
+
+  // Verify
+  console.log(`verifying implementation on etherscan`);
+  const implementationAddress =
+    await hre.upgrades.erc1967.getImplementationAddress(factoryProxy.address);
+  await hre.run("verify:verify", { address: implementationAddress });
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

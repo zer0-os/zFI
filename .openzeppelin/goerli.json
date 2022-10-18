@@ -67,6 +67,31 @@
       "address": "0x0Ab90E0aBca23FdB5e7f447628C6f2BFDB4dE0D0",
       "txHash": "0x841a5dc88cbe9af55f1e104bb39d9bbb5ec1efe565dcd1f74f7fbdedd3181773",
       "kind": "transparent"
+    },
+    {
+      "address": "0xC811E38d5114692BdBAF24A8fD5a25Aa2130a071",
+      "txHash": "0x7dd7c0332262efde5c446521d4c9f3e858d7c2eb6b915df1b60ac8913bcd8b7e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xAeEaC5F790dD98FD7166bBD50d9938Bf542AFeEf",
+      "txHash": "0x58fc9e70b0e858aa76d2cde8b9b6509522039185227c3379ef6001cd532f71c1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x996d9c2A6C8C070249a083a2495B34d85a56F54F",
+      "txHash": "0xe7d90e2313549b7a5206e8b97f02fc14e38dc038245cafbf27628bce0ca44a1e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xCa0F071fcf5b36436F75E422b5Bd23666015b9f9",
+      "txHash": "0xdb26e56c511a3257acaeaa9ee1f03a5b27aa4dfa56e798e8447838ae159690d9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x376030f58c76ECC288a4fce8F88273905544bC07",
+      "txHash": "0xbbe820d0718d56cdc76442758f1fe0c0c3fc31b23b2d2f2105bb925a6feaae32",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -215,7 +240,7 @@
             "contract": "ContextUpgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts\\utils\\ContextUpgradeable.sol:31"
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
           },
           {
             "contract": "OwnableUpgradeable",
@@ -233,13 +258,13 @@
             "contract": "PausableUpgradeable",
             "label": "_paused",
             "type": "t_bool",
-            "src": "contracts\\security\\PausableUpgradeable.sol:29"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:28"
           },
           {
             "contract": "PausableUpgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)49_storage",
-            "src": "contracts\\security\\PausableUpgradeable.sol:97"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:96"
           },
           {
             "contract": "zStakePoolBase",
@@ -250,13 +275,13 @@
           {
             "contract": "zStakePoolBase",
             "label": "users",
-            "type": "t_mapping(t_address,t_struct(User)2852_storage)",
+            "type": "t_mapping(t_address,t_struct(User)1471_storage)",
             "src": "contracts\\zStakePoolBase.sol:57"
           },
           {
             "contract": "zStakePoolBase",
             "label": "factory",
-            "type": "t_contract(zStakePoolFactory)4652",
+            "type": "t_contract(zStakePoolFactory)3273",
             "src": "contracts\\zStakePoolBase.sol:60"
           },
           {
@@ -309,10 +334,10 @@
           "t_address": {
             "label": "address"
           },
-          "t_mapping(t_address,t_struct(User)2852_storage)": {
+          "t_mapping(t_address,t_struct(User)1471_storage)": {
             "label": "mapping(address => struct zStakePoolBase.User)"
           },
-          "t_struct(User)2852_storage": {
+          "t_struct(User)1471_storage": {
             "label": "struct zStakePoolBase.User",
             "members": [
               {
@@ -329,14 +354,14 @@
               },
               {
                 "label": "deposits",
-                "type": "t_array(t_struct(Deposit)1171_storage)dyn_storage"
+                "type": "t_array(t_struct(Deposit)495_storage)dyn_storage"
               }
             ]
           },
-          "t_array(t_struct(Deposit)1171_storage)dyn_storage": {
+          "t_array(t_struct(Deposit)495_storage)dyn_storage": {
             "label": "struct IPool.Deposit[]"
           },
-          "t_struct(Deposit)1171_storage": {
+          "t_struct(Deposit)495_storage": {
             "label": "struct IPool.Deposit",
             "members": [
               {
@@ -367,11 +392,123 @@
           "t_bool": {
             "label": "bool"
           },
-          "t_contract(zStakePoolFactory)4652": {
+          "t_contract(zStakePoolFactory)3273": {
             "label": "contract zStakePoolFactory"
           },
           "t_uint32": {
             "label": "uint32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "b9f17c2e923aab903ca8d0f792588e8d889e091d81ca26f8230db257300ec1ba": {
+      "address": "0x70C5Ed9A9388F849D60E8BE9F33F06527Fb8089d",
+      "txHash": "0x979914cdfe39d568cab9c5e2444b265689ddbc4ba42831cdb852deac7bd29008",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardToken",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:27"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardVault",
+            "type": "t_address",
+            "src": "contracts\\zStakePoolFactory.sol:30"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "rewardTokensPerBlock",
+            "type": "t_uint256",
+            "src": "contracts\\zStakePoolFactory.sol:48"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "totalWeight",
+            "type": "t_uint32",
+            "src": "contracts\\zStakePoolFactory.sol:54"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "pools",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts\\zStakePoolFactory.sol:57"
+          },
+          {
+            "contract": "zStakePoolFactory",
+            "label": "poolExists",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "contracts\\zStakePoolFactory.sol:60"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
           },
           "t_array(t_uint256)49_storage": {
             "label": "uint256[49]"
