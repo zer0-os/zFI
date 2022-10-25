@@ -29,8 +29,8 @@ export const getAddresses = (network: string) => {
     return {
       ownerAddress: "0x35888AD3f1C0b39244Bb54746B96Ee84A5d97a53", // astro test
       rewardVault: "0x35888AD3f1C0b39244Bb54746B96Ee84A5d97a53",
-      wildToken: "0xdDd0516188a2240c864AAd7E95FF832038fa7804",
-      lpToken: "0x1A9A8894bc8611a39c7Ed690AED71b7918995F14",
+      wildToken: "0x0e46c45f8aca3f89Ad06F4a20E2BED1A12e4658C",
+      lpToken: "0x196bc789E03761904E3d7266fa57f2001592D25A",
     };
   } else if (network === "rinkeby") {
     return {
