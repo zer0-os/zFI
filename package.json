@@ -7,7 +7,8 @@
     "test": "hardhat test --show-stack-traces",
     "build": "yarn run clean && yarn run compile",
     "clean": "hardhat clean",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "admin": "hardhat run scripts/getProxyAdmin.ts"
   },
   "devDependencies": {
     "@defi-wonderland/smock": "2.0.7",
