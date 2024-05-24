@@ -16,7 +16,8 @@ const main = async () => {
     // "0xc2e9678A71e50E5AEd036e00e9c5caeb1aC5987D" // default registrar
     // "0xE4954E4FB3C448f4eFBC1f8EC40eD54a2A1cc1f5" // Crafts NFT - returns 0x0 address!
     // "0xc2e9678A71e50E5AEd036e00e9c5caeb1aC5987D" // ZNS token
-    "0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF"
+    "0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF",
+    "0x4039f12A6606D099558f273e601892B90fd64885"
   ];
 
   await contracts.reduce(

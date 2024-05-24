@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@defi-wonderland/smock": "2.0.7",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "2.1.1",
     "@nomiclabs/hardhat-waffle": "2.0.1",
@@ -29,7 +30,7 @@
     "dotenv": "10.0.0",
     "ethereum-waffle": "3.4.0",
     "ethers": "5.4.1",
-    "hardhat": "2.6.8",
+    "hardhat": "^2.22.4",
     "logdown": "3.3.1",
     "mocha": "9.1.3",
     "prettier": "2.3.1",

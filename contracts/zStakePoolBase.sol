@@ -413,6 +413,8 @@ abstract contract zStakePoolBase is
    *      from the previously unstaked stake
    */
   function _stake(
+
+
     address _staker,
     uint256 _amount,
     uint64 _lockUntil,
@@ -601,6 +603,7 @@ abstract contract zStakePoolBase is
    * @param _withUpdate flag allowing to disable synchronization (see sync()) if set to false
    * @return pendingYield the rewards calculated and optionally re-staked
    */
+
   function _processRewards(address _staker, bool _withUpdate)
     internal
     virtual
