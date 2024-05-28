@@ -288,6 +288,7 @@ abstract contract zStakePoolBase is
    * @param _amount amount of tokens to stake
    * @param _lockUntil stake period as unix timestamp; zero means no locking
    */
+
   function stake(uint256 _amount, uint64 _lockUntil) external override {
     require(!paused(), "contract is paused");
     // delegate call to an internal function
@@ -413,7 +414,6 @@ abstract contract zStakePoolBase is
    *      from the previously unstaked stake
    */
   function _stake(
-
 
     address _staker,
     uint256 _amount,
@@ -607,6 +607,7 @@ abstract contract zStakePoolBase is
   function _processRewards(address _staker, bool _withUpdate)
     internal
     virtual
+    
     returns (uint256 pendingYield)
   {
     // update smart contract state if required

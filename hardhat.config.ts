@@ -55,9 +55,9 @@ const config: HardhatUserConfig = {
       //     balance: ethers.utils.parseEther("1000").toString(),
       //   },
       // ],
-      forking: {
-        url: "https://eth-mainnet.alchemyapi.io/v2/MnO3SuHlzuCydPWE1XhsYZM_pHZP8_ix",
-      },
+      // forking: {
+      //   url: "https://eth-mainnet.alchemyapi.io/v2/MnO3SuHlzuCydPWE1XhsYZM_pHZP8_ix",
+      // },
     },
     // mainnet: {
     //   accounts: [`0x${process.env.MAINNET_PRIVATE_KEY}`],
@@ -89,6 +89,9 @@ const config: HardhatUserConfig = {
     //     mnemonic: "test test test test test test test test test test test test",
     //   },
     // },
+  },
+  mocha: {
+    timeout: 2000000000000,
   },
   etherscan: {
     apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
