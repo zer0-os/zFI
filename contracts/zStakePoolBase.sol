@@ -493,6 +493,68 @@ abstract contract zStakePoolBase is
     rewardLockPeriod = _rewardLockPeriod;
   }
 
+function batchUnstake() external {
+    uint256 totalUnstakedAmount = 0;
+    uint256 totalYieldRewards = 0;
+
+    // Get the user's deposits
+    User storage user = users[msg.sender];
+    Deposit[] storage deposits = user.deposits;
+
+    // Calculate pending rewards
+    uint256 pendingYield = _pendingYieldRewards(msg.sender);
+
+    // Iterate through all deposits and unstake fully
+    for (uint256 i = 0; i < deposits.length; i++) {
+        Deposit storage stakeDeposit = deposits[i];
+
+        // Get the full amount of the deposit
+        uint256 amount = stakeDeposit.tokenAmount;
+
+        // Verify available balance
+        if (amount == 0) continue;
+
+        // Save isYield flag to use it later
+        bool isYield = stakeDeposit.isYield;
+
+        // Recalculate deposit weight
+        uint256 previousWeight = stakeDeposit.weight;
+        uint256 newWeight = 0; // Since we are unstaking fully, new weight is zero
+
+        // Update the deposit, or delete it if it's depleted
+        delete user.deposits[i];
+
+        // Update user record
+        user.tokenAmount -= amount;
+        user.totalWeight -= previousWeight;
+        user.subYieldRewards = weightToReward(user.totalWeight, yieldRewardsPerWeight);
+
+        // Update global variable
+        usersLockingWeight -= previousWeight;
+
+        // Accumulate the total unstaked amount
+        totalUnstakedAmount += amount;
+
+        // If the deposit was created by the pool itself as a yield reward
+        if (isYield) {
+            totalYieldRewards += amount;
+        }
+    }
+
+    // Perform a single transfer for the total unstaked amount
+    if (totalUnstakedAmount > 0) {
+        transferPoolToken(msg.sender, totalUnstakedAmount);
+    }
+
+    // Perform a single transfer for the pending yield rewards
+    if (pendingYield > 0) {
+        factory.transferRewardYield(msg.sender, pendingYield);
+    }
+
+    // Emit an event for the total unstaked amount
+    emit Unstaked(msg.sender, msg.sender, totalUnstakedAmount);
+}
+
   /**
    * @dev Used internally, mostly by children implementations, see unstake()
    *

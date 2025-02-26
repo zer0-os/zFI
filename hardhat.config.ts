@@ -50,6 +50,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: [
         {
+          privateKey: `0x${process.env.TEST_KEY}`,
+          balance: ethers.utils.parseEther("1000").toString(),
+        },
+        {
           privateKey: `0x${process.env.MAINNET_PRIVATE_KEY}`,
           balance: ethers.utils.parseEther("1000").toString(),
         },
