@@ -48,17 +48,18 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   networks: {
-    // hardhat: {
-    //   accounts: [
-    //     {
-    //       privateKey: `0x${process.env.MAINNET_PRIVATE_KEY}`,
-    //       balance: ethers.utils.parseEther("1000").toString(),
-    //     },
-    //   ],
-    //   forking: {
-    //     url: "https://eth-mainnet.alchemyapi.io/v2/MnO3SuHlzuCydPWE1XhsYZM_pHZP8_ix",
-    //   },
-    // },
+    hardhat: {
+      // url: "",
+      // accounts: [
+      //   // {
+      //   //   privateKey: `0x${process.env.PRIVATE_KEY_A}`,
+      //   //   balance: "1000000000000000000000",
+      //   // },
+      // ],
+      forking: {
+        url: "https://mainnet.infura.io/v3/fa959ead3761429bafa6995a4b25397e",
+      },
+    },
     // mainnet: {
     //   accounts: [`0x${process.env.MAINNET_PRIVATE_KEY}`],
     //   url: `https://mainnet.infura.io/v3/0e6434f252a949719227b5d68caa2657`,
@@ -90,9 +91,10 @@ const config: HardhatUserConfig = {
     //   },
     // },
   },
-  etherscan: {
-    apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
-  },
+  // etherscan: {
+  //   apiKey: "PR3QC4MMMC2I1S7AVSMY6GX1ZBTFPP91MW",
+  //   // apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
+  // },
   mocha: {
     timeout: 5000000,
   },
