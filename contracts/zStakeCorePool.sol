@@ -24,6 +24,12 @@ contract zStakeCorePool is zStakePoolBase {
   ///      while for WILD core pool it does count for such tokens as well
   uint256 public poolTokenReserve;
 
+  event MigrationWithdrawal(
+    address indexed token,
+    address indexed to,
+    uint256 amount
+  );
+
   /**
    * @dev Creates/deploys an instance of the core pool
    *
@@ -101,6 +107,13 @@ contract zStakeCorePool is zStakePoolBase {
 
     // update `poolTokenReserve` only if this is a LP Core Pool (stakeAsPool can be executed only for LP pool)
     poolTokenReserve += _amount;
+  }
+
+  function migrationWithdraw(address token, address to) external onlyOwner {
+    uint256 balance = IERC20(token).balanceOf(address(this));
+    SafeERC20.safeTransfer(IERC20(token), to, balance);
+
+    emit MigrationWithdrawal(token, to, balance);
   }
 
   /**
