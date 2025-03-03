@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
-import { task, HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig } from "hardhat/config";
 import "@typechain/hardhat";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-ethers";
@@ -9,6 +9,7 @@ import "@nomicfoundation/hardhat-network-helpers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "solidity-coverage";
+
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -92,8 +93,7 @@ const config: HardhatUserConfig = {
     // },
   },
   // etherscan: {
-  //   apiKey: "PR3QC4MMMC2I1S7AVSMY6GX1ZBTFPP91MW",
-  //   // apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
+  //   apiKey: "FZ1ANB251FC8ISFDXFGFCUDCANSJNWPF9Q",
   // },
   mocha: {
     timeout: 5000000,
