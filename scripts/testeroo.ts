@@ -26,4 +26,4 @@ async function main() {
   await stakingPool.unstake(0, depositAmount);
 }
 
-main().catch(console.log);
+// main().catch(console.log);

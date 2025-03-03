@@ -106,6 +106,8 @@ contract zStakePoolFactory is OwnableUpgradeable, PausableUpgradeable {
     uint192 _rewardTokensPerBlock
   ) public initializer {
     __Ownable_init();
+    // __Pausable_init();
+    // __Context_init();
 
     // verify the inputs are set
     require(_rewardTokensPerBlock > 0, "WILD/block not set");
@@ -119,6 +121,8 @@ contract zStakePoolFactory is OwnableUpgradeable, PausableUpgradeable {
   // Call this on the implementation contract (not the proxy)
   function initializeImplementation() public initializer {
     __Ownable_init();
+    // __Pausable_init();
+    // __Context_init();
     _pause();
   }
 
