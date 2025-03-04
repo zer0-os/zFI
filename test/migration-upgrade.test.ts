@@ -87,6 +87,9 @@ describe.only("Migration Upgrade", () => {
 
   let lpPoolStatePreUpgrade: ContractStorageData;
   let wildPoolStatePreUpgrade: ContractStorageData;
+  let stakerDataWildPoolPreUpgrade;
+  let stakerDataLpPoolPreUpgrade;
+
 
   before(async () => {
     await impersonateAccount(OWNER_ADDRESS);
@@ -128,6 +131,69 @@ describe.only("Migration Upgrade", () => {
     // `);
   });
 
+  it("should be able to pause() blocking all core functionality", async () => {
+    // this will fail, but much deeper in code with reason related to lock interval
+    // `paused` is checked on the first line, so if it fails with any other reason,
+    // the contract is not paused. we verify that here
+    await expect(
+      wildPool.connect(owner).stake(123, 129873192831928)
+    ).to.be.revertedWith("invalid lock interval");
+
+    // now we pause the contract
+    await wildPool.connect(owner).setPauseStatus(true);
+    await lpPool.connect(owner).setPauseStatus(true);
+
+    expect(await wildPool.paused()).to.be.true;
+    expect(await lpPool.paused()).to.be.true;
+
+    const pauseReason = "contract is paused";
+    // try calling pause locked functions. they all should fail
+    const calls = {
+      stake: [123, 129873192831928],
+      unstake: [123, 123],
+      updateStakeLock: [123, 123],
+      sync: [],
+      processRewards: [],
+      setWeight: [123],
+      stakeAsPool: [owner.address, 123],
+    };
+
+    const contracts = [wildPool.connect(owner), lpPool.connect(owner)];
+    const callsArr = Object.entries(calls);
+
+    // this weird way of writing this was the only way that worked with chai or ethers calls
+    // triggering the "Promise rejection was handled asynchronously" warning
+    for (let k = 0; k < contracts.length; k++) {
+      for (let i = 0; i < callsArr.length; i++) {
+        try {
+          // @ts-ignore
+          await contracts[k][callsArr[i][0]](...callsArr[i][1]);
+        } catch (e) {
+          expect(e.message).to.include(pauseReason);
+        }
+      }
+    }
+
+    // test unpausing
+    await wildPool.connect(owner).setPauseStatus(false);
+    await lpPool.connect(owner).setPauseStatus(false);
+
+    expect(await wildPool.paused()).to.be.false;
+    expect(await lpPool.paused()).to.be.false;
+
+    // should fail with lock error that is after the pause check
+    await expect(
+      wildPool.connect(owner).stake(123, 129873192831928)
+    ).to.be.revertedWith("invalid lock interval");
+
+    // pause again to test further on the paused contract
+    await wildPool.connect(owner).setPauseStatus(true);
+    await lpPool.connect(owner).setPauseStatus(true);
+
+    expect(await wildPool.paused()).to.be.true;
+    expect(await lpPool.paused()).to.be.true;
+  });
+
   it("should upgrade the WILD Pool contract and validate the main state vars", async () => {
     const corePoolContractFact = new ZStakeCorePoolMigration__factory(owner);
 
@@ -157,7 +223,10 @@ describe.only("Migration Upgrade", () => {
       (stateVar, idx) => {
         const [key, value] = Object.entries(stateVar)[0];
 
-        expect(value).to.equal(lpPoolStatePreUpgrade[idx][key], `Mismatch on state var ${key} at idx ${idx}`);
+        expect(value).to.equal(
+          lpPoolStatePreUpgrade[idx][key],
+          `Mismatch on state var ${key} at idx ${idx}`
+        );
       }
     );
   });
@@ -179,5 +248,30 @@ describe.only("Migration Upgrade", () => {
   it("should revert when trying to withdraw WILD tokens from the WILD Pool as a non-owner", async () => {
     await expect(wildPoolNew.connect(tokenVault).migrationWithdraw(wildToken.address, tokenVault.address))
       .to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("should validate state vars again after all the operations", async () => {
+    const wildPoolStatePostUpgrade = await readContractStorage(poolContractFactory, wildPoolNew);
+
+    wildPoolStatePostUpgrade.forEach(
+      (stateVar, idx) => {
+        const [key, value] = Object.entries(stateVar)[0];
+
+        expect(value).to.equal(wildPoolStatePreUpgrade[idx][key], `Mismatch on state var ${key} at idx ${idx}`);
+      }
+    );
+
+    const lpPoolStatePostUpgrade = await readContractStorage(poolContractFactory, lpPoolNew);
+
+    lpPoolStatePostUpgrade.forEach(
+      (stateVar, idx) => {
+        const [key, value] = Object.entries(stateVar)[0];
+
+        expect(value).to.equal(
+          lpPoolStatePreUpgrade[idx][key],
+          `Mismatch on state var ${key} at idx ${idx}`
+        );
+      }
+    );
   });
 });
