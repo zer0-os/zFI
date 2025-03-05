@@ -245,6 +245,20 @@ describe.only("Migration Upgrade", () => {
     expect(vaultBalancePost).to.equal(vaultBalancePre.add(poolTokenBalancePre));
   });
 
+  it("should withdraw all LP tokens from the LP Pool as the owner", async () => {
+    const poolTokenBalancePre = await lpToken.balanceOf(lpPoolNew.address);
+    const vaultBalancePre = await lpToken.balanceOf(tokenVault.address);
+
+    await lpPoolNew.connect(owner).migrationWithdraw(lpToken.address, tokenVault.address);
+
+    const poolTokenBalancePost = await lpToken.balanceOf(lpPoolNew.address);
+    const vaultBalancePost = await lpToken.balanceOf(tokenVault.address);
+
+    expect(poolTokenBalancePre).to.not.equal(0);
+    expect(poolTokenBalancePost).to.equal(0);
+    expect(vaultBalancePost).to.equal(vaultBalancePre.add(poolTokenBalancePre));
+  });
+
   it("should revert when trying to withdraw WILD tokens from the WILD Pool as a non-owner", async () => {
     await expect(wildPoolNew.connect(tokenVault).migrationWithdraw(wildToken.address, tokenVault.address))
       .to.be.revertedWith("Ownable: caller is not the owner");
