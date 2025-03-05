@@ -231,16 +231,23 @@ describe.only("Migration Upgrade", () => {
     );
   });
 
+  it("should use the same new implementation for both proxies, deployed once", async () => {
+    const lpPoolImpl = await hre.upgrades.erc1967.getImplementationAddress(lpPoolNew.address);
+    const wildPoolImpl = await hre.upgrades.erc1967.getImplementationAddress(wildPoolNew.address);
+    expect(lpPoolImpl).to.equal(wildPoolImpl);
+  });
+
   it("should withdraw all WILD tokens from the WILD Pool as the owner", async () => {
     const poolTokenBalancePre = await wildToken.balanceOf(wildPoolNew.address);
     const vaultBalancePre = await wildToken.balanceOf(tokenVault.address);
+    expect(poolTokenBalancePre).to.not.equal(0);
+    expect(vaultBalancePre).to.equal(0);
 
     await wildPoolNew.connect(owner).migrationWithdraw(wildToken.address, tokenVault.address);
 
     const poolTokenBalancePost = await wildToken.balanceOf(wildPoolNew.address);
     const vaultBalancePost = await wildToken.balanceOf(tokenVault.address);
 
-    expect(poolTokenBalancePre).to.not.equal(0);
     expect(poolTokenBalancePost).to.equal(0);
     expect(vaultBalancePost).to.equal(vaultBalancePre.add(poolTokenBalancePre));
   });
@@ -248,13 +255,14 @@ describe.only("Migration Upgrade", () => {
   it("should withdraw all LP tokens from the LP Pool as the owner", async () => {
     const poolTokenBalancePre = await lpToken.balanceOf(lpPoolNew.address);
     const vaultBalancePre = await lpToken.balanceOf(tokenVault.address);
+    expect(poolTokenBalancePre).to.not.equal(0);
+    expect(vaultBalancePre).to.equal(0);
 
     await lpPoolNew.connect(owner).migrationWithdraw(lpToken.address, tokenVault.address);
 
     const poolTokenBalancePost = await lpToken.balanceOf(lpPoolNew.address);
     const vaultBalancePost = await lpToken.balanceOf(tokenVault.address);
 
-    expect(poolTokenBalancePre).to.not.equal(0);
     expect(poolTokenBalancePost).to.equal(0);
     expect(vaultBalancePost).to.equal(vaultBalancePre.add(poolTokenBalancePre));
   });
