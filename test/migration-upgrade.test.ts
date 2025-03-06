@@ -2,16 +2,20 @@ import * as hre from "hardhat";
 import { impersonateAccount } from "@nomicfoundation/hardhat-network-helpers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import {
-  MockToken, MockToken__factory,
+  MockToken,
+  MockToken__factory,
   ZStakeCorePool,
-  ZStakeCorePool__factory, ZStakeCorePoolMigration, ZStakeCorePoolMigration__factory,
+  ZStakeCorePool__factory,
+  ZStakeCorePoolMigration,
+  ZStakeCorePoolMigration__factory,
   ZStakePoolFactory,
-  ZStakePoolFactory__factory
+  ZStakePoolFactory__factory,
 } from "../typechain";
 import { expect } from "chai";
-import { getStorageLayout, getUnlinkedBytecode, getVersion } from "@openzeppelin/upgrades-core";
-import { readValidations } from "@openzeppelin/hardhat-upgrades/dist/utils/validations";
-import { BigNumber, Contract, ContractFactory } from "ethers";
+import { compareStorageData, ContractStorageData, readContractStorage } from "../src/migration/storage-data";
+import { upgradeStakingPool } from "../src/migration/upgrade-pool";
+import { transferProxyAdminOwnership } from "../src/migration/transfer-ownership";
+import { after } from "mocha";
 
 
 const OWNER_ADDRESS = "0x1A1d3644fc9906B1EE3d35842789A83D33e99943";
@@ -21,81 +25,40 @@ const LP_POOL_ADDRESS = "0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF";
 const WILD_TOKEN_ADDRESS = "0x2a3bFF78B79A009976EeA096a51A948a3dC00e34";
 const LP_TOKEN_ADDRESS = "0xcaA004418eB42cdf00cB057b7C9E28f0FfD840a5";
 
-export type ContractStorageData = Array<{
-  [label: string]: string | number | Array<{}>
-}>;
-
-
-export const readContractStorage = async (
-  contractFactory : ContractFactory,
-  contractObj : Contract,
-) : Promise<ContractStorageData> => {
-  const validations = await readValidations(hre);
-  const unlinkedBytecode = getUnlinkedBytecode(validations, contractFactory.bytecode);
-  const encodedArgs = contractFactory.interface.encodeDeploy();
-  const version = getVersion(unlinkedBytecode, contractFactory.bytecode, encodedArgs);
-  const layout = getStorageLayout(validations, version);
-
-  return await layout.storage.reduce(
-    async (acc : Promise<ContractStorageData> , {
-      contract,
-      label,
-      type
-    }) : Promise<ContractStorageData> => {
-      const newAcc = await acc;
-
-      // TODO: to make it general for any contract change this to more generally pick exceptions here
-      if(
-        (
-          contract === "zStakePoolBase" ||
-          contract === "zStakeCorePool" ||
-          contract === "zStakeCorePoolMigration"
-        ) && !type.includes("mapping")) {
-        try {
-          let value = await contractObj[label]();
-          if (value._isBigNumber) {
-            value = value.toString();
-          }
-
-          newAcc.push({ [label]: value });
-        } catch (e) {
-          console.log(`Error on LABEL ${label}: ${e.message}`);
-        }
-      }
-
-      return newAcc;
-    }, Promise.resolve([])
-  );
-};
-
 
 describe.only("Migration Upgrade", () => {
-  let owner: SignerWithAddress;
-  let tokenVault: SignerWithAddress;
+  let owner : SignerWithAddress;
+  let tokenVault : SignerWithAddress;
+  let upgradeOwner : SignerWithAddress;
 
   let poolContractFactory : ZStakeCorePool__factory;
 
-  let factory: ZStakePoolFactory;
-  let wildPool: ZStakeCorePool;
-  let lpPool: ZStakeCorePool;
-  let wildToken: MockToken;
-  let lpToken: MockToken;
+  let factory : ZStakePoolFactory;
+  let wildPool : ZStakeCorePool;
+  let lpPool : ZStakeCorePool;
+  let wildToken : MockToken;
+  let lpToken : MockToken;
 
   // upgraded
-  let wildPoolNew: ZStakeCorePoolMigration;
-  let lpPoolNew: ZStakeCorePoolMigration;
+  let wildPoolNew : ZStakeCorePoolMigration;
+  let lpPoolNew : ZStakeCorePoolMigration;
 
-  let lpPoolStatePreUpgrade: ContractStorageData;
-  let wildPoolStatePreUpgrade: ContractStorageData;
+  let lpPoolStatePreUpgrade : ContractStorageData;
+  let wildPoolStatePreUpgrade : ContractStorageData;
   let stakerDataWildPoolPreUpgrade;
   let stakerDataLpPoolPreUpgrade;
 
+  let originalConsoleLog : typeof console.log;
 
   before(async () => {
+    originalConsoleLog = console.log;
+    // disable console logging for tests
+    console.log = () => {};
+
     await impersonateAccount(OWNER_ADDRESS);
 
     owner = await hre.ethers.getSigner(OWNER_ADDRESS);
-    [,,tokenVault] = await hre.ethers.getSigners();
+    [,, tokenVault, upgradeOwner] = await hre.ethers.getSigners();
 
     poolContractFactory = new ZStakeCorePool__factory(owner);
 
@@ -119,16 +82,6 @@ describe.only("Migration Upgrade", () => {
 
     expect(wildPoolToken).to.equal(WILD_TOKEN_ADDRESS);
     expect(lpPoolToken).to.equal(LP_TOKEN_ADDRESS);
-
-    // if we want to see it ->
-    // const lpPoolDataStr = JSON.stringify(lpPoolStatePreUpgrade, null, "\t");
-    // const wildPoolDataStr = JSON.stringify(wildPoolStatePreUpgrade, null, "\t");
-
-    // console.log(`
-    // LP Pool Storage Data: ${lpPoolDataStr}
-    // --------------------------
-    // Wild Pool Storage Data: ${wildPoolDataStr}
-    // `);
   });
 
   it("should be able to pause() blocking all core functionality", async () => {
@@ -194,47 +147,45 @@ describe.only("Migration Upgrade", () => {
     expect(await lpPool.paused()).to.be.true;
   });
 
-  it("should upgrade the WILD Pool contract and validate the main state vars", async () => {
-    const corePoolContractFact = new ZStakeCorePoolMigration__factory(owner);
+  it("should change ProxyAdmin owner to a different account", async () => {
+    const proxyAdmin = await hre.upgrades.admin.getInstance();
+    const proxyAdminOwner = await proxyAdmin.owner();
 
-    // Upgrade the WILD Pool contract
-    wildPoolNew = await hre.upgrades.upgradeProxy(wildPool, corePoolContractFact) as ZStakeCorePoolMigration;
+    expect(proxyAdminOwner).to.equal(OWNER_ADDRESS);
+    expect(proxyAdminOwner).to.not.equal(upgradeOwner.address);
 
-    const wildPoolStatePostUpgrade = await readContractStorage(poolContractFactory, wildPoolNew);
+    await proxyAdmin.connect(owner).transferOwnership(upgradeOwner.address);
+    const newOwnerAddressPost = await proxyAdmin.owner();
+    expect(newOwnerAddressPost).to.equal(upgradeOwner.address);
+  });
 
-    wildPoolStatePostUpgrade.forEach(
-      (stateVar, idx) => {
-        const [key, value] = Object.entries(stateVar)[0];
-
-        expect(value).to.equal(wildPoolStatePreUpgrade[idx][key], `Mismatch on state var ${key} at idx ${idx}`);
-      }
-    );
+  it("should upgrade the WILD Pool contract, validate the main state vars", async () => {
+    wildPoolNew = await upgradeStakingPool({
+      pool: "wild",
+      ownerExternal: upgradeOwner,
+      transferOwnership: false,
+    });
   });
 
   it("should upgrade the LP Pool contract and validate the main state vars", async () => {
-    const corePoolContractFact = new ZStakeCorePoolMigration__factory(owner);
-
-    // Upgrade the LP Pool contract
-    lpPoolNew = await hre.upgrades.upgradeProxy(lpPool, corePoolContractFact) as ZStakeCorePoolMigration;
-
-    const lpPoolStatePostUpgrade = await readContractStorage(poolContractFactory, lpPoolNew);
-
-    lpPoolStatePostUpgrade.forEach(
-      (stateVar, idx) => {
-        const [key, value] = Object.entries(stateVar)[0];
-
-        expect(value).to.equal(
-          lpPoolStatePreUpgrade[idx][key],
-          `Mismatch on state var ${key} at idx ${idx}`
-        );
-      }
-    );
+    lpPoolNew = await upgradeStakingPool({
+      pool: "lp",
+      ownerExternal: upgradeOwner,
+      transferOwnership: false,
+    });
   });
 
   it("should use the same new implementation for both proxies, deployed once", async () => {
     const lpPoolImpl = await hre.upgrades.erc1967.getImplementationAddress(lpPoolNew.address);
     const wildPoolImpl = await hre.upgrades.erc1967.getImplementationAddress(wildPoolNew.address);
     expect(lpPoolImpl).to.equal(wildPoolImpl);
+  });
+
+  it("should transfer ownership of ProxyAdmin to the original owner", async () => {
+    await transferProxyAdminOwnership(upgradeOwner);
+
+    const proxyAdmin = await hre.upgrades.admin.getInstance();
+    expect(await proxyAdmin.owner()).to.equal(OWNER_ADDRESS);
   });
 
   it("should withdraw all WILD tokens from the WILD Pool as the owner", async () => {
@@ -275,25 +226,49 @@ describe.only("Migration Upgrade", () => {
   it("should validate state vars again after all the operations", async () => {
     const wildPoolStatePostUpgrade = await readContractStorage(poolContractFactory, wildPoolNew);
 
-    wildPoolStatePostUpgrade.forEach(
-      (stateVar, idx) => {
-        const [key, value] = Object.entries(stateVar)[0];
-
-        expect(value).to.equal(wildPoolStatePreUpgrade[idx][key], `Mismatch on state var ${key} at idx ${idx}`);
-      }
-    );
+    compareStorageData(wildPoolStatePreUpgrade, wildPoolStatePostUpgrade);
 
     const lpPoolStatePostUpgrade = await readContractStorage(poolContractFactory, lpPoolNew);
 
-    lpPoolStatePostUpgrade.forEach(
-      (stateVar, idx) => {
-        const [key, value] = Object.entries(stateVar)[0];
+    compareStorageData(lpPoolStatePreUpgrade, lpPoolStatePostUpgrade);
+  });
 
-        expect(value).to.equal(
-          lpPoolStatePreUpgrade[idx][key],
-          `Mismatch on state var ${key} at idx ${idx}`
-        );
+  it("upgraded contract should still be paused and functions inaccessible", async () => {
+    expect(await wildPoolNew.paused()).to.be.true;
+    expect(await lpPoolNew.paused()).to.be.true;
+
+    const pauseReason = "contract is paused";
+    // try calling pause locked functions. they all should fail
+    const calls = {
+      stake: [123, 129873192831928],
+      unstake: [123, 123],
+      updateStakeLock: [123, 123],
+      sync: [],
+      processRewards: [],
+      setWeight: [123],
+      stakeAsPool: [owner.address, 123],
+    };
+
+    const contracts = [wildPoolNew.connect(owner), lpPoolNew.connect(owner)];
+    const callsArr = Object.entries(calls);
+
+    // this weird way of writing this was the only way that worked with chai or ethers calls
+    // triggering the "Promise rejection was handled asynchronously" warning
+    for (let k = 0; k < contracts.length; k++) {
+      for (let i = 0; i < callsArr.length; i++) {
+        try {
+          // @ts-ignore
+          await contracts[k][callsArr[i][0]](...callsArr[i][1]);
+        } catch (e) {
+          expect(e.message).to.include(pauseReason);
+        }
       }
-    );
+    }
+  });
+
+  it("should reset logging", async () => {
+    // ! KEEP THIS AT THE END OF ALL TESTS !
+    // after() hook doesn't seem to work in this version for some reason
+    console.log = originalConsoleLog;
   });
 });
