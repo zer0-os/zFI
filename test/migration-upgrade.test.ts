@@ -6,24 +6,19 @@ import {
   MockToken__factory,
   ZStakeCorePool,
   ZStakeCorePool__factory,
-  ZStakeCorePoolMigration,
-  ZStakeCorePoolMigration__factory,
-  ZStakePoolFactory,
-  ZStakePoolFactory__factory,
+  ZStakeCorePoolMigration, ZStakePoolFactory__factory
 } from "../typechain";
 import { expect } from "chai";
 import { compareStorageData, ContractStorageData, readContractStorage } from "../src/migration/storage-data";
 import { upgradeStakingPool } from "../src/migration/upgrade-pool";
 import { transferProxyAdminOwnership } from "../src/migration/transfer-ownership";
-import { after } from "mocha";
-
-
-const OWNER_ADDRESS = "0x1A1d3644fc9906B1EE3d35842789A83D33e99943";
-const FACTORY_ADDRESS = "0xF133faFd49f4671ac63EE3a3aE7E7C4C9B84cE4a";
-const WILD_POOL_ADDRESS = "0x3aC551725ac98C5DCdeA197cEaaE7cDb8a71a2B4";
-const LP_POOL_ADDRESS = "0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF";
-const WILD_TOKEN_ADDRESS = "0x2a3bFF78B79A009976EeA096a51A948a3dC00e34";
-const LP_TOKEN_ADDRESS = "0xcaA004418eB42cdf00cB057b7C9E28f0FfD840a5";
+import {
+  FACTORY_ADDRESS,
+  LP_POOL_ADDRESS, LP_TOKEN_ADDRESS,
+  OWNER_SAFE_ADDRESS,
+  WILD_POOL_ADDRESS,
+  WILD_TOKEN_ADDRESS
+} from "../src/migration/constants";
 
 
 describe.only("Migration Upgrade", () => {
@@ -33,7 +28,6 @@ describe.only("Migration Upgrade", () => {
 
   let poolContractFactory : ZStakeCorePool__factory;
 
-  let factory : ZStakePoolFactory;
   let wildPool : ZStakeCorePool;
   let lpPool : ZStakeCorePool;
   let wildToken : MockToken;
@@ -45,8 +39,6 @@ describe.only("Migration Upgrade", () => {
 
   let lpPoolStatePreUpgrade : ContractStorageData;
   let wildPoolStatePreUpgrade : ContractStorageData;
-  let stakerDataWildPoolPreUpgrade;
-  let stakerDataLpPoolPreUpgrade;
 
   let originalConsoleLog : typeof console.log;
 
@@ -55,14 +47,13 @@ describe.only("Migration Upgrade", () => {
     // disable console logging for tests
     console.log = () => {};
 
-    await impersonateAccount(OWNER_ADDRESS);
+    await impersonateAccount(OWNER_SAFE_ADDRESS);
 
-    owner = await hre.ethers.getSigner(OWNER_ADDRESS);
+    owner = await hre.ethers.getSigner(OWNER_SAFE_ADDRESS);
     [,, tokenVault, upgradeOwner] = await hre.ethers.getSigners();
 
     poolContractFactory = new ZStakeCorePool__factory(owner);
 
-    factory = new ZStakePoolFactory__factory(owner).attach(FACTORY_ADDRESS);
     wildPool = new ZStakeCorePool__factory(owner).attach(WILD_POOL_ADDRESS);
     lpPool = new ZStakeCorePool__factory(owner).attach(LP_POOL_ADDRESS);
 
@@ -76,6 +67,10 @@ describe.only("Migration Upgrade", () => {
     wildPoolStatePreUpgrade = await readContractStorage(poolContractFactory, wildPool);
   });
 
+  after(() => {
+    console.log = originalConsoleLog;
+  });
+
   it("should validate state of forked contracts", async () => {
     const wildPoolToken = await wildPool.poolToken();
     const lpPoolToken = await lpPool.poolToken();
@@ -84,7 +79,7 @@ describe.only("Migration Upgrade", () => {
     expect(lpPoolToken).to.equal(LP_TOKEN_ADDRESS);
   });
 
-  it("should be able to pause() blocking all core functionality", async () => {
+  it("should be able to pause() both pools blocking all core functionality", async () => {
     // this will fail, but much deeper in code with reason related to lock interval
     // `paused` is checked on the first line, so if it fails with any other reason,
     // the contract is not paused. we verify that here
@@ -151,7 +146,7 @@ describe.only("Migration Upgrade", () => {
     const proxyAdmin = await hre.upgrades.admin.getInstance();
     const proxyAdminOwner = await proxyAdmin.owner();
 
-    expect(proxyAdminOwner).to.equal(OWNER_ADDRESS);
+    expect(proxyAdminOwner).to.equal(OWNER_SAFE_ADDRESS);
     expect(proxyAdminOwner).to.not.equal(upgradeOwner.address);
 
     await proxyAdmin.connect(owner).transferOwnership(upgradeOwner.address);
@@ -163,7 +158,6 @@ describe.only("Migration Upgrade", () => {
     wildPoolNew = await upgradeStakingPool({
       pool: "wild",
       ownerExternal: upgradeOwner,
-      transferOwnership: false,
     });
   });
 
@@ -171,7 +165,6 @@ describe.only("Migration Upgrade", () => {
     lpPoolNew = await upgradeStakingPool({
       pool: "lp",
       ownerExternal: upgradeOwner,
-      transferOwnership: false,
     });
   });
 
@@ -185,7 +178,7 @@ describe.only("Migration Upgrade", () => {
     await transferProxyAdminOwnership(upgradeOwner);
 
     const proxyAdmin = await hre.upgrades.admin.getInstance();
-    expect(await proxyAdmin.owner()).to.equal(OWNER_ADDRESS);
+    expect(await proxyAdmin.owner()).to.equal(OWNER_SAFE_ADDRESS);
   });
 
   it("should withdraw all WILD tokens from the WILD Pool as the owner", async () => {

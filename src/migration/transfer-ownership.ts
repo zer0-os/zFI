@@ -10,15 +10,11 @@ export const transferProxyAdminOwnership = async (
   console.log("Transferring ProxyAdmin ownership back to the original...");
   let proxyAdminContract = await hre.upgrades.admin.getInstance();
 
-  // if (proxyAdminContract.address === PROXY_ADMIN_ADDRESS) {
-  //   console.log("OZ Upgrades returned the CORRECT ProxyAdmin, proceeding to use Upgrades package to change owner");
-  //   await hre.upgrades.admin.transferProxyAdminOwnership(OWNER_SAFE_ADDRESS);
-  // } else {
-  // TODO: is this the right way to do it???
-  console.log("OZ Upgrades returned the INCORRECT ProxyAdmin, proceeding to call `transferOwnership()` directly");
-  proxyAdminContract = proxyAdminContract.attach(PROXY_ADMIN_ADDRESS);
+  if (proxyAdminContract.address !== PROXY_ADMIN_ADDRESS) {
+    console.log("OZ Upgrades returned the INCORRECT ProxyAdmin, attaching known address");
+    proxyAdminContract = proxyAdminContract.attach(PROXY_ADMIN_ADDRESS);
+  }
   await proxyAdminContract.connect(currentOwner).transferOwnership(OWNER_SAFE_ADDRESS);
-  // }
 
   // validate owner change
   const newAdminOwner = await proxyAdminContract.owner();

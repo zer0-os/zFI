@@ -5,7 +5,6 @@ import {
   ZStakeCorePoolMigration__factory,
 } from "../../typechain";
 import { poolAddresses } from "./constants";
-import { transferProxyAdminOwnership } from "./transfer-ownership";
 import { compareStorageData, readContractStorage } from "./storage-data";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
@@ -13,11 +12,9 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 export const upgradeStakingPool = async ({
   pool,
   ownerExternal,
-  transferOwnership,
 } : {
   pool : "lp" | "wild";
   ownerExternal ?: SignerWithAddress;
-  transferOwnership ?: boolean;
 }) => {
   const poolAddress = poolAddresses[pool];
   console.log(`Starting full upgrade process for ${pool} pool at address ${poolAddress}`);
@@ -29,7 +26,6 @@ export const upgradeStakingPool = async ({
 
   console.log(`Owner acquired as ${owner.address}`);
 
-  // TODO: add contract storage read
   const stakingPoolFactOg = new ZStakeCorePool__factory(owner);
   const stakingPoolContractOg = stakingPoolFactOg.attach(poolAddress);
   const storageDataPre = await readContractStorage(
@@ -56,12 +52,6 @@ export const upgradeStakingPool = async ({
   console.log("Storage data of the upgraded pool contract acquired. Proceeding to compare...");
   compareStorageData(storageDataPre, storageDataPost);
   console.log("Storage compared successfully. Values are unchanged after upgrade");
-
-  if (transferOwnership) {
-    // transfer ProxyAdmin owner back
-    // TODO: make sure this works properly !!!
-    await transferProxyAdminOwnership(owner);
-  }
 
   console.log(`Full upgrade process for ${pool} pool finished successfully.`);
 
