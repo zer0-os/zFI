@@ -111,7 +111,7 @@ contract zStakeCorePoolMigration is zStakePoolBase {
         poolTokenReserve += _amount;
     }
 
-    function migrationWithdraw(address token, address to) external onlyOwner {
+    function migrationWithdraw(address token, address to) external whenPaused onlyOwner {
         uint256 balance = IERC20(token).balanceOf(address(this));
         SafeERC20.safeTransfer(IERC20(token), to, balance);
 
