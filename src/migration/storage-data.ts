@@ -7,11 +7,17 @@ import {
   getVersion,
   StorageLayout,
 } from "@openzeppelin/upgrades-core";
-import { expect } from "chai";
 
+export type ContractStorageElement = string | number | Array<{}>;
 
 export type ContractStorageData = Array<{
-  [label: string]: string | number | Array<{}>;
+  [label: string]: ContractStorageElement;
+}>;
+
+export type ContractStorageDiff = Array<{
+  key: string;
+  valueBefore: ContractStorageElement;
+  valueAfter: ContractStorageElement;
 }>;
 
 
@@ -68,14 +74,28 @@ export const compareStorageData = (
   dataBefore: ContractStorageData,
   dataAfter: ContractStorageData,
 ) => {
-  dataAfter.forEach(
-    (stateVar, idx) => {
+  const storageDiff = dataAfter.reduce(
+    (acc : ContractStorageDiff | undefined, stateVar, idx) => {
       const [key, value] = Object.entries(stateVar)[0];
 
-      expect(value).to.equal(
-        dataBefore[idx][key],
-        `Mismatch on state var ${key} at idx ${idx}! Prev value: ${dataBefore[idx][key]}, new value: ${value}`
-      );
-    }
+      if (value !== dataBefore[idx][key]) {
+        console.error(
+          `Mismatch on state var ${key} at idx ${idx}! Prev value: ${dataBefore[idx][key]}, new value: ${value}`
+        );
+
+        return [
+          ...acc as ContractStorageDiff,
+          {
+            key,
+            valueBefore: dataBefore[idx][key],
+            valueAfter: value,
+          }
+        ];
+      }
+    }, []
   );
+
+  if (storageDiff && storageDiff.length > 0) {
+    throw new Error(`Storage data mismatch: ${JSON.stringify(storageDiff)}`);
+  }
 };
