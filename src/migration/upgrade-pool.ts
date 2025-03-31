@@ -49,6 +49,12 @@ export const upgradeStakingPool = async ({
     poolContractUpgraded,
   );
 
+  if (hre.network.name === "hardhat") {
+    await hre.run("verify:verify", {
+      address: implAddress,
+    });
+  }
+
   console.log("Storage data of the upgraded pool contract acquired. Proceeding to compare...");
   compareStorageData(storageDataPre, storageDataPost);
   console.log("Storage compared successfully. Values are unchanged after upgrade");
