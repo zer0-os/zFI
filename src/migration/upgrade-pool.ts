@@ -49,7 +49,7 @@ export const upgradeStakingPool = async ({
     poolContractUpgraded,
   );
 
-  if (hre.network.name === "hardhat") {
+  if (hre.network.name !== "hardhat") {
     await hre.run("verify:verify", {
       address: implAddress,
     });
