@@ -21,7 +21,7 @@ import {
 } from "../src/migration/constants";
 
 
-describe.only("Migration Upgrade", () => {
+describe("Migration Upgrade", () => {
   let owner : SignerWithAddress;
   let tokenVault : SignerWithAddress;
   let upgradeOwner : SignerWithAddress;
@@ -181,6 +181,17 @@ describe.only("Migration Upgrade", () => {
     expect(await proxyAdmin.owner()).to.equal(OWNER_SAFE_ADDRESS);
   });
 
+  it("should revert when trying to #migrationWithdraw() if the contract is not paused", async () => {
+    // unpause to test
+    await wildPoolNew.connect(owner).setPauseStatus(false);
+
+    await expect(wildPoolNew.connect(owner).migrationWithdraw(wildToken.address, tokenVault.address))
+      .to.be.revertedWith("Pausable: not paused");
+
+    // pause back
+    await wildPoolNew.connect(owner).setPauseStatus(true);
+  });
+
   it("should withdraw all WILD tokens from the WILD Pool as the owner", async () => {
     const poolTokenBalancePre = await wildToken.balanceOf(wildPoolNew.address);
     const vaultBalancePre = await wildToken.balanceOf(tokenVault.address);
@@ -211,7 +222,7 @@ describe.only("Migration Upgrade", () => {
     expect(vaultBalancePost).to.equal(vaultBalancePre.add(poolTokenBalancePre));
   });
 
-  it("should revert when trying to withdraw WILD tokens from the WILD Pool as a non-owner", async () => {
+  it("should revert when trying to #migrationWithdraw() WILD tokens from the WILD Pool as a non-owner", async () => {
     await expect(wildPoolNew.connect(tokenVault).migrationWithdraw(wildToken.address, tokenVault.address))
       .to.be.revertedWith("Ownable: caller is not the owner");
   });
